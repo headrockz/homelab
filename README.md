@@ -1,8 +1,4 @@
-# Server Settings 
-
-**Este repositório tem como objetivo mostrar as ferramentas que estão em execução no meu servidor**
-
-## Montando um Server
+# Montando um Server
 Adquiri um mini pc e decidi em transforma-lo em um servidor, as configs do pc são: processador celeron de 4 núcleos, 8gb de memória ram, 256gb de ssd e um hd de 1tb, essas configurações são mais do que o suficiente para o que será executado nele. Como entusiasta de linux, o SO dele não poderia ser outro que não um linux, no caso optei por rodar um Ubuntu server.
 
 ## O que será executado no server?
