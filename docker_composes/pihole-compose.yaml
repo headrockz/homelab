@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: butterfree 
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 80:80/tcp
+    environment:
+      TZ: 'America/Sao_Paulo'
+      WEBPASSWORD: '<your-passwd>'
+    volumes:
+      - pihole_app:/etc/pihole
+      - dns_config:/etc/dnsmasq.d
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+    restart: always

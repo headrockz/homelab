@@ -1,0 +1,54 @@
+#portainer
+docker volume create portainer_data
+
+docker run -d \
+	-p 9000:9000 \
+	--name portainer \
+	--hostname weedle \
+	--restart=always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v portainer_data:/data \
+	portainer/portainer-ce
+-H unix:///var/run/docker.sock
+
+docker volume create pihole_app
+docker volume create dns_config
+
+docker run -d \
+		--name pihole \
+		--hostname butterfree \
+		-e WEBPASSWORD=password \
+		-e ServerIP=192.168.15.3 \
+		-e TZ="America/Sao_Paulo" \
+		-e VIRTUAL_HOST=pi.hole \
+		-e PROXY_HOST="pi.hole" \
+		-v pihole_app:/etc/pihole \
+		-v dns_config:/etc/dnsmasq.d \
+		-p 81:80 -p 53:53/udp -p 53:53/tcp \
+		--restart=always \
+		pihole/pihole
+
+docker volume create pihole_app
+docker volume create dns_config
+
+docker run -d \
+		--name pihole \
+		--hostname butterfree \
+		-e WEBPASSWORD=password \
+		-e ServerIP=192.168.15.3 \
+		-e TZ="America/Sao_Paulo" \
+		-e VIRTUAL_HOST=pi.hole \
+		-e PROXY_HOST="pi.hole" \
+		-v pihole_app:/etc/pihole \
+		-v dns_config:/etc/dnsmasq.d \
+		-p 81:80 -p 53:53/udp -p 53:53/tcp \
+		--restart=always \
+		pihole/pihole
+
+
+#Arch 
+docker run -d \
+	--name arch \
+	--hostname dragonite \
+	# --network=
+	archlinux
