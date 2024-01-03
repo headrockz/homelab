@@ -18,7 +18,7 @@
 
 - LXC 1 e 2 - debian (1cpu 512mb)
     - pihole
-- LXC 3, debian (1cpu 1gb)
+- LXC 3 - debian (1cpu 1gb)
 	- casa os
 	- nginx proxy manager
 	- portainer
@@ -28,9 +28,9 @@
 	- n8n
 	- rundeck
     - github runner
-- VM 1, OpenWrt (1cpu 1gb)
+- VM 1 - OpenWrt (1cpu 1gb)
 	 - tailscale
-- VM 2, Ubuntu (4cpu 8gb)
+- VM 2 - Ubuntu (4cpu 8gb)
     - docker
     - pyenv
     - airflow
