@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    
+    restart: always
+    ports:
+      - "80:80"
+      - "83:81"
+      - "443:443"
+    volumes:
+      - ${NPM_DATA}:/data
+      - ${LETSCRYPT_DATA}:/etc/letsencrypt
+
+networks:
+  server-falcon:
+    external: true

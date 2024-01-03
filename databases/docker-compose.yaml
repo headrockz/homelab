@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres
+    hostname: falcon-postgres
+    volumes:
+      - ${POSTGRES_DATA}:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  
+  mysql:
+    image: mysql
+    hostname: falcon-server
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '3306:3306'
+    networks:
+      - server-falcon
+    volumes:
+      - ${MYSQL_DATA}:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    hostname: redis
+    container_name: redis
+    volumes:
+        - ${REDIS_DATA}:/data
+    ports:
+      - 6379:6379
+    restart: always
+
+  mongo:
+    image: mongo:4.4.6
+    container_name: mongo
+    hostname: falcon-mongo
+    restart: always
+    volumes:
+      - ${MONGO_DATA}:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    hostname: StarDestroyer
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_URL: ${MONGODB_URL}
+
+networks:
+  server-falcon:
+    external: true

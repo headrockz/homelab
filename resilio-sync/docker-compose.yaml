@@ -1,0 +1,17 @@
+version: "3"
+services:
+  resilio-sync:
+    image: lscr.io/linuxserver/resilio-sync:latest
+    container_name: resilio-sync
+    hostname: falcon-resilio-sync
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ${RESILIO_DATA}:/config
+      - ${RESILIO_PATH}:/sync
+    ports:
+      - 8888:8888
+      - 55555:55555
+    restart: always

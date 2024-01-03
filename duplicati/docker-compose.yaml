@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  duplicati:
+    image: lscr.io/linuxserver/duplicati:latest
+    container_name: duplicati
+    hostname: falcon-duplicati
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ${DUPLICATI_DATA}:/config
+      - ${DUPLICATI_BACKUPS}:/backups
+      - ${DUPLICATI_PATH}:/source:rod
+    networks:
+      - server-falcon
+    ports:
+      - 8200:8200
+    restart: always
+
+
+networks:
+  server-falcon:
+    external: true

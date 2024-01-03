@@ -1,0 +1,9 @@
+zshInstall.py
+samba.sh
+*.env*
+.DS_Store
+test
+telegraf.conf
+airflow
+airbyte
+media
