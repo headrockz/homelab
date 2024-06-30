@@ -1,55 +1,54 @@
 # Asafe's Homelab
 
-## Network
+[LinkedIn Post](https://www.linkedin.com/pulse/meu-homelab-asafe-felipe-wb3if/?trackingId=2GMQnhG8Smeis%2FGN5bT7RQ%3D%3D)
 
-| NAME | SUBNET | ID |
-|--------|--------|----|
-| SERVER | 192.168.1.0/28  | 1 |
-|  MAIN  | 192.168.2.0/24  | 2 |
-| CAMERA | 192.168.3.0/28  | 3 |
-| GUEST  | 192.168.10.0/25 | 10 |
+Cada computador recebe o nome de uma nave do Star Wars, sendo eles:
+
+- Falcon, um mini pc com processador n100 da intel, 16gb de ram, dois SSDs de 512gb e dois HDs de 2tb.
+- Xwing, outro mini pc com processador n100, 16gb de ram e um SSD de 512gb
 
 ## Software
 
-- Mini PC - [Proxmox](https://www.proxmox.com/en)
-- Nas - [Open media Vault](https://www.openmediavault.org/)
-- Nano Pi R5C - [DietPi](https://dietpi.com/)
+> Os dois mini pcs rodam o [Proxmox](https://www.proxmox.com/en) (um sistema de virtualização) como sistema operacional.
 
-### Falcon - Mini PC
+O Falcon fica destinado a executar aplicações mais "produtivas" como meu DNS, VPN e meu NAS, ele estão sendo executo as seguintes VMs e LXCs.
+- LXC 1 e 2 - Debian (1cpu 512mb de ram), onde executo o Pihole
+- LXC 3 - Debian (2cpu 6gb de ram), onde executo o My Speed Test, Portainer, Cloudflared, Nginx Proxy Manager, Uptime Kuma e o Grafana, também meus bancos de dados (PostgreSQL, MySQL, InfluxDB, MongoDB e Redis).
+- VM 1 - OpenWrt (1cpu 1gb de ram), onde executo o tailscale
+- VM 2 - Open Media Vault (2cpu 8gb de ram), é o meu NAS, onde executo o Samba e o NFS, também tenho alguns containers rodando (Syncthing, Duplicati e Resilio Sync).
 
-- LXC 1 e 2 - Debian (1cpu 512mb)
-  - pihole
-- LXC  - Debian (2cpu 4gb)
-  - nginx proxy manager
-  - portainer
-  - uptime
-  - cloudflared
-  - Syncthing
-  - Resilio Sync
-  - Duplacati
- - VM 1 - OpenWrt (1cpu 1gb)
-  - tailscale
-- VM 2 - Open Media Vault (4cpu 8gb)
-  - Samba
-  - NFS
+Também dentro do Falcon executo a aplicação Casa OS, é uma interface web para gerenciar aplicações docker fornecidas pela "App Store" deles, mas também é possível adicionar links externos.
 
-### Tie - Nano Pi
+Já o Xwing fica responsável por ser meu laboratório, tenho algumas VMs de teste como do True NAS, outra Open Media Vault, essas duas VMs essas não ficam sempre ligadas, além delas, tenho uma VM com Ubuntu Server que é meu ambiente de desenvolvimento, e tenho outras 3 VMs também com Ubuntu que rodam um cluster Kubernetes com o k3s.
 
-- casa os
-- jellyfin
-- transmission
-- pihole
-- postgres
-- influxdb
-- grafana
-- mongodb
-- mysql
+## Serviços
 
-### Xwing - Mini PC
+### Databases
 
-- VM 1 - Ubuntu (4cpu 8gb)
-  - docker
-  - pyenv
-  - airflow
-- VM 2,3,4 - Ubuntu (2cpu 2gb)
-  - Kubernetes
+- PostgreSQL
+- InfluxDB
+- MySQL
+- MongoDB
+- Redis
+
+### Monitoring
+
+- Grafana
+- My Speed Test
+- Portainer
+- Uptime
+
+### Network
+
+- Cloudflared
+- Nginx Proxy Manager
+- Pihole
+- Tailscale
+
+### Shares
+
+- Duplacati
+- NFS
+- Samba
+- Resilio Sync
+- Syncthing
