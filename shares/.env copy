@@ -1,0 +1,19 @@
+TZ=America/Sao_Paulo
+PGID=0
+PUID=0
+
+# Shared Data
+SHARED_DATA=/srv/
+
+# Duplicati
+DUPLICATI_DATA=/srv/dev-disk-by-uuid-0d37fc33-6bee-43dc-aeac-9be018021ec8/docker/duplicati_data
+DUPLICATI_BACKUPS=
+
+# Resilio Sync configs
+RESILIO_DATA=/srv/dev-disk-by-uuid-0d37fc33-6bee-43dc-aeac-9be018021ec8/docker/resilio_data
+
+# Syncthing
+SYNCTHING_DATA=/srv/dev-disk-by-uuid-0d37fc33-6bee-43dc-aeac-9be018021ec8/docker/syncthing_data
+
+# File Brower
+FILEBROWER_DATA=/srv/dev-disk-by-uuid-0d37fc33-6bee-43dc-aeac-9be018021ec8/docker/filebrower_data

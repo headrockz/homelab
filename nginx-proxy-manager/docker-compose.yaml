@@ -1,0 +1,16 @@
+---
+version: "3.9"
+
+services:
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    hostname: server-nginx
+    restart: always
+    volumes:
+      - ${NPM_DATA}:/data
+      - ${LETSCRYPT_DATA}:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 83:81
+      - 443:443

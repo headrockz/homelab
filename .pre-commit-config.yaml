@@ -1,0 +1,80 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+        stages: [commit]
+      - id: end-of-file-fixer
+        stages: [commit]
+      - id: trailing-whitespace
+        stages: [commit]
+      - id: check-added-large-files
+        stages: [commit]
+
+  - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
+    rev: v0.1.0
+    hooks:
+      - id: dockerfilelint
+        stages: [commit]
+
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+
+  - repo: local
+    hooks:
+      # - id: black
+      #   name: Run black
+      #   entry: poetry run black
+      #   language: system
+      #   types: [file, python]
+      #   stages: [commit]
+
+      - id: isort
+        name: Run Isort
+        entry: poetry run isort
+        language: system
+        types: [file, python]
+        stages: [commit]
+
+      - id: flake8
+        name: Run Flake8
+        entry: poetry run flake8
+        language: system
+        types: [file, python]
+        stages: [commit]
+
+      - id: yamllint
+        name: Run Yamlint
+        entry: poetry run yamllint
+        language: system
+        types: [file, yaml]
+        stages: [commit]
+
+      - id: bandit
+        name: Run Bandit
+        entry: poetry run bandit
+        language: system
+        types: [file, python]
+        stages: [commit]
+        args:
+          [
+            --configfile,
+            pyproject.toml,
+            --severity-level,
+            all,
+            --confidence-level,
+            all,
+            --quiet,
+            --format,
+            custom,
+          ]
+
+      - id: commit-check
+        name: Run Commit Check
+        entry: poetry run cz check --commit-msg-file
+        language: system
+        types: [file, yaml]
+        stages: [commit-msg]

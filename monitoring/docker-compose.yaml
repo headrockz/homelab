@@ -1,0 +1,55 @@
+---
+version: '3.9'
+
+services:
+  uptimekuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptimekuma
+    hostname: server-uptime
+    restart: always
+    volumes:
+      - ${UPTIME_DATA}/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3001:3001
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: server-grafana
+    restart: always
+    volumes:
+      - ${GRAFANA_DATA}/data:/vol01/Docker/monitoring
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    ports:
+      - 3002:3000
+    networks:
+      - monitoring
+
+  myspeed:
+    image: germannewsmaker/myspeed
+    container_name: myspeed
+    hostname: server-myspeed
+    restart: always
+    volumes:
+      - ${MYSPEED_DATA}/data:/myspeed/data
+    ports:
+      - 5216:5216
+    networks:
+      - monitoring
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    hostname: server-portainer
+    restart: always
+    volumes:
+      - ${PORTAINER_DATA}/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8000:8000
+      - 9443:9443
