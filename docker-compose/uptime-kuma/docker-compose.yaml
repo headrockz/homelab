@@ -1,0 +1,20 @@
+---
+services:
+  uptimekuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptimekuma
+    hostname: uptime
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/uptimekuma/app/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    # ports:
+    #   - 3001:3001
+    networks:
+      - server-uptime
+      - server-backend
+
+networks:
+  server-uptime:
+  server-backend:
+    external: true

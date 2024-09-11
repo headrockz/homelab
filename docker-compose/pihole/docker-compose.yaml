@@ -1,0 +1,20 @@
+---
+version: "3.9"
+
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: falcon-pihole
+    restart: always
+    volumes:
+      - ${PIHOLE_DATA}:/etc/pihole
+      - ${DNS_DATA}:/etc/dnsmasq.d
+    environment:
+      TZ: ${TZ}
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
+      VIRTUAL_HOST: "pihole.falcon.lan"
+      PROXY_HOST: "pihole.falcon.lan"
+      WEB_PORT: ${PIHOLE_PORT}
+      INTERFACE: "enp2s0"
+    network_mode: host

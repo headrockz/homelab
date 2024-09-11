@@ -1,0 +1,55 @@
+---
+services:
+
+  # prometheus:
+  #   image: prom/prometheus:v2.37.9
+  #   container_name: prometheus
+  #   hostname: server-prometheus
+  #   restart: always
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yaml'
+  #     - '--web.config.file=/etc/prometheus/web-config.yaml'
+  #     - '--web.external-url=${PROMETHEUS_URL}'
+  #     - '--storage.tsdb.path=/prometheus'
+  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
+  #     - '--web.console.templates=/etc/prometheus/consoles'
+  #     - '--web.enable-lifecycle'
+  #   volumes:
+  #     - ${DOCKER_DATA}/prometheus/config:/etc/prometheus
+  #     - ${DOCKER_DATA}/prometheus/data:/prometheus
+  #     - ${CERTS_PATH}/certs:/certs
+  #   ports:
+  #     - 9090:9090
+  #   networks:
+  #     - server-monitoring
+  #     - server-backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    restart: always
+    command: >
+       bash -c 'chown grafana:grafana /etc/grafana/grafana.crt ; \
+        chown grafana:grafana /etc/grafana/grafana.key ; \
+        chmod 400 /etc/grafana/grafana.key /etc/grafana/grafana.crt'
+    volumes:
+      - ${DOCKER_DATA}/grafana/data:/vol01/Docker/monitoring
+      - ${GRAFANA_PRIVATE_KEY}:/etc/grafana/grafana.key
+      - ${GRAFANA_CERTIFICATE}:/etc/grafana/grafana.crt
+    environment:
+      GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      GF_SERVER_PROTOCOL: https
+      GF_SERVER_CERT_FILE: "/etc/grafana/grafana.crt"
+      GF_SERVER_CERT_KEY: "/etc/grafana/grafana.key"
+    # ports:
+    #   - 3002:3000
+    networks:
+      - server-grafana
+      - server-backend
+
+networks:
+  server-grafana:
+  server-backend:
+    external: true

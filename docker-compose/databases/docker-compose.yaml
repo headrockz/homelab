@@ -1,0 +1,125 @@
+---
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: server-postgres
+    restart: always
+    # command: >
+    #   bash -c 'cp ${POSTGRES_CERTIFICATE} /var/lib/postgresql/server.crt ;
+    #   cp ${POSTGRES_PRIVATE_KEY} /var/lib/postgresql/server.key ;
+    #   cp /certs/cacert.pem /var/lib/postgresql/cacert.pem ;
+    #   chown postgres:postgres /var/lib/postgresql/server* ;
+    #   chown postgres:postgres /var/lib/postgresql/cacert.pem ;
+    #   chmod 600 /var/lib/postgresql/server* ;
+    #   chmod 600 /var/lib/postgresql/cacert.pem ;
+    #   su postgres -c
+    #   "postgres -c ssl=on -c ssl_cert_file=/var/lib/postgresql/server.crt -c \
+    #   ssl_key_file=/var/lib/postgresql/server.key -c \
+    #   ssl_ca_file=/var/lib/postgresql/cacert.pem";'
+    volumes:
+      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
+      - ${CERTS_PATH}/certs:/certs:z
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_AUTH}
+    ports:
+      - 5432:5432
+    networks:
+      - server-database
+
+  mysql:
+    image: mysql
+    hostname: server-mysql
+    container_name: mysql
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '3306:3306'
+    networks:
+      - server-database
+
+  redis:
+    image: redis:latest
+    hostname: server-redis
+    container_name: redis
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/redis/data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - server-database
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    hostname: server-mongo
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/mongo/data:/data/db
+      - ${DOCKER_DATA}/mongo/config:/data/configdb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - 27017:27017
+    networks:
+      - server-database
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    hostname: server-mongo-express
+    restart: always
+    volumes:
+      - ${CERTS_PATH}/certs:/certs:Z
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${EXPRESS_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${EXPRESS_PASSWORD}
+      ME_CONFIG_SITE_SSL_CRT_PATH: ${EXPRESS_CERTIFICATE}
+      ME_CONFIG_SITE_SSL_KEY_PATH: ${EXPRESS_PRIVATE_KEY}
+      ME_CONFIG_SITE_SSL_ENABLED: ${EXPRESS_SSL}
+      ME_CONFIG_MONGODB_SERVER: ${MONGO_SERVER}
+      ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - 8081:8081
+    links:
+      - mongo
+    networks:
+      - server-database
+      - server-backend
+
+  influxdb:
+    image: influxdb:alpine
+    container_name: influxdb
+    hostname: server-influxdb
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
+      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
+      - ${CERTS_PATH}/certs:/certs:Z
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=${INFLUX_MODE}
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
+      - INFLUXD_TLS_CERT=${INFLUX_CERTIFICATE}
+      - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
+    ports:
+      - 8086:8086
+    networks:
+      - server-database
+      - server-backend
+
+networks:
+  server-database:
+  server-backend:
+    external: true

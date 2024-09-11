@@ -1,0 +1,66 @@
+---
+networks:
+  server-backend:
+    external: true
+
+services:
+  # homeassistant:
+  #   container_name: hass
+  #   image: homeassistant/home-assistant
+  #   volumes:
+  #     - ${HASS_DATA}:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #   restart: unless-stopped
+  #   networks:
+  #     - hass-network
+  #   ports:
+  #     - "8123:8123"
+  #   depends_on:
+  #     - mqtt
+
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    volumes:
+      - "${DOCKER_DATA}/mosquitto/config:/mosquitto/config"
+      - "${DOCKER_DATA}/mosquitto/data:/mosquitto/data"
+      - "${DOCKER_DATA}/mosquitto/log:/mosquitto/log"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - server-backend
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+    image: koenkk/zigbee2mqtt
+    volumes:
+      - ${DOCKER_DATA}/zigbee:/app/data
+      - ${CERTS_PATH}/certs:/certs
+      - /run/udev:/run/udev:ro
+    networks:
+      - server-backend
+    environment:
+      - TZ=${TZ}
+    # add usb adapter zigbee
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    depends_on:
+      - mqtt
+
+  nodered:
+    container_name: nodered
+    restart: unless-stopped
+    image: nodered/node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      - ${DOCKER_DATA}/nodered:/data
+    networks:
+      - server-backend
+    depends_on:
+      - mqtt
+#    environment:
+#      TZ: ${TZ}

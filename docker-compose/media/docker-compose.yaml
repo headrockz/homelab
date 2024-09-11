@@ -1,0 +1,49 @@
+---
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    hostname: falcon
+    container_name: transmission
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/transmission/data:/config
+      - ${MEDIA}/downloads:/downloads
+      - ${MEDIA}/watch:/watch
+    environment:
+      - PUID=${UID}
+      - PGID=${UIG}
+      - TZ=${TZ}
+      - USER=${TRANSMISSION_USER}
+      - PASS=${TRANSMISSION_PASSWORD}
+    ports:
+      # - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    networks:
+      - server-backend
+
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    hostname: falcon
+    container_name: jellyfin
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/jellyfin/data:/config
+      - ${MEDIA}:/Media
+    environment:
+      - PUID=${UID}
+      - PGID=${UIG}
+      - TZ=${TZ}
+    ports:
+      - 8096:8096/tcp
+      - 8920:8920/tcp
+      - 7359:7359/tcp
+      - 1900:1901/tcp
+    networks:
+      - server-backend
+    devices:
+      - /dev/dri:/dev/dri
+
+networks:
+  server-backend:
+    external: true
