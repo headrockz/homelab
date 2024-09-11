@@ -1,0 +1,21 @@
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: stirling-pdf
+    hostname: stirling-pdf
+    restart: always
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      - LANGS=en_GB
+    volumes:
+      - ${DOCKER_DATA}/stirling_pdf/data:/usr/share/tessdata
+      - ${DOCKER_DATA}/stirling_pdf/config:/configs
+    # ports:
+    #   - 8080:8080
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true
