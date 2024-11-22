@@ -16,7 +16,7 @@ services:
       - USER=${TRANSMISSION_USER}
       - PASS=${TRANSMISSION_PASSWORD}
     ports:
-      # - 9091:9091
+      - 9091:9091
       - 51413:51413
       - 51413:51413/udp
     networks:
@@ -46,4 +46,3 @@ services:
 
 networks:
   server-backend:
-    external: true

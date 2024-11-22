@@ -1,16 +1,18 @@
 ---
-version: "3.9"
-
 services:
   resilio-sync:
     image: lscr.io/linuxserver/resilio-sync:latest
     hostname: server-resilio
     container_name: resilio-sync
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
     volumes:
       - ${DOCKER_DATA}/resilio_data:/config
       - ${PROJECT_DATA}:/sync/projects
-      - ${SHARED_DATA}/ugreen:/sync/ugreen
+      - ${SHARED_DATA}/sata:/sync/sata
     ports:
       # - 8888:8888
       - 55555:55555
@@ -26,11 +28,15 @@ services:
     hostname: server-duplicati
     container_name: duplicati
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
     volumes:
       - ${DOCKER_DATA}/duplicati/config:/config
       - ${DUPLICATI_BACKUPS}:/backups
       - ${PROJECT_DATA}:/source/projects
-      - ${SHARED_DATA}/ugreen:/source/ugreen
+      - ${SHARED_DATA}/sata:/source/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -45,10 +51,15 @@ services:
     hostname: server-syncthing
     container_name: syncthing
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
     volumes:
       - ${DOCKER_DATA}/syncthing/config:/config
       - ${PROJECT_DATA}:/sync/projects
       - ${SHARED_DATA}/ugreen:/sync/ugreen
+      - ${SHARED_DATA}/sata:/sync/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -69,12 +80,13 @@ services:
       - ${DOCKER_DATA}/filebrower/data:/db
       - ${PROJECT_DATA}:/srv/projects
       - ${SHARED_DATA}/ugreen:/srv/ugreen
+      - ${SHARED_DATA}/sata:/srv/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - 10180:80
+    # ports:
+    #   - 10180:80
     networks:
       - server-backend
 

@@ -1,8 +1,4 @@
 ---
-networks:
-  server-backend:
-    external: true
-
 services:
   # homeassistant:
   #   container_name: hass
@@ -23,7 +19,7 @@ services:
     image: eclipse-mosquitto:latest
     restart: unless-stopped
     volumes:
-      - "${DOCKER_DATA}/mosquitto/config:/mosquitto/config"
+      - "./mosquitto/config:/mosquitto/config"
       - "${DOCKER_DATA}/mosquitto/data:/mosquitto/data"
       - "${DOCKER_DATA}/mosquitto/log:/mosquitto/log"
     ports:
@@ -40,6 +36,8 @@ services:
       - ${DOCKER_DATA}/zigbee:/app/data
       - ${CERTS_PATH}/certs:/certs
       - /run/udev:/run/udev:ro
+    ports:
+      - "8080:8080"
     networks:
       - server-backend
     environment:
@@ -64,3 +62,6 @@ services:
       - mqtt
 #    environment:
 #      TZ: ${TZ}
+
+networks:
+  server-backend:

@@ -141,3 +141,4 @@ configuration.yaml
 secret.yaml
 mosquitto.conf
 mosquitto_pass.conf
+kestra/

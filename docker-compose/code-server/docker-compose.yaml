@@ -15,8 +15,8 @@ services:
     volumes:
       - ${DOCKER_DATA}/code-server/config:/config
       - ${PROJECTS_PATH}:/docker/projects
-    #  ports:
-    #   - 8443:8443
+    ports:
+      - 8443:8443
     networks:
       - server-backend
 

@@ -4,13 +4,13 @@ services:
     container_name: homarr
     hostname: homarr
     restart: always
-    ports:
-      - 7575:7575
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKER_DATA}/homarr/config:/app/data/configs
       - ${DOCKER_DATA}/homarr/icons:/app/public/icons
       - ${DOCKER_DATA}/homarr/data:/data
+    # ports:
+    #   - 7575:7575
     networks:
       - server-backend
 

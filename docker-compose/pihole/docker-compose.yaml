@@ -1,6 +1,3 @@
----
-version: "3.9"
-
 services:
   pihole:
     image: pihole/pihole:latest
@@ -13,8 +10,11 @@ services:
     environment:
       TZ: ${TZ}
       WEBPASSWORD: ${PIHOLE_PASSWORD}
-      VIRTUAL_HOST: "pihole.falcon.lan"
-      PROXY_HOST: "pihole.falcon.lan"
-      WEB_PORT: ${PIHOLE_PORT}
-      INTERFACE: "enp2s0"
-    network_mode: host
+      PIHOLE_PORT: 80
+    networks:
+      server_pihole:
+        ipv4_address: 192.168.0.2
+
+networks:
+  server_pihole:
+    external: true

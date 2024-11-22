@@ -1,28 +1,27 @@
 ---
 services:
-
-  # prometheus:
-  #   image: prom/prometheus:v2.37.9
-  #   container_name: prometheus
-  #   hostname: server-prometheus
-  #   restart: always
-  #   command:
-  #     - '--config.file=/etc/prometheus/prometheus.yaml'
-  #     - '--web.config.file=/etc/prometheus/web-config.yaml'
-  #     - '--web.external-url=${PROMETHEUS_URL}'
-  #     - '--storage.tsdb.path=/prometheus'
-  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
-  #     - '--web.console.templates=/etc/prometheus/consoles'
-  #     - '--web.enable-lifecycle'
-  #   volumes:
-  #     - ${DOCKER_DATA}/prometheus/config:/etc/prometheus
-  #     - ${DOCKER_DATA}/prometheus/data:/prometheus
-  #     - ${CERTS_PATH}/certs:/certs
-  #   ports:
-  #     - 9090:9090
-  #   networks:
-  #     - server-monitoring
-  #     - server-backend
+  prometheus:
+    image: prom/prometheus:v2.37.9
+    container_name: prometheus
+    hostname: server-prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--web.config.file=/etc/prometheus/web-config.yaml'
+      - '--web.external-url=${PROMETHEUS_URL}'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+      - ${CERTS_PATH}/certs:/certs
+    # ports:
+    #   - 9090:9090
+    networks:
+      - server-grafana
+      - server-backend
 
   grafana:
     image: grafana/grafana
@@ -34,7 +33,7 @@ services:
         chown grafana:grafana /etc/grafana/grafana.key ; \
         chmod 400 /etc/grafana/grafana.key /etc/grafana/grafana.crt'
     volumes:
-      - ${DOCKER_DATA}/grafana/data:/vol01/Docker/monitoring
+      - grafana_data:/var/lib/grafana
       - ${GRAFANA_PRIVATE_KEY}:/etc/grafana/grafana.key
       - ${GRAFANA_CERTIFICATE}:/etc/grafana/grafana.crt
     environment:
@@ -53,3 +52,7 @@ networks:
   server-grafana:
   server-backend:
     external: true
+
+volumes:
+  prometheus_data:
+  grafana_data:
