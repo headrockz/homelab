@@ -11,10 +11,8 @@ services:
     # ports:
     #   - 3001:3001
     networks:
-      - server-uptime
       - server-backend
 
 networks:
-  server-uptime:
   server-backend:
     external: true

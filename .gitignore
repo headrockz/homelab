@@ -139,6 +139,6 @@ telegraf.conf
 zshInstall.py
 configuration.yaml
 secret.yaml
-mosquitto.conf
-mosquitto_pass.conf
-kestra/
+mosquitto/
+zigbee
+statsd_exporter.yaml

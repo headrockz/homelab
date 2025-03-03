@@ -1,58 +1,45 @@
 # Asafe's Homelab
 
-[LinkedIn Post](https://www.linkedin.com/pulse/meu-homelab-asafe-felipe-wb3if/?trackingId=2GMQnhG8Smeis%2FGN5bT7RQ%3D%3D)
-
 ## Arquitetura do Homelab
 
 ![Diagrama do Homelab](/assets/homelab.png)
 
-Cada computador recebe o nome de uma nave do Star Wars, sendo eles:
+## Hardware e Software
 
-- Falcon, um mini pc com processador n100 da intel, 16gb de ram, um SSD de 512gb e dois HDs de 2tb.
-- Xwing, outro mini pc com processador n100, 16gb de ram e um SSD de 512gb
+- Mini PC Falcon - [Open Media Vault](https://www.openmediavault.org/)
+	-  Processador N100
+	- 16gb ram
+	- 512gb nvme (root)
+	- 2x 2tb hd (Raid 1 - md)
+- Mini PC Homeone - [Proxmox](https://www.proxmox.com/en)
+	- Processador I7 12650H
+	- 64gb ram
+	- 1tb ssd (root)
+	- 2tb ssd (sata)
+- Nano Pi Tie - [Diet Pi]([DietPi - Lightweight justice for your SBC!](https://dietpi.com/))
+	- Processador RK3566
+	- 4gb ram
+	- 32 emmc (root)
+	- 512gb (usb)
 
-## Software
+## Falcon
 
-> Os dois mini pcs rodam o [Proxmox](https://www.proxmox.com/en) (um sistema de virtualização) como sistema operacional.
+| Nome   | Tipo | ID  | Sistema | CPU | Ram  | Disco | Serviço(s)                                                                                                                                                                                                            |
+| ------ | ---- | --- | ------- | --- | ---- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Falcon | Host | 1   | OMV     | 4   | 16gb | 512gb | Samba<br>NFS<br>Syncthing<br>Resilio Sync<br>Duplacati<br>File Browser<br>Tailscale<br>Cloudflared<br>Nginx Proxy Manager<br>Portainer<br>Uptime Kuma<br>Grafana<br>Zigbee2mqtt<br>Mqtt<br>Node Red<br>Home Assistant |
 
-O Falcon fica destinado a executar aplicações mais "produtivas" como meu DNS, VPN e meu NAS, ele estão sendo executo as seguintes VMs e LXCs.
-- LXC 1 e 2 - Debian (1cpu 512mb de ram), onde executo o Pihole
-- LXC 3 - Debian (2cpu 6gb de ram), onde executo o My Speed Test, Portainer, Cloudflared, Nginx Proxy Manager, Uptime Kuma e o Grafana, também meus bancos de dados (PostgreSQL, MySQL, InfluxDB, MongoDB e Redis).
-- VM 1 - OpenWrt (1cpu 1gb de ram), onde executo o tailscale
-- VM 2 - Open Media Vault (2cpu 8gb de ram), é o meu NAS, onde executo o Samba e o NFS, também tenho alguns containers rodando (Syncthing, Duplicati e Resilio Sync).
+## Homeone
 
-Também dentro do Falcon executo a aplicação Casa OS, é uma interface web para gerenciar aplicações docker fornecidas pela "App Store" deles, mas também é possível adicionar links externos.
+| Nome     | Tipo | ID  | Sistema | CPU | Ram   | Disco | Serviço(s)                                          |
+| -------- | ---- | --- | ------- | --- | ----- | ----- | --------------------------------------------------- |
+| Homeone  | Host | 1   | Proxmox | 16  | 64gb  | 1tb   | Proxmox                                             |
+| Pihole   | LXC  | 101 | Debian  | 1   | 512mb | 5gb   | Pihole                                              |
+| Pihole2  | LXC  | 102 | Debian  | 1   | 512mb | 5gb   | Pihole                                              |
+| Dbs      | LXC  | 103 | Debian  | 4   | 8gb   | 100gb | PostgreSQL<br>InfluxDB<br>MySQL<br>MongoDB<br>Redis |
+| Dev      | VM   | 201 | Ubuntu  | 8   | 32gb  | 250gb | Airflow<br>Kestra<br>                        |
 
-Já o Xwing fica responsável por ser meu laboratório, tenho algumas VMs de teste como do True NAS, outra Open Media Vault, essas duas VMs essas não ficam sempre ligadas, além delas, tenho uma VM com Ubuntu Server que é meu ambiente de desenvolvimento, e tenho outras 3 VMs também com Ubuntu que rodam um cluster Kubernetes com o k3s.
+## Tie
 
-## Serviços
-
-### Databases
-
-- PostgreSQL
-- InfluxDB
-- MySQL
-- MongoDB
-- Redis
-
-### Monitoring
-
-- Grafana
-- My Speed Test
-- Portainer
-- Uptime
-
-### Network
-
-- Cloudflared
-- Nginx Proxy Manager
-- Pihole
-- Tailscale
-
-### Shares
-
-- Duplacati
-- NFS
-- Samba
-- Resilio Sync
-- Syncthing
+| Nome | Tipo | ID  | Sistema | CPU | Ram | Disco | Serviço(s) |
+| ---- | ---- | --- | ------- | --- | --- | ----- | ---------- |
+| Tie  | Host | 1   | OMV     | 4   | 4gb | 512gb | Pihole<br>Tailscale<br>     |

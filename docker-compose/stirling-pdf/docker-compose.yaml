@@ -1,3 +1,4 @@
+---
 services:
   stirling-pdf:
     image: frooodle/s-pdf:latest

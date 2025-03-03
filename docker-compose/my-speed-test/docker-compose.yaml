@@ -10,10 +10,8 @@ services:
     # ports:
     #   - 5216:5216
     networks:
-      - server-myspeed
       - server-backend
 
 networks:
-  server-myspeed:
   server-backend:
     external: true

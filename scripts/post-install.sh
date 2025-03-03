@@ -34,7 +34,7 @@ curl https://pyenv.run | bash ;
 curl -sSL https://install.python-poetry.org | python3 -
 
 ############################ Docker #################################
-curl -sSL https://get.docker.com | sudo bash
+  sudo bash
 # Adicionando nosso usuario ao grupo do docker
 sudo usermod -aG docker $USER ;
 

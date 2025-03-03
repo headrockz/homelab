@@ -11,8 +11,7 @@ services:
           memory: 2048M
     volumes:
       - ${DOCKER_DATA}/resilio_data:/config
-      - ${PROJECT_DATA}:/sync/projects
-      - ${SHARED_DATA}/sata:/sync/sata
+      - ${SHARED_DATA}:/sync/sata
     ports:
       # - 8888:8888
       - 55555:55555
@@ -35,8 +34,7 @@ services:
     volumes:
       - ${DOCKER_DATA}/duplicati/config:/config
       - ${DUPLICATI_BACKUPS}:/backups
-      - ${PROJECT_DATA}:/source/projects
-      - ${SHARED_DATA}/sata:/source/sata
+      - ${SHARED_DATA}:/source/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -57,9 +55,8 @@ services:
           memory: 2048M
     volumes:
       - ${DOCKER_DATA}/syncthing/config:/config
+      - ${SHARED_DATA}:/sync/sata
       - ${PROJECT_DATA}:/sync/projects
-      - ${SHARED_DATA}/ugreen:/sync/ugreen
-      - ${SHARED_DATA}/sata:/sync/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -77,10 +74,10 @@ services:
     hostname: server-filebrowser
     restart: always
     volumes:
-      - ${DOCKER_DATA}/filebrower/data:/db
+      # - ${DOCKER_DATA}/filebrower/data/filebrowser.db:/database.db
+      # - ${DOCKER_DATA}/filebrower/data/filebrowser.json:/.filebrowser.json
+      - ${SHARED_DATA}:/srv/sata
       - ${PROJECT_DATA}:/srv/projects
-      - ${SHARED_DATA}/ugreen:/srv/ugreen
-      - ${SHARED_DATA}/sata:/srv/sata
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

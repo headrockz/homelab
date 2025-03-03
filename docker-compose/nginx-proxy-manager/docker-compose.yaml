@@ -13,10 +13,8 @@ services:
       - 81:81
       - 443:443
     networks:
-      - server-nginx
       - server-backend
 
 networks:
-  server-nginx:
   server-backend:
     external: true

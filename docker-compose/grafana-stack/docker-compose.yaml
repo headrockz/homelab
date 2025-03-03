@@ -17,8 +17,27 @@ services:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
       - ${CERTS_PATH}/certs:/certs
-    # ports:
-    #   - 9090:9090
+    ports:
+      - 9090:9090
+    networks:
+      - server-grafana
+      - server-backend
+
+  statsd-exporter:
+    image: prom/statsd-exporter
+    container_name: statsd-exporter
+    hostname: server-statsd
+    restart: always
+    # command: "--statsd.listen-udp=:8125 --web.listen-address=:9102"
+    command:
+      - '--statsd.mapping-config=/etc/statsd_exporter.yaml'
+      - '--statsd.listen-udp=:8125'
+      - '--web.listen-address=:9102'
+    volumes:
+      - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
+    ports:
+      - 9102:9102
+      - 8125:8125/udp
     networks:
       - server-grafana
       - server-backend

@@ -1,3 +1,4 @@
+---
 services:
   homarr:
     image: ghcr.io/ajnart/homarr:latest

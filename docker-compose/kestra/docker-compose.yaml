@@ -1,0 +1,32 @@
+---
+services:
+  kestra:
+    image: kestra/kestra:develop
+    container_name: kestra
+    hostname: kestra
+    restart: always
+    env_file:
+      - .env
+    pull_policy: always
+    user: "root"
+    command: server standalone --worker-thread=16 -c config.yaml
+    volumes:
+      - ${DOCKER_DATA}/kestra:/app/storage
+      - ./config/config.yaml:/app/config.yaml:ro
+      - ./scripts:/app/scripts
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+
+    environment:
+      - SECRET_SSH_KEY=${SECRET_SSH_KEY}
+      - SECRET_TELEGRAM_BOT_TOKEN=${SECRET_TELEGRAM_BOT_TOKEN}
+      - SECRET_TELEGRAM_CHAT_ID=${SECRET_TELEGRAM_CHAT_ID}
+    ports:
+      - "8082:8080"
+      - "8081:8081"
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true
