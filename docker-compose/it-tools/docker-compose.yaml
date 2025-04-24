@@ -5,8 +5,8 @@ services:
     container_name: it-tools
     hostname: it-tools
     restart: always
-    ports:
-      - 1020:80
+    # ports:
+    #   - 1020:80
     networks:
       - server-backend
 
