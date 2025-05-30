@@ -1,0 +1,26 @@
+---
+services:
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    hostname: telegraf
+    restart: always
+    user: telegraf:990
+    entrypoint: /bin/bash -c "/entrypoint.sh telegraf"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /:/hostfs:ro
+    environment:
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
+    networks:
+      - server-telegraf
+
+networks:
+  server-telegraf:

@@ -1,0 +1,67 @@
+---
+services:
+    romm:
+        image: rommapp/romm:latest
+        container_name: romm
+        restart: unless-stopped
+        volumes:
+            - ${ROMS}/games/romm/resources:/romm/resources
+            - ${ROMS}/games/romm/data:/redis-data
+            - ${ROMS}/games/roms:/romm/library/roms
+            - ${ROMS}/games/romm/assets:/romm/assets
+            - ${ROMS}/games/romm/config:/romm/config
+        environment:
+            - DB_HOST=romm-db
+            - DB_NAME=romm
+            - DB_USER=${DB_USER}
+            - DB_PASSWD=${DB_PASS}
+            - ROMM_AUTH_SECRET_KEY=${SECRET_KEY}
+            - IGDB_CLIENT_ID=
+            - IGDB_CLIENT_SECRET=
+            - MOBYGAMES_API_KEY=
+            - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
+            - SCREENSCRAPER_USER=${SCREENSCRAPER_USER}
+            - SCREENSCRAPER_PASSWORD=${SCREENSCRAPER_PASSWORD}
+            - OIDC_ENABLED=true
+            - OIDC_PROVIDER=authentik
+            - OIDC_REDIRECT_URI=${OIDC_REDIRECT_URI}
+            - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+            - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+            - OIDC_SERVER_APPLICATION_URL=${OIDC_SERVER_APPLICATION_URL}
+
+        # ports:
+        #     - 8080:8080
+        networks:
+            - romm
+            - server-backend
+        depends_on:
+            romm-db:
+                condition: service_healthy
+                restart: true
+
+    romm-db:
+        image: mariadb:latest
+        container_name: romm-db
+        restart: unless-stopped
+        volumes:
+            - ${ROMS}/games/romm/mysql:/var/lib/mysql
+        environment:
+            - MARIADB_ROOT_PASSWORD=${PASS_ROOT}
+            - MARIADB_DATABASE=romm
+            - MARIADB_USER=${DB_USER}
+            - MARIADB_PASSWORD=${DB_PASS}
+        networks:
+            - romm
+        healthcheck:
+            test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+            start_period: 30s
+            start_interval: 10s
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+
+networks:
+    romm:
+    server-backend:
+        external: true

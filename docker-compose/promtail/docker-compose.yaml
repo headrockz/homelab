@@ -1,0 +1,20 @@
+---
+services:
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:3.5.1
+    restart: unless-stopped
+    command:
+      - -config.file=/mnt/config/config.yaml
+    cap_add:
+      - SYSLOG
+    volumes:
+      - ./config.yaml:/mnt/config/config.yaml
+      - /var/log:/var/log:ro
+    networks:
+      - server-backend
+
+
+networks:
+  server-backend:
+    external: true

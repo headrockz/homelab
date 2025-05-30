@@ -1,0 +1,14 @@
+---
+services:
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: it-tools
+    restart: always
+    # ports:
+    #   - 80:80
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true

@@ -1,0 +1,93 @@
+---
+services:
+  # resilio-sync:
+  #   image: lscr.io/linuxserver/resilio-sync:latest
+  #   hostname: server-resilio
+  #   container_name: resilio-sync
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 2048M
+  #   volumes:
+  #     - ${DOCKER_DATA}/resilio_data:/config
+  #     - ${SHARED_DATA}:/sync/sata
+  #   ports:
+  #     # - 8888:8888
+  #     - 55555:55555
+  #   environment:
+  #     - PGID=${PGID}
+  #     - PUID=${PUID}
+  #     - TZ=${TZ}
+  #   networks:
+  #     - server-backend
+
+  # duplicati:
+  #   image: lscr.io/linuxserver/duplicati:latest
+  #   hostname: server-duplicati
+  #   container_name: duplicati
+  #   restart: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 2048M
+  #   volumes:
+  #     - ${DOCKER_DATA}/duplicati/config:/config
+  #     - ${DUPLICATI_BACKUPS}:/backups
+  #     - ${SHARED_DATA}:/source/sata
+  #   environment:
+  #     - PGID=${PGID}
+  #     - PUID=${PUID}
+  #     - TZ=${TZ}
+  #   # ports:
+  #   #   - 8200:8200
+  #   networks:
+  #     - server-backend
+
+  syncthing:
+    image: syncthing/syncthing:latest
+    hostname: server-syncthing
+    container_name: syncthing
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+    volumes:
+      - ${DOCKER_DATA}/syncthing/config:/var/syncthing
+      - ${SHARED_DATA}:/sync/sata
+      - ${PROJECT_DATA}:/sync/projects
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      # - 8384:8384
+      - 22000:22000
+      - 21027:21027
+    networks:
+      - server-backend
+
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrower
+    hostname: server-filebrowser
+    restart: always
+    user: 1000:1000
+    volumes:
+      - ./data/filebrowser.db:/database/filebrowser.db
+      - ./data/.filebrowser.json:/.filebrowser.json
+      - ${SHARED_DATA}:/srv/sata
+      - ${PROJECT_DATA}:/srv/projects
+    environment:
+      # - PGID=${PGID}
+      # - PUID=${PUID}
+      - TZ=${TZ}
+    # ports:
+    #   - 80:80
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true

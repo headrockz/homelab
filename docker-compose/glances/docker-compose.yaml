@@ -1,0 +1,22 @@
+---
+services:
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
+    restart: unless-stopped
+    pid: "host"
+    privileged: true
+    network_mode: host
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.rule=Host(`glances.tie.${DOMAIN}`)
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.tls.certresolver=cloudflare
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./glances.conf:/glances/conf/glances.conf
+    environment:
+      - TZ=${TZ}
+      - GLANCES_OPT= -C /glances/conf/glances.conf -w

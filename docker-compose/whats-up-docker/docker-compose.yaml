@@ -1,0 +1,28 @@
+---
+services:
+  wud:
+    image: getwud/wud:latest
+    container_name: wud
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - ./store:/store
+      - ${DOCKER_DATA}/certs:/certs
+    env_file:
+      - .env
+    # environment:
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.wud.entrypoints=https
+    #   - traefik.http.routers.wud.rule=Host(`wud.falcon.${DOMAIN}`)
+    #   - traefik.http.routers.wud.tls=true
+    #   - traefik.http.routers.wud.tls.certresolver=cloudflare
+    #   - traefik.http.services.wud.loadbalancer.server.port=3000
+    #   - traefik.http.routers.wud.service=wud
+    # ports:
+    #   - 3000:3000
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true

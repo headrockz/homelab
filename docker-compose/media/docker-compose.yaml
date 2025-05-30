@@ -1,0 +1,48 @@
+---
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/transmission/config:/config
+      - ${MEDIA}/downloads:/downloads
+      - ${MEDIA}/watch:/watch
+    environment:
+      - PUID=${UID}
+      - PGID=${UIG}
+      - TZ=${TZ}
+      - USER=${TRANSMISSION_USER}
+      - PASS=${TRANSMISSION_PASSWORD}
+    ports:
+      # - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    networks:
+      - server-backend
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/jellyfin/config:/config
+      - ${MEDIA}:/Media
+      - ${GALLERY}:/Gallery
+    environment:
+      - PUID=${UID}
+      - PGID=${UIG}
+      - TZ=${TZ}
+    ports:
+      # - 8096:8096/tcp
+      # - 8920:8920/tcp
+      - 7359:7359/tcp
+      - 1900:1901/tcp
+    networks:
+      - server-backend
+    devices:
+      - /dev/dri:/dev/dri
+
+networks:
+  server-backend:
+    external: true

@@ -1,0 +1,18 @@
+---
+services:
+  portainer:
+    image: portainer/portainer-ee:latest
+    container_name: portainer
+    restart: always
+    volumes:
+      - ${DOCKER_DATA}/portainer/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    # ports:
+    #   - 8000:8000
+    #   - 9443:9443
+    networks:
+      - server-backend
+
+networks:
+  server-backend:
+    external: true
