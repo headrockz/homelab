@@ -1,7 +1,7 @@
 ---
 datasources:
   postgres:
-    url: jdbc:postgresql://db.lan:5432/kestra
+    url: jdbc:postgresql://${KESTRA_POSTGRES_IP}:5432/kestra
     driverClassName: org.postgresql.Driver
     username: kestra
     password: "{{ secret(KESTRA_POSTGRES_PASS) }}"
@@ -13,10 +13,19 @@ kestra:
       password: kestra
   repository:
     type: postgres
+  # storage:
+  #   type: local
+  #   local:
+  #     basePath: "/app/storage"
   storage:
-    type: local
-    local:
-      basePath: "/app/storage"
+    type: s3
+    s3:
+      endpoint: ${KESTRA_MINIO_ENDPOINT}
+      accessKey: ${KESTRA_MINIO_ACCESS_KEY}
+      secretKey: ${KESTRA_MINIO_SECRET_KEY}
+      region: "us-east-1"
+      bucket: "kestra"
+      forcePathStyle: "true"
   queue:
     type: postgres
   tasks:
