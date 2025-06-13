@@ -1,7 +1,7 @@
 ---
 services:
   nginx:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     restart: always
     volumes:
