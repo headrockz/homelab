@@ -36,3 +36,11 @@ kestra:
     enabled: false
   tutorialFlows:
     enabled: false
+  traces:
+    root: DEFAULT
+otel:
+  traces:
+    exporter: otlp
+  exporter:
+    otlp:
+      endpoint: https://lokigrpc.falcon.${DOMAIN}
