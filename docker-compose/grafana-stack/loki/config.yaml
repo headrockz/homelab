@@ -5,6 +5,10 @@ server:
   http_tls_config:
     cert_file: /certs/server-cert.pem
     key_file: /certs/server-key.pem
+  grpc_listen_port: 9443
+  # grpc_tls_config:
+  #   cert_file: /certs/server-cert.pem
+  #   key_file: /certs/server-key.pem
 
 ui:
   enabled: true
