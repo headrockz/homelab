@@ -122,42 +122,54 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
     ports:
       - 8081:8081
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mongo-express.entrypoints=https
+      - traefik.http.routers.mongo-express.rule=Host(`mongo.db.${DOMAIN}`)
+      - traefik.http.routers.mongo-express.tls=true
+      - traefik.http.services.mongo-express.loadbalancer.server.scheme=https
+      - traefik.http.services.mongo-express.loadbalancer.server.port=8081
+      - traefik.http.routers.mongo-express.tls.certresolver=cloudflare
+      - traefik.http.routers.mongo-express.service=mongo-express
     links:
       - mongo
     networks:
       - server-database
+      - server-backend
 
-  influxdb:
-    image: influxdb:alpine
-    container_name: influxdb
-    restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
-    volumes:
-      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
-      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
-      - ${CERTS_PATH}/certs:/certs:Z
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=${INFLUX_MODE}
-      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER}
-      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
-      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
-      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
-      - INFLUXD_TLS_CERT=${INFLUX_CERTIFICATE}
-      - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
-    ports:
-      - 8086:8086
-    networks:
-      - server-database
+  # influxdb:
+  #   image: influxdb:alpine
+  #   container_name: influxdb
+  #   restart: always
+  #   logging:
+  #     driver: loki
+  #     options:
+  #       loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+  #       loki-retries: 2
+  #       loki-max-backoff: "800ms"
+  #       loki-timeout: "1s"
+  #       loki-batch-size: 100
+  #       loki-batch-wait: 1s
+  #       mode: non-blocking
+  #   volumes:
+  #     - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
+  #     - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
+  #     - ${CERTS_PATH}/certs:/certs:Z
+  #   environment:
+  #     - DOCKER_INFLUXDB_INIT_MODE=${INFLUX_MODE}
+  #     - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER}
+  #     - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
+  #     - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+  #     - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
+  #     - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
+  #     - INFLUXD_TLS_CERT=${INFLUX_CERTIFICATE}
+  #     - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
+  #   ports:
+  #     - 8086:8086
+  #   networks:
+  #     - server-database
 
 networks:
   server-database:
+  server-backend:
+    external: true
