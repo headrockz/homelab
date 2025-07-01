@@ -3,6 +3,7 @@ services:
   wud:
     image: getwud/wud:latest
     container_name: wud
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       # - ./store:/store
