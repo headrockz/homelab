@@ -76,7 +76,7 @@ services:
     user: 1000:1000
     volumes:
       - ./data/filebrowser.db:/database/filebrowser.db
-      - ./data/.filebrowser.json:/.filebrowser.json
+      - ./data/.filebrowser.json:/config/settings.json
       - ${SHARED_DATA}:/srv/sata
       - ${PROJECT_DATA}:/srv/projects
     environment:

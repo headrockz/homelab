@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ----------------------------------------------------------------- #
 # Linguagens ->  Python
-# Ferramentas -> Docker, kubectl, k9s
+# Ferramentas -> Docker, kubectl, k9s, lazygit
 # Shell -> zsh
 # Plugins -> powerlevel10k zsh-autosuggstions
 #            fast-syntax-highlighting zsh-completions
@@ -34,7 +34,7 @@ curl https://pyenv.run | bash ;
 curl -sSL https://install.python-poetry.org | python3 -
 
 ############################ Docker #################################
-  sudo bash
+curl -fsSL https://get.docker.com | sudo bash
 # Adicionando nosso usuario ao grupo do docker
 sudo usermod -aG docker $USER ;
 
