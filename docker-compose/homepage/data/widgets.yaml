@@ -1,0 +1,12 @@
+---
+resources:
+    cpu: true
+    cputemp: true
+    tempmin: 0
+    tempmax: 90
+    memory: true
+    disk:
+        - /
+search:
+    provider: duckduckgo
+    target: _blank
