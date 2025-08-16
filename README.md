@@ -5,7 +5,6 @@
 ![Diagrama do Homelab](/assets/homelab.png)
 
 ## Hardware e Software
-## Hardware e Software
 
 - Mini PC Falcon - [Open Media Vault](https://www.openmediavault.org/)
 	-  Processador N100

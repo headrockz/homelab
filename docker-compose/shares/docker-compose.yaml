@@ -73,7 +73,7 @@ services:
     container_name: filebrower
     hostname: server-filebrowser
     restart: always
-    user: 1000:1000
+    user: 0:0
     volumes:
       - ./data/filebrowser.db:/database/filebrowser.db
       - ./data/.filebrowser.json:/config/settings.json

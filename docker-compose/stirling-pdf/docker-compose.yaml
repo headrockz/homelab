@@ -6,9 +6,21 @@ services:
     hostname: stirling-pdf
     restart: always
     environment:
-      - DOCKER_ENABLE_SECURITY=false
+      - DOCKER_ENABLE_SECURITY=true
       - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
       - LANGS=en_GB
+      - DISABLE_ADDITIONAL_FEATURES=false
+      - SECURITY_ENABLELOGIN=true
+      - SECURITY_LOGINMETHOD=oauth2
+      - SECURITY_OAUTH2_ENABLED=true
+      - SECURITY_OAUTH2_AUTOCREATEUSER=true
+      - SECURITY_OAUTH2_ISSUER=${ISSUER_URI}
+      - SECURITY_OAUTH2_CLIENTID=${OIDC_CLIENT_ID}
+      - SECURITY_OAUTH2_CLIENTSECRET=${OIDC_CLIENT_SECRET}
+      - SECURITY_OAUTH2_BLOCKREGISTRATION=false
+      - SECURITY_OAUTH2_SCOPES=openid,profile,email
+      - SECURITY_OAUTH2_USEASUSERNAME=email
+      - SECURITY_OAUTH2_PROVIDER=${PROVIDER}
     volumes:
       - ${DOCKER_DATA}/stirling_pdf/data:/usr/share/tessdata
       - ${DOCKER_DATA}/stirling_pdf/config:/configs

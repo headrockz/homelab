@@ -5,9 +5,22 @@
 - Developer:
     - Github:
         - abbr: GH
-          href: https://github.com/
+          icon: github.png
+          href: https://github.com
+    - Google Cloud Platform:
+        - abbr: GCP
+          icon: google-cloud-platform.png
+          href: https://console.cloud.google.com
+    - ChatGPT:
+        - abbr: GPT
+          icon: chatgpt.png
+          href: https://chatgpt.com
+    - Google Gemini:
+        - abbr: Gemini
+          icon: google-gemini.png
+          href: https://gemini.google.com/app
 
 - Entertainment:
     - YouTube:
-        - abbr: YT
-          href: https://youtube.com/
+        - icon: youtube.png
+          href: https://youtube.com

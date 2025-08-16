@@ -1,8 +1,9 @@
+---
 http:
   middlewares:
     authentik:
       forwardAuth:
-        address: http://ak-outpost:9000/outpost.goauthentik.io/auth/traefik
+        address: http://authentik-outpost:9000/outpost.goauthentik.io/auth/traefik
         trustForwardHeader: true
         authResponseHeaders:
           - X-authentik-username

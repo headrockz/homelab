@@ -3,6 +3,7 @@
     - Proxmox:
         icon: proxmox.png
         href: "https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006"
+        siteMonitor: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
         widget:
           type: proxmox
           url: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
@@ -33,10 +34,6 @@
     - CasaOS:
         icon: casaos.png
         href: "https://casaos.{{HOMEPAGE_VAR_DOMAIN}}"
-    - CasaOS:
-        icon: casaos.png
-        href: "https://casaos.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Tie
 
 - Monitoring:
     - Grafana:
@@ -170,8 +167,8 @@
         container: mongo-express
     - InfluxDB:
         icon: influxdb.png
-        href: "https://influx.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
+        href: "https://influx.db.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: db
         container: influxdb
 
 - Network:
