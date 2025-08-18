@@ -8,9 +8,9 @@ datasources:
 kestra:
   server:
     basicAuth:
-      enabled: false
-      username: "admin@kestra.io"
-      password: kestra
+      enabled: true
+      username: ${KESTRA_USERNAME}
+      password: ${KESTRA_PASSWORD}
   repository:
     type: postgres
   # storage:
