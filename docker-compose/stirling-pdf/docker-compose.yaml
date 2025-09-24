@@ -22,8 +22,8 @@ services:
       - SECURITY_OAUTH2_USEASUSERNAME=email
       - SECURITY_OAUTH2_PROVIDER=${PROVIDER}
     volumes:
-      - ${DOCKER_DATA}/stirling_pdf/data:/usr/share/tessdata
-      - ${DOCKER_DATA}/stirling_pdf/config:/configs
+      - stirling_pdf_data:/usr/share/tessdata
+      - stirling_pdf_config:/configs
     # ports:
     #   - 8080:8080
     networks:
@@ -32,3 +32,7 @@ services:
 networks:
   server-backend:
     external: true
+
+volumes:
+  stirling_pdf_data:
+  stirling_pdf_config:

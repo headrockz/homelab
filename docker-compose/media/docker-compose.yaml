@@ -5,7 +5,7 @@ services:
     container_name: transmission
     restart: always
     volumes:
-      - ${DOCKER_DATA}/transmission/config:/config
+      - transmission_config:/config
       - ${MEDIA}/downloads:/downloads
       - ${MEDIA}/watch:/watch
     environment:
@@ -46,3 +46,6 @@ services:
 networks:
   server-backend:
     external: true
+
+volumes:
+  transmission_config:

@@ -31,9 +31,6 @@
           url: "https://authentik.{{HOMEPAGE_VAR_DOMAIN}}"
           key: "{{HOMEPAGE_VAR_AUTHENTIK_API}}"
           allowed_fields: ["users", "loginsLast24H", "failedLoginsLast24H"]
-    - CasaOS:
-        icon: casaos.png
-        href: "https://casaos.{{HOMEPAGE_VAR_DOMAIN}}"
 
 - Monitoring:
     - Grafana:
@@ -59,11 +56,12 @@
         container: loki
     - Uptime Kuma:
         icon: uptime-kuma.png
-        href: "https://uptime.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://uptime.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://uptime.tie.{{HOMEPAGE_VAR_DOMAIN}}
         description: Server Tie
         widget:
           type: uptimekuma
-          url: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+          url: https://uptime.tie.{{HOMEPAGE_VAR_DOMAIN}}
           slug: homelab
     - What's Up Docker:
         icon: https://getwud.github.io/wud/assets/wud-logo.svg
@@ -225,6 +223,8 @@
         widget:
           type: traefik
           url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
+          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
     - Traefik:
         icon: traefik-proxy.png
         href: "https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}"
