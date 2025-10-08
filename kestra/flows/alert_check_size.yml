@@ -1,0 +1,37 @@
+id: alert_check_size
+namespace: prd
+description: Send message for telegram with folder sizes
+
+
+tasks:
+  - id: check_size
+    type: io.kestra.plugin.fs.ssh.Command
+    host: "{{ kv(key='LOCAL_NAS', namespace='prd')['IP'] }}"
+    authMethod: PUBLIC_KEY
+    username: "{{ kv(key='LOCAL_NAS', namespace='prd')['USER'] }}"
+    privateKey: "{{ secret('SSH_RSA_PRIVATE_KEY') }}"
+    commands: 
+      - sh /scripts/check_size.sh "{{ kv(key='LOCAL_NAS', namespace='prd')['PATH'] }}"
+
+  - id: telegram_notification
+    type: io.kestra.plugin.notifications.telegram.TelegramSend
+    channel: "{{ secret('TELEGRAM_CHAT_ID') }}"
+    token: "{{ secret('TELEGRAM_BOT_TOKEN') }}"
+    payload: |
+      [FOLDER SIZES - LOCAL NAS 🗂]
+
+      - Docker > {{ outputs.check_size["vars"]["docker"] }}
+      - Docs > {{ outputs.check_size["vars"]["docs"] }}
+      - Games > {{ outputs.check_size["vars"]["games"] }}
+      - Hass > {{ outputs.check_size["vars"]["home_assistant"] }}
+      - Media > {{ outputs.check_size["vars"]["media"] }}
+      - Obsidian > {{ outputs.check_size["vars"]["obsidian"] }}
+      - Projects > {{ outputs.check_size["vars"]["projects"] }}
+      - Projects Old > {{ outputs.check_size["vars"]["projects-old"] }}
+      - Proxmox > {{ outputs.check_size["vars"]["proxmox"] }}
+      - Fabiana > {{ outputs.check_size["vars"]["fabiana"] }}
+
+triggers:
+  - id: weekly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 10 * * 5"

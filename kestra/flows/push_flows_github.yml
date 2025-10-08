@@ -1,0 +1,32 @@
+id: push_flows_github
+namespace: prd
+description: Push all flows to Github homelab repo
+
+tasks:
+  - id: push
+    type: io.kestra.plugin.core.flow.ForEach
+    values: ["prd"]
+    tasks:
+      - id: flows
+        type: io.kestra.plugin.git.PushFlows
+        sourceNamespace: "{{ taskrun.value }}"
+        gitDirectory: "kestra/flows"
+        includeChildNamespaces: false
+        # dryRun: true
+        commitMessage: "add/update flows {{ taskrun.value }}"
+      # - id: namespace
+      #   type: io.kestra.plugin.git.NamespaceSync
+      #   username: kestra
+      #   # delete: true
+      #   namespace: "{{ taskrun.value }}"
+      #   branch: main
+      #   gitDirectory: "kestra"
+      #   dryRun: true
+
+pluginDefaults:
+  - type: io.kestra.plugin.git
+    values:
+      username: headrockz
+      url: https://github.com/headrockz/homelab
+      password: "{{ secret('GITHUB_TOKEN') }}"
+      branch: develop

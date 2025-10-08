@@ -1,0 +1,44 @@
+id: pihole_sync
+namespace: prd
+description: Sync Pihole Config and backup
+
+
+tasks:
+  - id: generate_file
+    type: io.kestra.plugin.fs.ssh.Command
+    host: "{{ kv('PIHOLE_SYNC')['PIHOLE_IP'] }}"
+    authMethod: PUBLIC_KEY
+    username: "{{ kv(key='PIHOLE_SYNC', namespace='prd')['PIHOLE_USER'] }}"
+    privateKey: "{{ secret('SSH_RSA_PRIVATE_KEY') }}"
+    commands: 
+      - pihole-FTL --teleporter && scp -i {{ kv(key='PIHOLE_SYNC')['PIHOLE_KEY'] }} pi-hole_pihole_teleporter_* {{ kv(key='PIHOLE_SYNC')['PIHOLE_2_ADDR'] }}:~/ ; rm pi-hole_pihole_teleporter_*
+
+  - id: update_pihole_2
+    type: io.kestra.plugin.fs.ssh.Command
+    host: "{{ kv(key='PIHOLE_SYNC')['PIHOLE_2_IP'] }}"
+    authMethod: PUBLIC_KEY
+    username: "{{ kv(key='PIHOLE_SYNC')['PIHOLE_2_USER'] }}"
+    privateKey: "{{ secret('SSH_RSA_PRIVATE_KEY') }}"
+    commands: 
+      - pihole-FTL --teleporter ~/pi-hole_pihole_teleporter_* 
+
+  - id: backup
+    type: io.kestra.plugin.fs.ssh.Command
+    host: "{{ kv('PIHOLE_SYNC')['PIHOLE_2_IP'] }}"
+    authMethod: PUBLIC_KEY
+    username: "{{ kv(key='PIHOLE_SYNC')['PIHOLE_2_USER'] }}"
+    privateKey: "{{ secret('SSH_RSA_PRIVATE_KEY') }}"
+    commands: 
+      - scp -i {{ kv(key='PIHOLE_SYNC')['PIHOLE_2_KEY'] }} pi-hole_pihole_teleporter_* {{ kv(key='PIHOLE_SYNC')['PIHOLE_3_ADDR'] }}:~/ ; cp ~/pi-hole_pihole_teleporter_* {{ kv(key='PIHOLE_SYNC')['BACKUP'] }} ; rm ~/pi*
+
+  # - id: update_pihole_offsite
+  #   type: io.kestra.plugin.fs.ssh.Command
+  #   host: "{{ kv('PIHOLE_SYNC')['PIHOLE_3_IP'] }}"
+  #   authMethod: PUBLIC_KEY
+  #   username: "{{ kv(key='PIHOLE_SYNC')['PIHOLE_3_USER'] }}"
+  #   privateKey: "{{ secret('SSH_RSA_PRIVATE_KEY') }}"
+  #   commands: 
+  #     - pihole-FTL --teleporter ~/pi-hole_pihole_teleporter_* ; rm ~/pi*
+
+
+

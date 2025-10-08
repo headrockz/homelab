@@ -1,0 +1,46 @@
+id: extract
+namespace: prd
+
+tasks:
+  - id: api
+    type: io.kestra.plugin.core.http.Request
+    uri: https://dummyjson.com/products
+  
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      {{ outputs.api.code }}
+
+  - id: extract_ticker
+    type: io.kestra.plugin.scripts.python.Script
+    namespaceFiles:
+      enabled: true
+    containerImage: python:slim
+    beforeCommands:
+      - pip install polars
+    outputFiles:
+      - products.parquet
+    script: |
+      import polars as pl
+      import json
+
+      data = {{ outputs.api.body | jq('.products') | first }}
+      df = pl.from_dicts(data)
+      df.glimpse()
+      df.select(["brand", "price"]).write_parquet("products.parquet")
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      host: ssh://charizard@10.0.2.14
+      config: |
+        {"tls": true, "tlscacert": "", "tlscert": "", "tlskey": "", "tlsverify": true}
+
+  - id: sql_query
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    inputFiles:
+      in.csv: "{{ outputs.extract_ticker.outputFiles['products.parquet'] }}"
+    sql: |
+      SELECT brand, round(avg(price), 2) as avg_price
+      FROM read_parquet('{{ workingDir }}/in.csv')
+      GROUP BY brand
+      ORDER BY avg_price DESC;
+    fetchType: STORE
