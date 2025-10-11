@@ -1,35 +1,34 @@
 ---
-networks:
-  server-backend:
-    external: true
-
 services:
-  # homeassistant:
-  #   container_name: hass
-  #   image: homeassistant/home-assistant
-  #   volumes:
-  #     - ${HASS_DATA}:/config
-  #     - /etc/localtime:/etc/localtime:ro
-  #   restart: unless-stopped
-  #   networks:
-  #     - hass-network
-  #   ports:
-  #     - "8123:8123"
-  #   depends_on:
-  #     - mqtt
+  homeassistant:
+    container_name: hass
+    image: homeassistant/home-assistant
+    volumes:
+      - ${DOCKER_DATA}/smart_home/hass:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - smart-home
+      - server-backend
+    ports:
+      - 8123:8123
+    depends_on:
+      - mqtt
 
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:latest
     restart: unless-stopped
     volumes:
-      - "${DOCKER_DATA}/mosquitto/config:/mosquitto/config"
-      - "${DOCKER_DATA}/mosquitto/data:/mosquitto/data"
-      - "${DOCKER_DATA}/mosquitto/log:/mosquitto/log"
+      - ./mosquitto/config:/mosquitto/config
+      - ${DOCKER_DATA}/smart_home/mosquitto/data:/mosquitto/data
+      - ${DOCKER_DATA}/smart_home/mosquitto/log:/mosquitto/log
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - 1883:1883
+      - 9001:9001
     networks:
+      - smart-home
       - server-backend
 
   zigbee2mqtt:
@@ -37,10 +36,13 @@ services:
     restart: unless-stopped
     image: koenkk/zigbee2mqtt
     volumes:
-      - ${DOCKER_DATA}/zigbee:/app/data
+      - ./zigbee:/app/data
       - ${CERTS_PATH}/certs:/certs
       - /run/udev:/run/udev:ro
+    # ports:
+    #   - 8080:8080
     networks:
+      - smart-home
       - server-backend
     environment:
       - TZ=${TZ}
@@ -50,17 +52,22 @@ services:
     depends_on:
       - mqtt
 
-  nodered:
-    container_name: nodered
-    restart: unless-stopped
-    image: nodered/node-red
-    ports:
-      - "1880:1880"
-    volumes:
-      - ${DOCKER_DATA}/nodered:/data
-    networks:
-      - server-backend
-    depends_on:
-      - mqtt
-#    environment:
-#      TZ: ${TZ}
+#   nodered:
+#     container_name: nodered
+#     restart: unless-stopped
+#     image: nodered/node-red
+#     ports:
+#       - "1880:1880"
+#     volumes:
+#       - ${DOCKER_DATA}/smart_home/inodered:/data
+#     networks:
+#       - server-backend
+#     depends_on:
+#       - mqtt
+# #    environment:
+# #      TZ: ${TZ}
+
+networks:
+  smart-home:
+  server-backend:
+    external: true

@@ -1,55 +1,112 @@
 ---
 services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--web.config.file=/etc/prometheus/web-config.yaml'
+      - '--web.external-url=${PROMETHEUS_URL}'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+      - ${CERTS_PATH}/certs:/certs
+    env_file:
+      - .env
+    # ports:
+    #   - 9090:9090
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.prometheus.entrypoints=https
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.${SERVER}.${DOMAIN}`)
+      - traefik.http.services.prometheus.loadbalancer.server.scheme=https
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
+      - traefik.http.routers.prometheus.tls.certresolver=cloudflare
+      - traefik.http.routers.prometheus.service=prometheus
+      - traefik.http.routers.prometheus.middlewares=authentik@file
 
-  # prometheus:
-  #   image: prom/prometheus:v2.37.9
-  #   container_name: prometheus
-  #   hostname: server-prometheus
-  #   restart: always
-  #   command:
-  #     - '--config.file=/etc/prometheus/prometheus.yaml'
-  #     - '--web.config.file=/etc/prometheus/web-config.yaml'
-  #     - '--web.external-url=${PROMETHEUS_URL}'
-  #     - '--storage.tsdb.path=/prometheus'
-  #     - '--web.console.libraries=/etc/prometheus/console_libraries'
-  #     - '--web.console.templates=/etc/prometheus/consoles'
-  #     - '--web.enable-lifecycle'
-  #   volumes:
-  #     - ${DOCKER_DATA}/prometheus/config:/etc/prometheus
-  #     - ${DOCKER_DATA}/prometheus/data:/prometheus
-  #     - ${CERTS_PATH}/certs:/certs
-  #   ports:
-  #     - 9090:9090
-  #   networks:
-  #     - server-monitoring
-  #     - server-backend
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    command: "-config.file=/etc/loki/config.yaml"
+    volumes:
+      - ./loki/config.yaml:/etc/loki/config.yaml:ro
+      - loki_data:/loki:rw
+      - ${CERTS_PATH}/certs:/certs
+    # ports:
+    #   - 3100:3100
+    #   - 9443:9443
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.loki.entrypoints=https
+      - traefik.http.routers.loki.rule=Host(`loki.${SERVER}.${DOMAIN}`)
+      - traefik.http.services.loki.loadbalancer.server.scheme=https
+      - traefik.http.routers.loki.tls=true
+      - traefik.http.services.loki.loadbalancer.server.port=3100
+      - traefik.http.routers.loki.tls.certresolver=cloudflare
+      - traefik.http.routers.loki.service=loki
+
+  statsd-exporter:
+    image: prom/statsd-exporter
+    container_name: statsd-exporter
+    restart: always
+    command:
+      - '--statsd.mapping-config=/etc/statsd_exporter.yaml'
+      - '--statsd.listen-udp=:8125'
+      - '--web.listen-address=:9102'
+    volumes:
+      - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
+    ports:
+      - 9102:9102
+      - 8125:8125/udp
+    networks:
+      - server-backend
 
   grafana:
     image: grafana/grafana
     container_name: grafana
-    hostname: grafana
     restart: always
-    command: >
-       bash -c 'chown grafana:grafana /etc/grafana/grafana.crt ; \
-        chown grafana:grafana /etc/grafana/grafana.key ; \
-        chmod 400 /etc/grafana/grafana.key /etc/grafana/grafana.crt'
     volumes:
-      - ${DOCKER_DATA}/grafana/data:/vol01/Docker/monitoring
-      - ${GRAFANA_PRIVATE_KEY}:/etc/grafana/grafana.key
-      - ${GRAFANA_CERTIFICATE}:/etc/grafana/grafana.crt
+      - grafana_data:/var/lib/grafana
+      - ${CERTS_PATH}/certs:/certs
+    env_file:
+      - .env
     environment:
       GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       GF_SERVER_PROTOCOL: https
-      GF_SERVER_CERT_FILE: "/etc/grafana/grafana.crt"
-      GF_SERVER_CERT_KEY: "/etc/grafana/grafana.key"
+      GF_SERVER_CERT_FILE: ${GRAFANA_CERTIFICATE}
+      GF_SERVER_CERT_KEY: ${GRAFANA_PRIVATE_KEY}
     # ports:
-    #   - 3002:3000
+    #   - 3000:3000
     networks:
-      - server-grafana
       - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.entrypoints=https
+      - traefik.http.routers.grafana.rule=Host(`grafana.${SERVER}.${DOMAIN}`)
+      - traefik.http.services.grafana.loadbalancer.server.scheme=https
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - traefik.http.routers.grafana.tls.certresolver=cloudflare
+      - traefik.http.routers.grafana.service=grafana
 
 networks:
-  server-grafana:
   server-backend:
     external: true
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  loki_data:

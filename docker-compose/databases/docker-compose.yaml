@@ -1,22 +1,19 @@
 ---
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: postgres
-    hostname: server-postgres
     restart: always
-    # command: >
-    #   bash -c 'cp ${POSTGRES_CERTIFICATE} /var/lib/postgresql/server.crt ;
-    #   cp ${POSTGRES_PRIVATE_KEY} /var/lib/postgresql/server.key ;
-    #   cp /certs/cacert.pem /var/lib/postgresql/cacert.pem ;
-    #   chown postgres:postgres /var/lib/postgresql/server* ;
-    #   chown postgres:postgres /var/lib/postgresql/cacert.pem ;
-    #   chmod 600 /var/lib/postgresql/server* ;
-    #   chmod 600 /var/lib/postgresql/cacert.pem ;
-    #   su postgres -c
-    #   "postgres -c ssl=on -c ssl_cert_file=/var/lib/postgresql/server.crt -c \
-    #   ssl_key_file=/var/lib/postgresql/server.key -c \
-    #   ssl_ca_file=/var/lib/postgresql/cacert.pem";'
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
       - ${CERTS_PATH}/certs:/certs:z
@@ -27,26 +24,53 @@ services:
       - 5432:5432
     networks:
       - server-database
+      - server-backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`postgres.${SERVER}.${DOMAIN}`)"
+      - "traefik.tcp.routers.postgres.entrypoints=tcp"
+      - "traefil.tcp.routers.postgres.tls=true"
+      - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
+      - "traefik.tcp.routers.postgres.service=postgres"
+      - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
 
   mysql:
     image: mysql
-    hostname: server-mysql
     container_name: mysql
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/mysql/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - '3306:3306'
+      - 3306:3306
     networks:
       - server-database
 
   redis:
     image: redis:latest
-    hostname: server-redis
     container_name: redis
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/redis/data:/data
     ports:
@@ -57,8 +81,17 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
-    hostname: server-mongo
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/mongo/data:/data/db
       - ${DOCKER_DATA}/mongo/config:/data/configdb
@@ -73,8 +106,17 @@ services:
   mongo-express:
     image: mongo-express
     container_name: mongo-express
-    hostname: server-mongo-express
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${CERTS_PATH}/certs:/certs:Z
     environment:
@@ -89,6 +131,15 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
     ports:
       - 8081:8081
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mongo-express.entrypoints=https
+      - traefik.http.routers.mongo-express.rule=Host(`mongo.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.mongo-express.tls=true
+      - traefik.http.services.mongo-express.loadbalancer.server.scheme=https
+      - traefik.http.services.mongo-express.loadbalancer.server.port=8081
+      - traefik.http.routers.mongo-express.tls.certresolver=cloudflare
+      - traefik.http.routers.mongo-express.service=mongo-express
     links:
       - mongo
     networks:
@@ -98,8 +149,17 @@ services:
   influxdb:
     image: influxdb:alpine
     container_name: influxdb
-    hostname: server-influxdb
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: "800ms"
+        loki-timeout: "1s"
+        loki-batch-size: 100
+        loki-batch-wait: 1s
+        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
       - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
@@ -115,6 +175,15 @@ services:
       - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
     ports:
       - 8086:8086
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.influxdb.entrypoints=https
+      - traefik.http.routers.influxdb.rule=Host(`influx.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.influxdb.tls=true
+      - traefik.http.services.influxdb.loadbalancer.server.scheme=https
+      - traefik.http.services.influxdb.loadbalancer.server.port=8086
+      - traefik.http.routers.influxdb.tls.certresolver=cloudflare
+      - traefik.http.routers.influxdb.service=influxdb
     networks:
       - server-database
       - server-backend

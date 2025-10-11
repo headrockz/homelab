@@ -1,0 +1,33 @@
+---
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    volumes:
+      - ./data/bookmarks.yaml:/app/config/bookmarks.yaml
+      - ./data/docker.yaml:/app/config/docker.yaml
+      - ./data/kubernetes.yaml:/app/config/kubernetes.yaml
+      - ./data/services.yaml:/app/config/services.yaml
+      - ./data/settings.yaml:/app/config/settings.yaml
+      - ./data/widgets.yaml:/app/config/widgets.yaml
+      - ./data/proxmox.yaml:/app/config/proxmox.yaml
+      - ${CERTS_PATH}/certs:/app/config/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    # ports:
+    #  - 3000:3000
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homepage.entrypoints=https
+      - traefik.http.routers.homepage.rule=Host(`homepage.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.homepage.tls=true
+      - traefik.http.services.homepage.loadbalancer.server.port=3000
+      - traefik.http.routers.homepage.tls.certresolver=homepage
+
+networks:
+  server-backend:
+    external: true

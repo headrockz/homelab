@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # ----------------------------------------------------------------- #
 # Linguagens ->  Python
-# Ferramentas -> Docker, kubectl, k9s
+# Gerenciador de versões -> pyenv, poetry
+# Ferramentas -> Docker, kubectl, k9s, Helm, opentofu,
+#                lazygit, lazydocker, harlequin
 # Shell -> zsh
 # Plugins -> powerlevel10k zsh-autosuggstions
 #            fast-syntax-highlighting zsh-completions
@@ -33,9 +35,17 @@ curl https://pyenv.run | bash ;
 ############################## Poetry ###############################
 curl -sSL https://install.python-poetry.org | python3 -
 
+############################# Opentofu ##############################
+
+curl --proto '=https' --tlsv1.2 \
+    -fsSL https://get.opentofu.org/install-opentofu.sh \
+    -o install-opentofu.sh &&
+chmod +x install-opentofu.sh &&
+./install-opentofu.sh --install-method deb &&
+rm -f install-opentofu.sh ;
+
 ############################ Docker #################################
-curl -sSL https://get.docker.com | sudo bash
-# Adicionando nosso usuario ao grupo do docker
+curl -fsSL https://get.docker.com | sudo bash
 sudo usermod -aG docker $USER ;
 
 ########################### Kubectl #################################
@@ -54,6 +64,12 @@ echo "deb [arch=$(ARCH) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn
 sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 sudo apt-get update
 sudo apt-get install helm
+
+########################## Lazydocker ################################
+curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+
+############################ Lazygit #################################
+sudo apt install lazygit
 
 # -------------------- INSTALAÇÃO DOS DOTFILES -------------------- #
 
@@ -77,5 +93,5 @@ sudo apt update && sudo apt dist-upgrade -y ;
 sudo apt autoclean ;
 sudo apt autoremove -y
 
-echo "Lembre-se de instalar o k9s"
+echo "Lembre-se de instalar o k9s e o harlequin" ;
 # ------------------- ACABOU - VOLTE SEMPRE ----------------------- #

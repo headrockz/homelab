@@ -1,0 +1,32 @@
+---
+services:
+  traefik:
+    image: docker.io/library/traefik:latest
+    container_name: traefik
+    ports:
+      - 80:80
+      - 443:443
+      # - 8080:8080
+    volumes:
+      - /run/docker.sock:/run/docker.sock:ro
+      - ./config/:/etc/traefik/
+      - ./certs/:/var/traefik/certs/:rw
+    environment:
+      - CF_DNS_API_TOKEN=${CF_TOKEN}
+      - CF_API_EMAIL=${CF_EMAIL}
+    networks:
+      - server-backend
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.rule=Host(`traefik.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.tls.certresolver=cloudflare
+      - traefik.http.routers.traefik.service=traefik
+      - traefik.http.routers.traefik.middlewares=authentik@file
+
+networks:
+  server-backend:
+    external: true

@@ -1,0 +1,262 @@
+---
+- Infrastructure:
+    - Proxmox:
+        icon: proxmox.png
+        href: "https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006"
+        siteMonitor: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
+        widget:
+          type: proxmox
+          url: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
+          username: "{{HOMEPAGE_VAR_PROXMOX_USER}}"
+          password: "{{HOMEPAGE_VAR_PROXMOX_API}}"
+          node: homeone
+    - Open Media Vault:
+        icon: openmediavault.png
+        href: "https://omv.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://omv.{{HOMEPAGE_VAR_DOMAIN}}
+        widget:
+          type: openmediavault
+          url: https://omv.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_OMV_USER}}"
+          password: "{{HOMEPAGE_VAR_OMV_API}}"
+          method: smart.getListBg
+    - Authentik:
+        icon: authentik.png
+        href: "https://authentik.{{HOMEPAGE_VAR_DOMAIN}}"
+        # description: Grafana Monitoring
+        server: my-docker
+        container: authentik-server
+        widget:
+          type: authentik
+          url: "https://authentik.{{HOMEPAGE_VAR_DOMAIN}}"
+          key: "{{HOMEPAGE_VAR_AUTHENTIK_API}}"
+          allowed_fields: ["users", "loginsLast24H", "failedLoginsLast24H"]
+
+- Monitoring:
+    - Grafana:
+        icon: grafana.png
+        href: "https://grafana.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: grafana
+        widget:
+          type: grafana
+          url: https://grafana.xwing.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
+          password: "{{HOMEPAGE_VAR_GRAFANA_API}}"
+          allowed_fields: ["dashboards", "datasources", "totalalerts"]
+    - Prometheus:
+        icon: prometheus.png
+        href: "https://prometheus.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: prometheus
+    - Loki:
+        icon: loki.png
+        href: "https://loki.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: loki
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: "https://uptime.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+        description: Server Tie
+        widget:
+          type: uptimekuma
+          url: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+          slug: homelab
+    - What's Up Docker:
+        icon: https://getwud.github.io/wud/assets/wud-logo.svg
+        href: "https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: wud
+    - What's Up Docker:
+        icon: https://getwud.github.io/wud/assets/wud-logo.svg
+        href: "https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        description: Server Tie
+    - Glances:
+        icon: glances.png
+        href: "https://glances.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://glances.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        description: Server Tie
+
+- Data Engineering:
+    - Airflow:
+        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/apache-airflow.svg
+        href: "https://airflow.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: destroyer
+        container: airflow-airflow-webserver-1
+    - Kestra:
+        icon: kestra.png
+        href: "https://kestra.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: destroyer
+        container: kestra
+        # showStats: true
+    - MinIO:
+        icon: minio.png
+        href: "https://minioui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: destroyer
+        container: minio
+    - Open Metadata:
+        icon: https://miro.medium.com/v2/1*NTBaKucQjjMGziseWsSF5Q.png
+        href: "https://open-metadata.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+
+- Misc:
+    - RomM:
+        icon: romm.png
+        href: "https://romm.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: romm
+        widget:
+          type: romm
+          url: https://romm.{{HOMEPAGE_VAR_DOMAIN}}
+          fields: ["platforms", "totalRoms", "totalfilesize"]
+    - Open WebUI:
+        icon: open-webui.png
+        href: "https://openwebui.dev.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: dev
+        container: open-webui
+    - It-Tools:
+        icon: it-tools.png
+        href: "https://it-tools.{{HOMEPAGE_VAR_DOMAIN}}"
+        # description: IT Tools
+        server: my-docker
+        container: it-tools
+    - Stirling PDF:
+        icon: stirling-pdf.png
+        href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: stirling-pdf
+    - Syncthing:
+        icon: syncthing.png
+        href: "https://syncthing.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: syncthing
+    - Syncthing:
+        icon: syncthing.png
+        href: "https://syncthing.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Destroyer
+        server: destroyer
+        container: syncthing
+
+- Media:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: "https://jellyfin.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: jellyfin
+        widget:
+          type: jellyfin
+          url: https://jellyfin.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_JELLYFIN_API}}"
+    - Transmission:
+        icon: transmission.png
+        href: "https://transmission.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: transmission
+        widget:
+          type: transmission
+          url: https://transmission.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_TRANSMISSION_USER}}"
+          password: "{{HOMEPAGE_VAR_TRANSMISSION_API}}"
+          rpcUrl: /transmission/
+
+- Databases:
+    - MongoDB:
+        icon: mongodb.png
+        href: "https://mongo.db.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: db
+        container: mongo-express
+    - InfluxDB:
+        icon: influxdb.png
+        href: "https://influx.db.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: db
+        container: influxdb
+
+- Network:
+    - PiHole Homeone:
+        icon: pi-hole.png
+        href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/admin"
+        widget:
+          type: pihole
+          url: https://pihole.{{HOMEPAGE_VAR_DOMAIN}}
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
+    - PiHole Falcon:
+        icon: pi-hole.png
+        href: "https://pihole2.{{HOMEPAGE_VAR_DOMAIN}}/admin"
+        widget:
+          type: pihole
+          version: 6
+          url: https://pihole2.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
+    - PiHole Tie:
+        icon: pi-hole.png
+        href: "https://pihole.tie.{{HOMEPAGE_VAR_DOMAIN}}/admin"
+        description: Server Tie
+        widget:
+          type: pihole
+          version: 6
+          url: https://pihole.tie.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
+
+- Reverse Proxy:
+    - Nginx Proxy Manager:
+        icon: nginx-proxy-manager.png
+        href: "https://nginx.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: nginx-proxy-manager
+        widget:
+          type: npm
+          url: https://nginx.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_NPM_USER}}"
+          password: "{{HOMEPAGE_VAR_NPM_API}}"
+    - Traefik:
+        icon: traefik-proxy.png
+        href: "https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Destroyer
+        server: destroyer
+        container: traefik
+        widget:
+          type: traefik
+          url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
+          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
+    - Traefik:
+        icon: traefik-proxy.png
+        href: "https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server DB
+        server: db
+        container: traefik
+        widget:
+          type: traefik
+          url: https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}
+    - Traefik:
+        icon: traefik-proxy.png
+        href: "https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Dev
+        server: dev
+        container: traefik
+        widget:
+          type: traefik
+          url: https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}
+    - Traefik:
+        icon: traefik-proxy.png
+        href: "https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        description: Server Tie
+
+- Smart Home:
+    - Home Assistant:
+        icon: home-assistant.png
+        href: https://home.{{HOMEPAGE_VAR_DOMAIN}}
+        server: my-docker
+        container: hass
+        widget:
+          type: homeassistant
+          url: https://home.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_HASS_API}}"
+    - Zigbee2MQTT:
+        icon: zigbee2mqtt.png
+        href: "https://zigbee.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: zigbee2mqtt

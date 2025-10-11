@@ -132,6 +132,37 @@ cython_debug/
 # Mac OS
 .DS_Store
 
+# Poetry
+poetry.lock
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude sensitive variable files
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# Ignore override files as they are usually used for local dev
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore .terraform.lock.hcl
+.terraform.lock.hcl
 
 # My ignore files
 test
@@ -139,5 +170,8 @@ telegraf.conf
 zshInstall.py
 configuration.yaml
 secret.yaml
-mosquitto.conf
-mosquitto_pass.conf
+mosquitto/
+data
+zigbee
+statsd_exporter.yaml
+glances.conf

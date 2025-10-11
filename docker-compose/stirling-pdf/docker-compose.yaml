@@ -1,0 +1,45 @@
+---
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: stirling-pdf
+    hostname: stirling-pdf
+    restart: always
+    environment:
+      - DOCKER_ENABLE_SECURITY=true
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      - LANGS=en_GB
+      - DISABLE_ADDITIONAL_FEATURES=false
+      - SECURITY_ENABLELOGIN=true
+      - SECURITY_LOGINMETHOD=oauth2
+      - SECURITY_OAUTH2_ENABLED=true
+      - SECURITY_OAUTH2_AUTOCREATEUSER=true
+      - SECURITY_OAUTH2_ISSUER=${ISSUER_URI}
+      - SECURITY_OAUTH2_CLIENTID=${OIDC_CLIENT_ID}
+      - SECURITY_OAUTH2_CLIENTSECRET=${OIDC_CLIENT_SECRET}
+      - SECURITY_OAUTH2_BLOCKREGISTRATION=false
+      - SECURITY_OAUTH2_SCOPES=openid,profile,email
+      - SECURITY_OAUTH2_USEASUSERNAME=email
+      - SECURITY_OAUTH2_PROVIDER=${PROVIDER}
+    volumes:
+      - stirling_pdf_data:/usr/share/tessdata
+      - stirling_pdf_config:/configs
+    # ports:
+    #   - 8080:8080
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.stirling-pdf.entrypoints=https
+      - traefik.http.routers.stirling-pdf.rule=Host(`stirling-pdf.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.stirling-pdf.tls=true
+      - traefik.http.services.stirling-pdf.loadbalancer.server.port=8080
+      - traefik.http.routers.stirling-pdf.tls.certresolver=stirling-pdf
+
+networks:
+  server-backend:
+    external: true
+
+volumes:
+  stirling_pdf_data:
+  stirling_pdf_config:

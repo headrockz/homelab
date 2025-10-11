@@ -1,0 +1,61 @@
+---
+datasources:
+  postgres:
+    url: jdbc:postgresql://${KESTRA_POSTGRES_IP}:5432/kestra
+    driverClassName: org.postgresql.Driver
+    username: kestra
+    password: "{{ secret(KESTRA_POSTGRES_PASS) }}"
+kestra:
+  server:
+    basicAuth:
+      enabled: true
+      username: ${KESTRA_USERNAME}
+      password: ${KESTRA_PASSWORD}
+  repository:
+    type: postgres
+  # storage:
+  #   type: local
+  #   local:
+  #     basePath: "/app/storage"
+  storage:
+    type: s3
+    s3:
+      endpoint: ${KESTRA_MINIO_ENDPOINT}
+      accessKey: ${KESTRA_MINIO_ACCESS_KEY}
+      secretKey: ${KESTRA_MINIO_SECRET_KEY}
+      region: "us-east-1"
+      bucket: "kestra"
+      forcePathStyle: "true"
+  queue:
+    type: postgres
+  tasks:
+    tmpDir:
+      path: /tmp/kestra-wd/tmp
+  url: http://localhost:8080/
+  templates:
+    enabled: false
+  tutorialFlows:
+    enabled: false
+  traces:
+    root: DEFAULT
+# otel:
+#   traces:
+#     exporter: otlp
+#   exporter:
+#     otlp:
+#       endpoint: https://lokigrpc.falcon.${DOMAIN}
+micronaut:
+  # metrics:
+  #   export:
+  #     otlp:
+  #       enabled: true
+  #       url: http://loki.${DOMAIN}/otlp
+  security:
+    oauth2:
+      enabled: true
+      clients:
+        authentik:
+          clientId: "${KESTRA_CLIENT_ID}"
+          clientSecret: "${KESTRA_CLIENT_SECRET}"
+          openid:
+            issuer: "https://authentik.${DOMAIN}/application/o/kestra/"

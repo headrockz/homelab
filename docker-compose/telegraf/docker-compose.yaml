@@ -9,7 +9,7 @@ services:
     entrypoint: /bin/bash -c "/entrypoint.sh telegraf"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKER_DATA}/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /:/hostfs:ro
     environment:
       - INFLUX_TOKEN=${INFLUX_TOKEN}

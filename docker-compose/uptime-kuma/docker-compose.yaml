@@ -8,13 +8,18 @@ services:
     volumes:
       - ${DOCKER_DATA}/uptimekuma/app/data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
-    # ports:
-    #   - 3001:3001
+    ports:
+      - 3001:3001
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.uptimekuma.rule=Host(`uptime.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.uptimekuma.tls=true
+      - traefik.http.services.uptimekuma.loadbalancer.server.port=3001
+      - traefik.http.routers.uptimekuma.tls.certresolver=cloudflare
+      - traefik.http.routers.uptimekuma.middlewares=authentik@file
     networks:
-      - server-uptime
       - server-backend
 
 networks:
-  server-uptime:
   server-backend:
     external: true

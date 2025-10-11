@@ -1,22 +1,19 @@
 ---
 services:
   nginx:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
-    hostname: nginx
     restart: always
     volumes:
       - ${DOCKER_DATA}/nginxproxymanager/data:/data
       - ${DOCKER_DATA}/nginxproxymanager/etc/letsencrypt:/etc/letsencrypt
     ports:
       - 80:80
-      # - 81:81
+      - 81:81
       - 443:443
     networks:
-      - server-nginx
       - server-backend
 
 networks:
-  server-nginx:
   server-backend:
     external: true

@@ -1,0 +1,19 @@
+---
+http:
+  routers:
+    local-ollama:
+      rule: "Host(`ollama.dev.${DOMAIN}`)"
+      service: ollama
+      priority: 1000
+      entrypoints:
+        - http
+        - https
+      tls:
+        certResolver: cloudflare
+      middlewares:
+        - authentik@file
+  services:
+    ollama:
+      loadBalancer:
+        servers:
+          - url: "http://${OLLAMA_HOST}:11434"
