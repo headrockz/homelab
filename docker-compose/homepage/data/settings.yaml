@@ -5,6 +5,13 @@ layout:
   Data Engineering:
     style: row
     columns: 5
+
   Misc:
+    style: row
+    columns: 5
+  Monitoring:
+    style: row
+    columns: 5
+  Infrastructure:
     style: row
     columns: 5

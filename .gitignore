@@ -164,14 +164,14 @@ terraform.rc
 # Ignore .terraform.lock.hcl
 .terraform.lock.hcl
 
+# Ignore ansible.cfg
+ansible.cfg
+
 # My ignore files
 test
-telegraf.conf
-zshInstall.py
 configuration.yaml
 secret.yaml
 mosquitto/
 data
 zigbee
-statsd_exporter.yaml
 glances.conf

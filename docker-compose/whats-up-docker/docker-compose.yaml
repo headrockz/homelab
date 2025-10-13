@@ -6,12 +6,10 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      # - ./store:/store
       - ${DOCKER_DATA}/certs:/certs
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
-    # environment:
     # ports:
     #   - 3000:3000
     networks:
