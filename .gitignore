@@ -164,8 +164,10 @@ terraform.rc
 # Ignore .terraform.lock.hcl
 .terraform.lock.hcl
 
-# Ignore ansible.cfg
+# Ignore ansible files
 ansible.cfg
+hosts.ini
+inventory.yaml
 
 # My ignore files
 test

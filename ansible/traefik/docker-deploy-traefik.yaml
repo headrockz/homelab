@@ -1,0 +1,47 @@
+---
+- name: Deploy Traefik Service
+  hosts: "{{ hosts }}"
+  become: true
+  vars:
+    traefik_dir: "~/"
+    local_traefik_dir: "{{ playbook_dir }}/../../docker-compose/traefik"
+  collections:
+    - community.docker
+
+  tasks:
+    - name: Copy traefik docker-compose files
+      ansible.builtin.copy:
+        src: "{{ local_traefik_dir }}"
+        dest: "{{ traefik_dir }}"
+        mode: '0644'
+
+    - name: Update middleware.yaml with hostname
+      ansible.builtin.shell:
+        cmd: |
+          sed -i "s|address: http://authentik-outpost:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname):9000/outpost.goauthentik.io/auth/traefik|g" {{ traefik_dir }}traefik/config/middleware.yaml
+      register: sed_result
+      changed_when: sed_result.rc == 0
+      failed_when: sed_result.rc != 0
+
+    - name: Create docker network if it doesn't exist
+      community.docker.docker_network:
+        name: server-backend
+        state: present
+      changed_when: false
+
+    - name: Deploy Traefik using docker-compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ traefik_dir }}traefik"
+        files:
+          - docker-compose.yaml
+        state: present
+        pull: policy
+        remove_orphans: true
+
+    - name: Check if Traefik is running
+      ansible.builtin.shell:
+        cmd:
+          docker ps -f name=traefik --format '\{\{.Status\}\}'
+      register: traefik_status
+      changed_when: traefik_status.rc == 0
+      failed_when: traefik_status.rc != 0
