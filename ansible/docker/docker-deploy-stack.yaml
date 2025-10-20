@@ -1,5 +1,5 @@
 ---
-- name: Deploy compse Service
+- name: Deploy compose Service
   hosts: "{{ hosts | default([]) }}"
   become: true
   vars:
