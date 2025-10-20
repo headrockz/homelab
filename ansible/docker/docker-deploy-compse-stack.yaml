@@ -1,0 +1,60 @@
+---
+- name: Deploy compse Service
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+  vars:
+    compose_path: "{{ remote_path | default('~/compose') }}"
+    volume: "{{ docker_volume | default('~/docker') }}"
+    local_dir: "{{ playbook_dir }}/../../docker-compose/{{ compose_name }}"
+  collections:
+    - community.docker
+
+  tasks:
+    - name: Copy docker-compose files
+      ansible.builtin.copy:
+        src: "{{ local_dir }}"
+        dest: "{{ compose_path }}"
+        mode: '0644'
+
+    - name: Update .env file with hostname
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^SERVER='
+        line: "SERVER={{ ansible_hostname}}"
+
+    - name: Update docker volume path
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^DOCKER_DATA='
+        line: "DOCKER_DATA={{ volume }}"
+    # Specific case for stack "shares"
+    - name: Update shared data (only for containers shares)
+      when: compose_name == "shares"
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^SHARED_DATA='
+        line: "SHARED_DATA={{ path_syncthing | default('~/compose') }}"
+    # Specific case for stack "traefik"
+    - name: Update middleware.yaml with hostname
+      when: compose_name == "traefik"
+      ansible.builtin.shell:
+        cmd: |
+          sed -i "s|address: http://authentik-outpost:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname):9000/outpost.goauthentik.io/auth/traefik|g" {{ compose_path }}/{{ compose_name }}/config/middleware.yaml
+      register: sed_result
+      changed_when: sed_result.rc == 0
+      failed_when: sed_result.rc != 0
+
+    - name: Create docker network if it doesn't exist
+      community.docker.docker_network:
+        name: server-backend
+        state: present
+      changed_when: false
+
+    - name: Deploy compose stack using docker-compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_path }}/{{ compose_name }}"
+        files:
+          - docker-compose.yaml
+        state: present
+        pull: policy
+        remove_orphans: true
