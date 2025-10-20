@@ -1,11 +1,16 @@
 ---
 - name: Install and Configure ZSH with Oh My Posh and Plugins
-  hosts: "{{ hosts | d([]) }}"
+  hosts: "{{ hosts | default([]) }}"
   become: true
 
   tasks:
     - name: Install required packages
       ansible.builtin.apt:
+        name:
+          - zsh
+          - curl
+          - git
+          - unzip
         state: present
         update_cache: true
 

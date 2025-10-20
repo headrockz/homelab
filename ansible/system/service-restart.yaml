@@ -1,6 +1,6 @@
 ---
 - name: Restart a specific service
-  hosts: "{{ hosts }}"
+  hosts: "{{ hosts | default([]) }}"
   become: true
 
   vars:

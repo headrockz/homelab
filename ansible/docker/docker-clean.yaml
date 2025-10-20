@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ hosts }}"
+- hosts: "{{ hosts | default([]) }}"
 
   tasks:
     - name: Prune non-dangling, and dangling images

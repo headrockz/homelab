@@ -1,6 +1,6 @@
 ---
 - name: Install docker
-  hosts: "{{ hosts }}"
+  hosts: "{{ hosts | default([]) }}"
   become: true
 
   tasks:
