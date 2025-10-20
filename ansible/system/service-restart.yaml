@@ -1,0 +1,38 @@
+---
+- name: Restart a specific service
+  hosts: "{{ hosts }}"
+  become: true
+
+  vars:
+    service_name: "{{ service_name }}"
+
+  tasks:
+    - name: Check service status before restart
+      service_facts:
+
+    - name: Check if service exists
+      fail:
+        msg: "The service '{{ service_name }}' does not exist on the system"
+      when: service_name not in ansible_facts.services
+
+    - name: Restart the service
+      service:
+        name: "{{ service_name }}"
+        state: restarted
+      register: service_restart
+
+    - name: Show restart status
+      debug:
+        msg: "The service {{ service_name }} was successfully restarted"
+      when: service_restart is succeeded
+
+    - name: Check service status after restart
+      service:
+        name: "{{ service_name }}"
+        state: started
+      register: service_check
+
+    - name: Show error message if service fails to start
+      fail:
+        msg: "Failed to restart service {{ service_name }}. Check system logs."
+      when: service_check is failed

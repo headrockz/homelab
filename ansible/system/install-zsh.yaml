@@ -1,0 +1,84 @@
+---
+- name: Install and Configure ZSH with Oh My Posh and Plugins
+  hosts: "{{ hosts | d([]) }}"
+  become: true
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+
+    - name: Install oh-my-posh
+      ansible.builtin.shell:
+        cmd: |
+          curl -s https://ohmyposh.dev/install.sh | bash -s
+
+    - name: Create .zsh directory for plugins
+      ansible.builtin.file:
+        path: ".zsh"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        mode: '0755'
+
+    - name: Clone zsh-autosuggestions plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: "~/.zsh/zsh-autosuggestions"
+        version: master
+        depth: 1
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Clone zsh-completions plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-completions.git
+        dest: "~/.zsh/zsh-completions"
+        version: master
+        depth: 1
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Clone zsh-syntax-highlighting plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: "~/.zsh/zsh-syntax-highlighting"
+        version: master
+        depth: 1
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Clone fast-syntax-highlighting plugin
+      ansible.builtin.git:
+        repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+        dest: "~/.zsh/fast-syntax-highlighting"
+        version: master
+        depth: 1
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Download my oh-my-posh theme
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/headrockz/mydotfiles/refs/heads/main/my_posh_config.omp.json
+        dest: "~/.my_posh_config.omp.json"
+        mode: '0644'
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Copy .zshrc configuration file
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/templates/.zshrc.j2"
+        dest: "~/.zshrc"
+        mode: '0644'
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Change default shell to zsh for current user
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /usr/bin/zsh

@@ -1,0 +1,24 @@
+# oh-my-posh
+eval "$(~/.local/bin/oh-my-posh init zsh --config ~/.my_posh_config.omp.json)"
+
+HISTSIZE=5000
+SAVEHIST=5000
+HISTFILE=~/.zsh_history
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
+# source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+# alias
+alias py="python"
+alias d="docker"
+alias dc="docker-compose"
+alias dn="dotnet"
+alias gs="git status"
+alias gadd="git add ."
+alias gc="git commit -am"
+alias gp="git push"
+alias gpull="git pull"
+alias update="sudo apt update -y && sudo apt dist-upgrade -y && sudo apt autoclean ; sudo apt autoremove -y"
+alias backup="rsync -rv --exclude=venv projects projects-old"
