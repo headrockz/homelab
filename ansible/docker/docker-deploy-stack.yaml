@@ -20,7 +20,7 @@
       ansible.builtin.lineinfile:
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^SERVER='
-        line: "SERVER={{ ansible_hostname}}"
+        line: "SERVER={{ ansible_hostname }}"
 
     - name: Update docker volume path
       ansible.builtin.lineinfile:
