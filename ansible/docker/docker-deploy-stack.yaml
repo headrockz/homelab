@@ -4,7 +4,6 @@
   become: true
   vars:
     compose_path: "{{ remote_path | default('~/compose') }}"
-    volume: "{{ docker_volume | default('~/docker') }}"
     local_dir: "{{ playbook_dir }}/../../docker-compose/{{ compose_name }}"
   collections:
     - community.docker
@@ -26,7 +25,8 @@
       ansible.builtin.lineinfile:
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^DOCKER_DATA='
-        line: "DOCKER_DATA={{ volume }}"
+        line: "DOCKER_DATA={{ docker_volume | default('~/docker') }}"
+
     # Specific case for stack "shares"
     - name: Update shared data (only for containers shares)
       when: compose_name == "shares"
@@ -34,6 +34,7 @@
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^SHARED_DATA='
         line: "SHARED_DATA={{ path_syncthing | default('~/compose') }}"
+
     # Specific case for stack "traefik"
     - name: Update middleware.yaml with hostname
       when: compose_name == "traefik"

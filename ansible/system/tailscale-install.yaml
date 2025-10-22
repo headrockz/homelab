@@ -1,0 +1,10 @@
+---
+- name: Install Tailscale
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+
+  tasks:
+    - name: Install tailscale
+      ansible.builtin.shell:
+        cmd: |
+          curl -fsSL https://tailscale.com/install.sh | sh
