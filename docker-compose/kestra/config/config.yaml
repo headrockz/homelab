@@ -26,6 +26,12 @@ kestra:
       region: "us-east-1"
       bucket: "kestra"
       forcePathStyle: "true"
+  ai:
+    type: "openrouter"
+    openrouter:
+      api-key: ${KESTRA_OPENROUTER_API_KEY}
+      base-url: ${KESTRA_OPENROUTER_BASE_URL}
+      model-name: ${KESTRA_OPENROUTER_MODEL}
   queue:
     type: postgres
   tasks:
