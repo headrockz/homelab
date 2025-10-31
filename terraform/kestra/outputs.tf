@@ -1,8 +1,3 @@
-output "kestra_url" {
-  description = "Kestra instance URL"
-  value       = var.kestra_url
-}
-
 output "created_kv_resources" {
   description = "List of key-value resources created in Kestra"
   value = {

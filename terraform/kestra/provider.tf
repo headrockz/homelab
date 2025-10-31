@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "kestra" {
-  url      = var.kestra_url
-  username = var.kestra_username
-  password = var.kestra_password
+  # url      = var.kestra_url
+  # username = var.kestra_username
+  # password = var.kestra_password
 
   # Enterprise
   # optional jwt token (EE)

@@ -1,20 +1,3 @@
-variable "kestra_url" {
-  description = "Kestra instance URL"
-  type        = string
-}
-
-variable "kestra_username" {
-  description = "Kestra username for authentication"
-  type        = string
-  sensitive   = true
-}
-
-variable "kestra_password" {
-  description = "Kestra password for authentication"
-  type        = string
-  sensitive   = true
-}
-
 variable "minio_endpoint" {
   description = "MinIO endpoint URL"
   type        = string
