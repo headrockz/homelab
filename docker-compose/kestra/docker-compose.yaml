@@ -1,22 +1,12 @@
 ---
 services:
   kestra:
-    image: kestra/kestra:develop
+    image: kestra/kestra:latest
     container_name: kestra
     command: server standalone --worker-thread=16 --config config.yaml
     restart: always
     pull_policy: always
     user: "root"
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/kestra:/app/storage
       - ./config/config.yaml:/app/config.yaml:ro
@@ -29,15 +19,15 @@ services:
       - SECRET_TELEGRAM_CHAT_ID=${SECRET_TELEGRAM_CHAT_ID}
     env_file:
       - .env
-    ports:
-      - 8082:8080
-      - 8081:8081
+    # ports:
+    #   - 8080:8080
+    #   - 8081:8081
     networks:
       - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.kestra.entrypoints=https
-      - traefik.http.routers.kestra.rule=Host(`kestra.destroyer.${DOMAIN}`)
+      - traefik.http.routers.kestra.rule=Host(`kestra.${SERVER}.${DOMAIN}`)
       - traefik.http.routers.kestra.tls=true
       - traefik.http.services.kestra.loadbalancer.server.port=8080
       - traefik.http.routers.kestra.tls.certresolver=cloudflare

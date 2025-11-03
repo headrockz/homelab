@@ -5,16 +5,6 @@ services:
     container_name: minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     # ports:
     #   - 9000:9000
     #   - 9001:9001

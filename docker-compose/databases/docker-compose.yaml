@@ -4,16 +4,6 @@ services:
     image: postgres:16
     container_name: postgres
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
       - ${CERTS_PATH}/certs:/certs:z
@@ -38,16 +28,6 @@ services:
     image: mysql
     container_name: mysql
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/mysql/data:/var/lib/mysql
     environment:
@@ -61,16 +41,6 @@ services:
     image: redis:latest
     container_name: redis
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/redis/data:/data
     ports:
@@ -82,16 +52,6 @@ services:
     image: mongo:latest
     container_name: mongo
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/mongo/data:/data/db
       - ${DOCKER_DATA}/mongo/config:/data/configdb
@@ -107,16 +67,6 @@ services:
     image: mongo-express
     container_name: mongo-express
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${CERTS_PATH}/certs:/certs:Z
     environment:
@@ -150,16 +100,6 @@ services:
     image: influxdb:alpine
     container_name: influxdb
     restart: always
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://${LOKI_URL}/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: "800ms"
-        loki-timeout: "1s"
-        loki-batch-size: 100
-        loki-batch-wait: 1s
-        mode: non-blocking
     volumes:
       - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
       - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
