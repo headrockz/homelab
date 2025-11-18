@@ -1,0 +1,51 @@
+---
+- name: Create PostgreSQL User
+  hosts: "{{ hosts | default('localhost') }}"
+  vars:
+    # Database connection settings
+    postgres_ssl_mode: "{{ ssl_mode | default('prefer') }}"
+
+  tasks:
+    - name: Create PostgreSQL user
+      community.postgresql.postgresql_user:
+        login_host: "{{ postgres_host }}"
+        login_port: "{{ postgres_port | default('5432') }}"
+        login_user: "{{ admin_user | default('postgres') }}"
+        login_password: "{{ admin_password }}"
+        login_db: "{{ admin_db | default('postgres') }}"
+        name: "{{ username }}"
+        password: "{{ password }}"
+        role_attr_flags: "{{ role_attrs }}"
+        expires: "{{ expires if expires != '' else omit }}"
+        ssl_mode: "{{ postgres_ssl_mode }}"
+        state: present
+      notify: user create
+      tags:
+        - user
+
+    - name: Create database for user (if specified)
+      community.postgresql.postgresql_db:
+        login_host: "{{ postgres_host }}"
+        login_port: "{{ postgres_port | default('5432') }}"
+        login_user: "{{ admin_user | default('postgres') }}"
+        login_password: "{{ admin_password }}"
+        name: "{{ database }}"
+        owner: "{{ admin_user | default('postgres') }}"
+        ssl_mode: "{{ postgres_ssl_mode }}"
+        state: present
+      when: database != ''
+      tags:
+        - database
+
+    - name: Grant privileges to user on database
+      community.postgresql.postgresql_privs:
+        login_host: "{{ postgres_host }}"
+        login_port: "{{ postgres_port | default('5432') }}"
+        login_user: "{{ admin_user | default('postgres') }}"
+        login_password: "{{ admin_password }}"
+        db: "{{ database }}"
+        privs: "{{ privileges | default('ALL') }}"
+        type: database
+        role: "{{ username }}"
+        ssl_mode: "{{ postgres_ssl_mode }}"
+      when: database != ''

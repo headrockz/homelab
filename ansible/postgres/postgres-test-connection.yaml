@@ -1,0 +1,23 @@
+---
+- name: Create PostgreSQL User
+  hosts: "{{ hosts | default('localhost') }}"
+
+  tasks:
+    - name: Install required Python packages
+      ansible.builtin.pip:
+        name:
+          - psycopg2-binary
+        state: present
+
+    - name: Test PostgreSQL connection
+      community.postgresql.postgresql_ping:
+        login_host: "{{ postgres_host }}"
+        login_port: "{{ postgres_port | default('5432') }}"
+        login_user: "{{ admin_user | default('postgres') }}"
+        login_password: "{{ admin_password }}"
+        login_db: "postgres"
+      register: ping_result
+
+    - name: Display connection result
+      ansible.builtin.debug:
+        msg: "PostgreSQL connection successful: {{ ping_result }}"
