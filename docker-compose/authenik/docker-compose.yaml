@@ -38,7 +38,7 @@ services:
       timeout: 3s
 
   server:
-    image: ghcr.io/goauthentik/server:2025.8.4
+    image: ghcr.io/goauthentik/server:2025.10.1
     container_name: authentik-server
     command: server
     restart: unless-stopped
@@ -76,7 +76,7 @@ services:
       - traefik.http.routers.server.service=server
 
   worker:
-    image: ghcr.io/goauthentik/server:2025.8.4
+    image: ghcr.io/goauthentik/server:2025.10.1
     container_name: authentik-worker
     command: worker
     restart: unless-stopped
