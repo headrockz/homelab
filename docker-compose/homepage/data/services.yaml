@@ -23,7 +23,6 @@
     - Authentik:
         icon: authentik.png
         href: "https://authentik.{{HOMEPAGE_VAR_DOMAIN}}"
-        # description: Grafana Monitoring
         server: my-docker
         container: authentik-server
         widget:
@@ -33,27 +32,6 @@
           allowed_fields: ["users", "loginsLast24H", "failedLoginsLast24H"]
 
 - Monitoring:
-    - Grafana:
-        icon: grafana.png
-        href: "https://grafana.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: grafana
-        widget:
-          type: grafana
-          url: https://grafana.xwing.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
-          password: "{{HOMEPAGE_VAR_GRAFANA_API}}"
-          allowed_fields: ["dashboards", "datasources", "totalalerts"]
-    - Prometheus:
-        icon: prometheus.png
-        href: "https://prometheus.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: prometheus
-    - Loki:
-        icon: loki.png
-        href: "https://loki.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: loki
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: "https://uptime.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -63,6 +41,32 @@
           type: uptimekuma
           url: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
           slug: homelab
+    - Grafana:
+        icon: grafana.png
+        href: "https://grafana.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: xwing
+        container: grafana
+        widget:
+          type: grafana
+          url: https://grafana.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
+          password: "{{HOMEPAGE_VAR_GRAFANA_API}}"
+          fields: ["dashboards", "datasources", "totalalerts"]
+    - Prometheus:
+        icon: prometheus.png
+        href: "https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: xwing
+        container: prometheus
+        widget:
+          type: prometheus
+          url: https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_PROMETHEUS_USER}}"
+          password: "{{HOMEPAGE_VAR_PROMETHEUS_PASS}}"
+    - Loki:
+        icon: loki.png
+        href: "https://loki.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: xwing
+        container: loki
     - What's Up Docker:
         icon: https://getwud.github.io/wud/assets/wud-logo.svg
         href: "https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -81,7 +85,7 @@
 
 - Data Engineering:
     - Airflow:
-        icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/apache-airflow.svg
+        icon: apache-airflow.png
         href: "https://airflow.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
         server: destroyer
         container: airflow-airflow-webserver-1
@@ -110,35 +114,17 @@
           type: romm
           url: https://romm.{{HOMEPAGE_VAR_DOMAIN}}
           fields: ["platforms", "totalRoms", "totalfilesize"]
-    - Open WebUI:
-        icon: open-webui.png
-        href: "https://openwebui.dev.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: dev
-        container: open-webui
-    - It-Tools:
-        icon: it-tools.png
-        href: "https://it-tools.{{HOMEPAGE_VAR_DOMAIN}}"
-        # description: IT Tools
+    - Immich:
+        icon: immich.png
+        href: "https://immich.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
         server: my-docker
-        container: it-tools
-    - Stirling PDF:
-        icon: stirling-pdf.png
-        href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: stirling-pdf
-    - Syncthing:
-        icon: syncthing.png
-        href: "https://syncthing.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: syncthing
-    - Syncthing:
-        icon: syncthing.png
-        href: "https://syncthing.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Destroyer
-        server: destroyer
-        container: syncthing
-
-- Media:
+        container: immich_server
+        widget:
+          type: immich
+          url: https://immich.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_IMMICH_API}}"
+          version: 2
+          fields: ["photos", "videos", "storage"]
     - Jellyfin:
         icon: jellyfin.png
         href: "https://jellyfin.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -159,6 +145,41 @@
           username: "{{HOMEPAGE_VAR_TRANSMISSION_USER}}"
           password: "{{HOMEPAGE_VAR_TRANSMISSION_API}}"
           rpcUrl: /transmission/
+    - Open WebUI:
+        icon: open-webui.png
+        href: "https://openwebui.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: open-webui
+    - Next-Explorer:
+        icon: files.png
+        href: "https://file.{{HOMEPAGE_VAR_DOMAIN}}"
+        # description: IT Tools
+        server: my-docker
+        container: nextexplorer
+    - It-Tools:
+        icon: it-tools.png
+        href: "https://it-tools.{{HOMEPAGE_VAR_DOMAIN}}"
+        # description: IT Tools
+        server: my-docker
+        container: it-tools
+    - Stirling PDF:
+        icon: stirling-pdf.png
+        href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: my-docker
+        container: stirling-pdf
+    - Syncthing:
+        icon: syncthing.png
+        href: "https://syncthing.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: syncthing
+    - Syncthing:
+        icon: syncthing.png
+        href: "https://syncthing.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Destroyer
+        server: destroyer
+        container: syncthing
+
 
 - Databases:
     - MongoDB:
@@ -216,33 +237,44 @@
         description: Server Destroyer
         server: destroyer
         container: traefik
-        widget:
-          type: traefik
-          url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
-          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
+        # widget:
+        #   type: traefik
+        #   url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
+        #   username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
+        #   password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
+    - Traefik:
+        icon: traefik-proxy.png
+        href: "https://traefik.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Xwing
+        server: xwing
+        container: traefik
+        # widget:
+        #   type: traefik
+        #   url: https://traefik.xwing.{{HOMEPAGE_VAR_DOMAIN}}
+        #   username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
+        #   password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
     - Traefik:
         icon: traefik-proxy.png
         href: "https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server DB
         server: db
         container: traefik
-        widget:
-          type: traefik
-          url: https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}
+        # widget:
+        #   type: traefik
+        #   url: https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}
     - Traefik:
         icon: traefik-proxy.png
         href: "https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Dev
         server: dev
         container: traefik
-        widget:
-          type: traefik
-          url: https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}
+        # widget:
+        #   type: traefik
+        #   url: https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}
     - Traefik:
         icon: traefik-proxy.png
         href: "https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}"
-        siteMonitor: https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        siteMonitor: "https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Tie
 
 - Smart Home:
