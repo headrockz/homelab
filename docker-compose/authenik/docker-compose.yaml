@@ -21,22 +21,6 @@ services:
       retries: 5
       timeout: 5s
 
-  redis:
-    image: redis:alpine
-    container_name: authentik-redis
-    command: --save 60 1 --loglevel warning
-    restart: unless-stopped
-    volumes:
-      - ${DOCKER_DATA}/authentik/redis/data:/data
-    networks:
-      - authentik
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
-      start_period: 20s
-      interval: 30s
-      retries: 5
-      timeout: 3s
-
   server:
     image: ghcr.io/goauthentik/server:2025.10.1
     container_name: authentik-server
@@ -63,8 +47,6 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     labels:
       - traefik.enable=true
       - traefik.http.routers.server.entrypoints=https
@@ -87,7 +69,6 @@ services:
       - ${DOCKER_DATA}/authentik/certs:/certs
       - ${DOCKER_DATA}/authentik/custom-templates:/templates
     environment:
-      AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB}
@@ -102,8 +83,6 @@ services:
           memory: 3GB
     depends_on:
       postgresql:
-        condition: service_healthy
-      redis:
         condition: service_healthy
 
 networks:
