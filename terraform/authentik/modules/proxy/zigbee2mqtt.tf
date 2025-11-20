@@ -1,0 +1,17 @@
+resource "authentik_provider_proxy" "zigbee2mqtt" {
+  name               = "Zigbee 2 MQTT"
+  external_host      = "https://zigbee.${var.domain}"
+  mode               = "forward_single"
+  authorization_flow = data.authentik_flow.default-authorization-flow.id
+  invalidation_flow  = data.authentik_flow.default-invalidation-flow.id
+}
+
+resource "authentik_application" "zigbee2mqtt" {
+  name              = "Zigbee 2 MQTT"
+  slug              = "zigbee-2-mqtt"
+  group             = "Smart Home"
+  protocol_provider = authentik_provider_proxy.zigbee2mqtt.id
+  meta_launch_url   = "https://zigbee.${var.domain}/"
+  meta_icon         = "/media/public/application-icons/zigbee2mqtt.png"
+  open_in_new_tab   = true
+}
