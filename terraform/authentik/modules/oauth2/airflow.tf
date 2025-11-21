@@ -10,8 +10,10 @@ resource "authentik_provider_oauth2" "airflow" {
   invalidation_flow  = var.default_invalidation_flow
   signing_key        = var.default_self_singned
   property_mappings = [
-    var.airflow_property_mapping_id,
-    var.oauth_profile_id
+    var.oauth_profile_id,
+    var.oauth_openid_id,
+    var.oauth_email_id,
+    var.airflow_property_mapping_id
   ]
   allowed_redirect_uris = [
     {
