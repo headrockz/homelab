@@ -24,5 +24,4 @@ resource "authentik_application" "nextexplorer" {
   meta_launch_url   = "https://file.${var.domain}/"
   meta_icon         = "/media/public/application-icons/files.png"
   open_in_new_tab   = true
-
 }

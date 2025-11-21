@@ -25,5 +25,4 @@ resource "authentik_application" "kestra" {
   meta_launch_url   = "https://kestra.destroyer.${var.domain}/"
   meta_icon         = "/media/public/application-icons/kestra.png"
   open_in_new_tab   = true
-
 }

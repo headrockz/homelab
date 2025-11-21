@@ -1,7 +1,7 @@
 module "authentik_config" {
   source = "./modules/authentik_config"
-
 }
+
 module "modules_oauth2" {
   source = "./modules/oauth2"
   domain = var.domain
