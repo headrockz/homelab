@@ -37,3 +37,19 @@ else:
   }
 EOF
 }
+
+resource "authentik_property_mapping_provider_scope" "openwebui" {
+  name        = "Open WebUI Scope Mapping"
+  scope_name  = "openwebui"
+  description = "Maps Open WebUI specific properties"
+  expression  = <<EOF
+if ak_is_group_member(request.user, name="OpenWebUI Admins"):
+  return {
+    "policy": "admin",
+}
+else:
+    return {
+      "policy": "user"
+  }
+EOF
+}

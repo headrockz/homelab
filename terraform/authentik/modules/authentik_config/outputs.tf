@@ -33,6 +33,11 @@ output "minio_property_mapping_id" {
   value       = authentik_property_mapping_provider_scope.minio.id
 }
 
+output "openwebui_property_mapping_id" {
+  description = "Open WebUI property mapping ID"
+  value       = authentik_property_mapping_provider_scope.openwebui.id
+}
+
 output "default_authorization_flow" {
   description = "Default Authorization Flow ID"
   value       = data.authentik_flow.default-authorization-flow.id
