@@ -18,6 +18,11 @@ output "oauth_offline_access_id" {
   value       = data.authentik_property_mapping_provider_scope.oauth_offline_access.id
 }
 
+output "proxy_outpost_property_mapping_id" {
+  description = "Proxy Outpost property mapping ID"
+  value       = data.authentik_property_mapping_provider_scope.proxy_outpost.id
+}
+
 output "airflow_property_mapping_id" {
   description = "Airflow property mapping ID"
   value       = data.authentik_property_mapping_provider_scope.airflow.id

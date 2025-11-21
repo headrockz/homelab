@@ -10,6 +10,7 @@ module "modules_oauth2" {
   oauth_email_id              = module.authentik_config.oauth_email_id
   oauth_openid_id             = module.authentik_config.oauth_openid_id
   oauth_offline_access_id     = module.authentik_config.oauth_offline_access_id
+  proxy_outpost_id            = module.authentik_config.proxy_outpost_property_mapping_id
   airflow_property_mapping_id = module.authentik_config.airflow_property_mapping_id
   minio_property_mapping_id   = module.authentik_config.minio_property_mapping_id
   default_authorization_flow  = module.authentik_config.default_authorization_flow

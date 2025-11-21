@@ -19,6 +19,16 @@ variable "oauth_openid_id" {
   type        = string
 }
 
+variable "oauth_offline_access_id" {
+  description = "OAuth offline access property mapping ID"
+  type        = string
+}
+
+variable "proxy_outpost_id" {
+  description = "Proxy Outpost property mapping ID"
+  type        = string
+}
+
 variable "airflow_property_mapping_id" {
   description = "Airflow property mapping ID"
   type        = string

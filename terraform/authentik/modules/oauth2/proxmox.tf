@@ -9,7 +9,7 @@ resource "authentik_provider_oauth2" "proxmox" {
   authorization_flow = var.default_authorization_flow
   invalidation_flow  = var.default_invalidation_flow
   signing_key        = var.default_self_singned
-    property_mappings = [
+  property_mappings = [
     var.oauth_profile_id,
     var.oauth_openid_id,
     var.oauth_email_id
