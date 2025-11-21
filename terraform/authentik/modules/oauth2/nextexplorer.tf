@@ -4,11 +4,16 @@ resource "random_password" "nextexplorer" {
 }
 
 resource "authentik_provider_oauth2" "nextexplorer" {
-  name               = "NextExplorer"
+  name               = "Next Explorer"
   client_id          = resource.random_password.nextexplorer.result
   authorization_flow = var.default_authorization_flow
   invalidation_flow  = var.default_invalidation_flow
   signing_key        = var.default_self_singned
+  property_mappings = [
+    var.oauth_profile_id,
+    var.oauth_openid_id,
+    var.oauth_email_id
+  ]
   allowed_redirect_uris = [
     {
       matching_mode = "regex",
