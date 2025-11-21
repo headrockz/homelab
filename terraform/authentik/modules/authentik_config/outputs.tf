@@ -13,6 +13,11 @@ output "oauth_email_id" {
   value       = data.authentik_property_mapping_provider_scope.oauth_email.id
 }
 
+output "oauth_offline_access_id" {
+  description = "OAuth offline access property mapping ID"
+  value       = data.authentik_property_mapping_provider_scope.oauth_offline_access.id
+}
+
 output "airflow_property_mapping_id" {
   description = "Airflow property mapping ID"
   value       = data.authentik_property_mapping_provider_scope.airflow.id

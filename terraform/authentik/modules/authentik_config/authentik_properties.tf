@@ -10,6 +10,10 @@ data "authentik_property_mapping_provider_scope" "oauth_openid" {
   scope_name = "openid"
 }
 
+data "authentik_property_mapping_provider_scope" "oauth_offline_access" {
+  scope_name = "offline_access"
+}
+
 data "authentik_property_mapping_provider_scope" "airflow" {
   scope_name = "airflow"
 }
