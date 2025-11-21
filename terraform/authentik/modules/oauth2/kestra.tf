@@ -1,9 +1,14 @@
+resource "random_password" "kestra" {
+  length  = 40
+  special = false
+}
+
 resource "authentik_provider_oauth2" "kestra" {
   name               = "Kestra"
   client_id          = resource.random_password.kestra.result
-  authorization_flow = data.authentik_flow.default-authorization-flow.id
-  invalidation_flow  = data.authentik_flow.default-invalidation-flow.id
-  signing_key        = data.authentik_certificate_key_pair.self-singned.id
+  authorization_flow = var.default_authorization_flow
+  invalidation_flow  = var.default_invalidation_flow
+  signing_key        = var.default_self_singned
   allowed_redirect_uris = [
     {
       matching_mode = "regex",

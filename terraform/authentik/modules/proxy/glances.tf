@@ -2,8 +2,8 @@ resource "authentik_provider_proxy" "glances" {
   name               = "Glances"
   external_host      = "https://glances.tie.${var.domain}"
   mode               = "forward_single"
-  authorization_flow = data.authentik_flow.default-authorization-flow.id
-  invalidation_flow  = data.authentik_flow.default-invalidation-flow.id
+  authorization_flow = var.default_authorization_flow
+  invalidation_flow  = var.default_invalidation_flow
 }
 
 resource "authentik_application" "glances" {
