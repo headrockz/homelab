@@ -31,7 +31,6 @@ services:
       - ${DOCKER_DATA}/authentik/media:/media
       - ${DOCKER_DATA}/authentik/custom-templates:/templates
     environment:
-      AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB}
