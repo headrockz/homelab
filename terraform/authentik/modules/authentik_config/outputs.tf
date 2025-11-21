@@ -3,6 +3,16 @@ output "oauth_profile_id" {
   value       = data.authentik_property_mapping_provider_scope.oauth_profile.id
 }
 
+output "oauth_openid_id" {
+  description = "OAuth openid property mapping ID"
+  value       = data.authentik_property_mapping_provider_scope.oauth_openid.id
+}
+
+output "oauth_email_id" {
+  description = "OAuth email property mapping ID"
+  value       = data.authentik_property_mapping_provider_scope.oauth_email.id
+}
+
 output "airflow_property_mapping_id" {
   description = "Airflow property mapping ID"
   value       = data.authentik_property_mapping_provider_scope.airflow.id

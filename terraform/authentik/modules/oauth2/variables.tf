@@ -9,9 +9,25 @@ variable "oauth_profile_id" {
   type        = string
 }
 
+variable "oauth_email_id" {
+  description = "OAuth email property mapping ID"
+  type        = string
+}
+
+variable "oauth_openid_id" {
+  description = "OAuth openid property mapping ID"
+  type        = string
+}
+
 variable "airflow_property_mapping_id" {
   description = "Airflow property mapping ID"
   type        = string
+}
+
+variable "minio_property_mapping_id" {
+  description = "MinIO property mapping ID"
+  type        = string
+
 }
 variable "default_invalidation_flow" {
   description = "Default Invalidation Flow ID"

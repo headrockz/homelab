@@ -7,7 +7,10 @@ module "modules_oauth2" {
   domain = var.domain
 
   oauth_profile_id            = module.authentik_config.oauth_profile_id
+  oauth_email_id              = module.authentik_config.oauth_email_id
+  oauth_openid_id             = module.authentik_config.oauth_openid_id
   airflow_property_mapping_id = module.authentik_config.airflow_property_mapping_id
+  minio_property_mapping_id   = module.authentik_config.minio_property_mapping_id
   default_authorization_flow  = module.authentik_config.default_authorization_flow
   default_invalidation_flow   = module.authentik_config.default_invalidation_flow
   default_self_singned        = module.authentik_config.default_self_singned
