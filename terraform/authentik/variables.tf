@@ -9,3 +9,9 @@ variable "username" {
   type        = string
   sensitive   = true
 }
+
+variable "akadmin" {
+  description = "Authentik akadmin username"
+  type        = string
+  sensitive   = true
+}

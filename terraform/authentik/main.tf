@@ -4,6 +4,7 @@ module "authentik_config" {
 
 module "groups" {
   source   = "./modules/groups"
+  akadmin  = var.akadmin
   username = var.username
 }
 
