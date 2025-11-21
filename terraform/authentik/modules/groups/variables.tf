@@ -1,9 +1,3 @@
-variable "domain" {
-  description = "Personal domain"
-  type        = string
-  sensitive   = true
-}
-
 variable "username" {
   description = "Authentik username"
   type        = string
