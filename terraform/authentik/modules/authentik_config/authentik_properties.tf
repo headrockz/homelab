@@ -27,7 +27,7 @@ resource "authentik_property_mapping_provider_scope" "minio" {
   scope_name  = "minio"
   description = "Maps MinIO specific properties"
   expression  = <<EOF
-if ak_is_group_member(request.user, name="MinIO Admin"):
+if ak_is_group_member(request.user, name="authentik Admins"):
   return {
     "policy": "consoleAdmin",
 }
@@ -43,7 +43,7 @@ resource "authentik_property_mapping_provider_scope" "openwebui" {
   scope_name  = "openwebui"
   description = "Maps Open WebUI specific properties"
   expression  = <<EOF
-if ak_is_group_member(request.user, name="OpenWebUI Admins"):
+if ak_is_group_member(request.user, name="authentik Admins"):
   return {
     "policy": "admin",
 }
