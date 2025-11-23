@@ -13,3 +13,11 @@ resource "authentik_token" "homepage" {
   expiring    = false
   intent      = "api"
 }
+
+resource "authentik_token" "prometheus" {
+  identifier  = "prometheus"
+  user        = resource.authentik_user.prometheus.id
+  description = "Prometheus Connection Token"
+  expiring    = false
+  intent      = "app_password"
+}
