@@ -177,3 +177,4 @@ mosquitto/
 data
 zigbee
 glances.conf
+*.secrets.tf
