@@ -21,6 +21,12 @@ module "metrics" {
   influxdb_token    = var.influxdb_token
 }
 
+module "groups" {
+  source = "./modules/groups"
+
+  proxmox_node_name = var.proxmox_node_name
+}
+
 module "lxc" {
   source = "./modules/lxc"
 
@@ -28,8 +34,9 @@ module "lxc" {
   dns               = var.dns
 }
 
-module "groups" {
-  source = "./modules/groups"
+module "kube" {
+  source = "./modules/kube"
 
   proxmox_node_name = var.proxmox_node_name
+  dns               = var.dns
 }

@@ -1,5 +1,5 @@
 resource "random_password" "pihole2" {
-  length           = 16
+  length           = 12
   override_special = "_%@"
   special          = true
 }
