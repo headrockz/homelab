@@ -27,6 +27,13 @@ module "groups" {
   proxmox_node_name = var.proxmox_node_name
 }
 
+module "sdn" {
+  source = "./modules/sdn"
+
+  proxmox_node_name = var.proxmox_node_name
+  dns               = var.dns
+}
+
 module "lxc" {
   source = "./modules/lxc"
 
