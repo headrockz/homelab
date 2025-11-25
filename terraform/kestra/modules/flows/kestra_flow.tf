@@ -28,7 +28,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.OpenAI
       modelName: openai/gpt-oss-20b:free
-      baseUrl: "{{ kv('OPENROUTER_API') }}"
+      baseUrl: "{{ kv('${var.kv_dev_openrouter_api}') }}"
       apiKey: "{{ secret('OPENROUTER_API_KEY') }}"
     messages:
       - type: SYSTEM
