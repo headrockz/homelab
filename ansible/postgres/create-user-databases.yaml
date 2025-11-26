@@ -4,6 +4,8 @@
   vars:
     # Database connection settings
     postgres_ssl_mode: "{{ ssl_mode | default('prefer') }}"
+  collections:
+    - community.postgresql
 
   tasks:
     - name: Create PostgreSQL user

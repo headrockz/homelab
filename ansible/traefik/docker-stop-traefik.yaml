@@ -2,8 +2,10 @@
 - hosts: "{{ hosts }}"
   vars:
     traefik_dir: "~/"
-  tasks:
+  collections:
+    - community.docker
 
+  tasks:
     - name: destroy docker-compose project
       community.docker.docker_compose_v2:
         project_src: "{{ traefik_dir }}traefik"

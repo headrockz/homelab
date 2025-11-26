@@ -1,9 +1,11 @@
 ---
-- name: "Docker Certs enable"
+- name: Docker Certs enable
   hosts: "{{ hosts | default([]) }}"
   become: true
   vars:
     certs_path: "/root/certs"
+  collections:
+    - community.docker
 
   tasks:
     - name: Check if docker certs are existing

@@ -2,6 +2,8 @@
 - name: Install docker
   hosts: "{{ hosts | default([]) }}"
   become: true
+  collections:
+    - community.docker
 
   tasks:
     - name: Install docker dependencies

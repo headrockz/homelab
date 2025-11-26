@@ -1,6 +1,8 @@
 ---
 - name: Create PostgreSQL User
   hosts: "{{ hosts | default('localhost') }}"
+  collections:
+    - community.postgresql
 
   tasks:
     - name: Install required Python packages

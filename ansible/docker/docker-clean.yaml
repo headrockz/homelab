@@ -1,5 +1,7 @@
 ---
 - hosts: "{{ hosts | default([]) }}"
+  collections:
+    - community.docker
 
   tasks:
     - name: Prune non-dangling, and dangling images
