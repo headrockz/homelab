@@ -1,0 +1,37 @@
+---
+- name: Create Home Assistant MQTT Topics
+  hosts: localhost
+  gather_facts: false
+  vars:
+    mqtt_broker: "{{ mqtt_broker }}"
+    mqtt_port: 1883
+    mqtt_username: "{{ mqtt_username }}"
+    mqtt_password: "{{ mqtt_password }}"
+  collections:
+    - community.mqtt
+
+  tasks:
+    - name: Publish Home Assistant MQTT Topics
+      community.general.mqtt:
+        server: "{{ mqtt_broker }}"
+        port: "{{ mqtt_port }}"
+        username: "{{ mqtt_username }}"
+        password: "{{ mqtt_password }}"
+        topic: "{{ item.topic }}"
+        payload: "{{ lookup('template', 'hass_config_topic.j2') }}"
+        qos: 1
+        retain: false
+      vars:
+        host: "{{ item.host }}"
+        manufacturer: "{{ item.manufacturer }}"
+        unique_id: "{{ item.unique_id }}"
+        state_topic: "{{ item.state_topic }}"
+        model: "{{ item.model }}"
+        device_name: "{{ item.device_name }}"
+        topic_name: "{{ item.topic_name }}"
+        url: "{{ item.url }}"
+        expire_after: "{{ item.expire_after }}"
+        icon: "{{ item.icon | default('server') }}"
+        labels: "{{ item.labels }}"
+        value_template: "{{ item.value_template | default('') }}"
+      loop: "{{ home_assistant_topics }}"

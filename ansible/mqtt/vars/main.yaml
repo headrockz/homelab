@@ -1,0 +1,31 @@
+---
+home_assistant_topics:
+  # Config Tie: Check Updates Packages
+  - topic: "homeassistant/sensor/tie/updates_packages/config"
+    host: "tie"
+    manufacturer: "Friendly Elec"
+    model: "R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Updates Packages"
+    expire_after: 172800
+    icon: "package-up"
+    value_template: "value_json.state"
+    unique_id: "nano_pi_updates_packages"
+    state_topic: "tie/status/updates_packages"
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Status Monitor
+  - topic: "homeassistant/sensor/tie/status/config"
+    host: "tie"
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Status"
+    icon: "server"
+    value_template: "value_json.state"
+    unique_id: "nano_pi_status_monitor"
+    state_topic: "tie/status/state"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"

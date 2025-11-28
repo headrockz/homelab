@@ -1,0 +1,30 @@
+---
+- name: Test MQTT Connection
+  hosts: "localhost"
+  gather_facts: false
+  vars:
+    mqtt_broker: "{{ mqtt_broker }}"
+    mqtt_port: 1883
+    mqtt_username: "{{ mqtt_username }}"
+    mqtt_password: "{{ mqtt_password }}"
+  collections:
+    - community.mqtt
+
+  tasks:
+    - name: Install required Python packages
+      ansible.builtin.pip:
+        name:
+          - paho-mqtt
+        state: present
+
+    - name: test MQTT connection
+      community.general.mqtt:
+        server: "{{ mqtt_broker }}"
+        port: "{{ mqtt_port }}"
+        username: "{{ mqtt_username }}"
+        password: "{{ mqtt_password }}"
+        topic: "test/test"
+        payload: "hello world  ☕️"
+        qos: 1
+        retain: false
+      register: ping_result

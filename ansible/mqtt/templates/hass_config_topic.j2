@@ -1,0 +1,21 @@
+{
+"device": {
+"hw_version": "1.0",
+"identifiers": [
+{% for label in labels %}
+"{{ label }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+],
+"manufacturer": "{{ manufacturer }}",
+"model": "{{ model }}",
+"model_id": "{{ host }}",
+"name": "{{ device_name }}",
+"sw_version": "1.0"
+},
+"expire_after": {{ expire_after }},
+"icon": "mdi:{{ icon }}",
+"name": "{{ topic_name }}",
+"state_topic": "{{ state_topic }}",
+"unique_id": "{{ unique_id }}",
+"value_template": "{{ '{{' }}{{ value_template }}{{ '}}' }}"
+}
