@@ -17,11 +17,11 @@ resource "authentik_provider_oauth2" "stirling-pdf" {
   allowed_redirect_uris = [
     {
       matching_mode = "regex",
-      url           = "https://stirling-pdf.${var.domain}/login/oauth2/code/oidc",
+      url           = "https://stirling-pdf.${var.domain}/login/oauth2/code/authentik",
     },
     {
       matching_mode = "regex",
-      url           = "http://stirling-pdf:8080/login/oauth2/code/oidc",
+      url           = "http://stirling-pdf:8080/login/oauth2/code/authentik",
     }
   ]
 }

@@ -12,7 +12,7 @@ services:
       OLLAMA_BASE_URL: ${APP_OLLAMA_URL}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.openwebui.rule=Host(`openwebui.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.openwebui.rule=Host(`openwebui.${DOMAIN}`)
       - traefik.http.routers.openwebui.tls=true
       - traefik.http.services.openwebui.loadbalancer.server.port=8080
       - traefik.http.routers.openwebui.tls.certresolver=cloudflare

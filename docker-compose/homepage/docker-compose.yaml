@@ -23,7 +23,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.homepage.entrypoints=https
-      - traefik.http.routers.homepage.rule=Host(`homepage.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.homepage.rule=Host(`homepage.${DOMAIN}`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.services.homepage.loadbalancer.server.port=3000
       - traefik.http.routers.homepage.tls.certresolver=homepage

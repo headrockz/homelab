@@ -31,7 +31,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.stirling-pdf.entrypoints=https
-      - traefik.http.routers.stirling-pdf.rule=Host(`stirling-pdf.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.stirling-pdf.rule=Host(`stirling-pdf.${DOMAIN}`)
       - traefik.http.routers.stirling-pdf.tls=true
       - traefik.http.services.stirling-pdf.loadbalancer.server.port=8080
       - traefik.http.routers.stirling-pdf.tls.certresolver=stirling-pdf
