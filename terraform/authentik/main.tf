@@ -36,4 +36,6 @@ module "modules_proxy" {
   default_authorization_flow = module.authentik_config.default_authorization_flow
   default_invalidation_flow  = module.authentik_config.default_invalidation_flow
   default_self_singned       = module.authentik_config.default_self_singned
+
+  authentik_admin_group_id = module.groups.authentik_admin_group
 }

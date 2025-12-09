@@ -15,3 +15,9 @@ resource "authentik_application" "traefik-tie" {
   meta_icon         = "/media/public/application-icons/traefik.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "traefik-tie" {
+  target = authentik_application.traefik-tie.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

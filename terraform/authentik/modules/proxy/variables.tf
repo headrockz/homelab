@@ -20,3 +20,8 @@ variable "default_self_singned" {
   type        = string
   default     = "authentik Self-signed Certificate"
 }
+
+variable "authentik_admin_group_id" {
+  default = "Authentik Admins Group ID"
+  type    = string
+}

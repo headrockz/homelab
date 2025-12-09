@@ -15,3 +15,9 @@ resource "authentik_application" "prometheus" {
   meta_icon         = "/media/public/application-icons/prometheus.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "prometheus" {
+  target = authentik_application.prometheus.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

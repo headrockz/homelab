@@ -15,3 +15,9 @@ resource "authentik_application" "glances" {
   meta_icon         = "/media/public/application-icons/glances.svg"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "glances" {
+  target = authentik_application.glances.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

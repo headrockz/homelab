@@ -24,3 +24,9 @@ resource "authentik_application" "uptime-kuma" {
   meta_icon         = "/media/public/application-icons/uptime-kuma.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "uptime-kuma" {
+  target = authentik_application.uptime-kuma.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

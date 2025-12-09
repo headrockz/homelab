@@ -15,3 +15,9 @@ resource "authentik_application" "zigbee2mqtt" {
   meta_icon         = "/media/public/application-icons/zigbee2mqtt.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "zigbee2mqtt" {
+  target = authentik_application.zigbee2mqtt.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

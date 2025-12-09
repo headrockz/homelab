@@ -15,3 +15,9 @@ resource "authentik_application" "ollama" {
   meta_icon         = "/media/public/application-icons/ollama-dark.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "ollama" {
+  target = authentik_application.ollama.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}
