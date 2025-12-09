@@ -39,3 +39,9 @@ resource "authentik_application" "wud" {
   meta_icon         = "/media/public/application-icons/whats-up-docker.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "wud" {
+  target = authentik_application.wud.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

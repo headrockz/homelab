@@ -31,3 +31,9 @@ resource "authentik_application" "proxmox" {
   meta_icon         = "/media/public/application-icons/proxmox.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "proxmox" {
+  target = authentik_application.proxmox.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

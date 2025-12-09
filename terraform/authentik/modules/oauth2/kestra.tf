@@ -31,3 +31,10 @@ resource "authentik_application" "kestra" {
   meta_icon         = "/media/public/application-icons/kestra.png"
   open_in_new_tab   = true
 }
+
+
+resource "authentik_policy_binding" "kestra" {
+  target = authentik_application.kestra.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

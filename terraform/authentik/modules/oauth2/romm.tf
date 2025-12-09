@@ -31,3 +31,9 @@ resource "authentik_application" "romm" {
   meta_icon         = "/media/public/application-icons/romm.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "romm" {
+  target = authentik_application.romm.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

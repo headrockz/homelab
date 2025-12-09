@@ -32,3 +32,9 @@ resource "authentik_application" "airflow" {
   meta_icon         = "/media/public/application-icons/airflow.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "airflow" {
+  target = authentik_application.airflow.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}
