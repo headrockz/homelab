@@ -3,6 +3,7 @@ home_assistant_topics:
   # Config Tie: Check Updates Packages
   - topic: "homeassistant/sensor/tie/updates_packages/config"
     host: "tie"
+    retain: true
     manufacturer: "Friendly Elec"
     model: "R5C"
     device_name: "Nano Pi Status"
@@ -18,6 +19,7 @@ home_assistant_topics:
   # Config Tie: Status Monitor
   - topic: "homeassistant/sensor/tie/status/config"
     host: "tie"
+    retain: true
     manufacturer: "Friendly Elec"
     model: "Nano Pi R5C"
     device_name: "Nano Pi Status"

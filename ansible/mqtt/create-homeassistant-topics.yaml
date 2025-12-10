@@ -20,7 +20,7 @@
         topic: "{{ item.topic }}"
         payload: "{{ lookup('template', 'hass_config_topic.j2') }}"
         qos: 1
-        retain: false
+        retain: "{{ retain }}"
       vars:
         host: "{{ item.host }}"
         manufacturer: "{{ item.manufacturer }}"
@@ -34,4 +34,5 @@
         icon: "{{ item.icon | default('server') }}"
         labels: "{{ item.labels }}"
         value_template: "{{ item.value_template | default('') }}"
+        retain: "{{ item.retain | default(false) }}"
       loop: "{{ home_assistant_topics }}"
