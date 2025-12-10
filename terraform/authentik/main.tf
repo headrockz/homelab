@@ -26,7 +26,8 @@ module "modules_oauth2" {
   default_invalidation_flow  = module.authentik_config.default_invalidation_flow
   default_self_singned       = module.authentik_config.default_self_singned
 
-  authentik_admin_group_id = module.groups.authentik_admin_group
+  authentik_admin_group_id     = module.groups.authentik_admin_group
+  authentik_prometheus_user_id = module.groups.authentik_prometheus_user
 }
 
 module "modules_proxy" {
@@ -37,5 +38,6 @@ module "modules_proxy" {
   default_invalidation_flow  = module.authentik_config.default_invalidation_flow
   default_self_singned       = module.authentik_config.default_self_singned
 
-  authentik_admin_group_id = module.groups.authentik_admin_group
+  authentik_admin_group_id     = module.groups.authentik_admin_group
+  authentik_prometheus_user_id = module.groups.authentik_prometheus_user
 }

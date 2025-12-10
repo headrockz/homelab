@@ -21,3 +21,9 @@ resource "authentik_policy_binding" "prometheus" {
   group  = var.authentik_admin_group_id
   order  = 0
 }
+
+resource "authentik_policy_binding" "prometheus_prometheus_user" {
+  target = authentik_application.prometheus.uuid
+  user   = var.authentik_prometheus_user_id
+  order  = 0
+}

@@ -45,3 +45,9 @@ resource "authentik_policy_binding" "wud" {
   group  = var.authentik_admin_group_id
   order  = 0
 }
+
+resource "authentik_policy_binding" "wud_prometheus_user" {
+  target = authentik_application.wud.uuid
+  user   = var.authentik_prometheus_user_id
+  order  = 0
+}

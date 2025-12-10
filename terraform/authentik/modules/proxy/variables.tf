@@ -25,3 +25,8 @@ variable "authentik_admin_group_id" {
   default = "Authentik Admins Group ID"
   type    = string
 }
+
+variable "authentik_prometheus_user_id" {
+  description = "Authentik Prometheus User ID"
+  type        = string
+}
