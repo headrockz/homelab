@@ -44,7 +44,7 @@
     - Grafana:
         icon: grafana.png
         href: "https://grafana.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: xwing
+        server: my-docker
         container: grafana
         widget:
           type: grafana
@@ -55,7 +55,7 @@
     - Prometheus:
         icon: prometheus.png
         href: "https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: xwing
+        server: my-docker
         container: prometheus
         widget:
           type: prometheus
@@ -65,7 +65,7 @@
     - Loki:
         icon: loki.png
         href: "https://loki.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: xwing
+        server: my-docker
         container: loki
     - What's Up Docker:
         icon: https://getwud.github.io/wud/assets/wud-logo.svg
@@ -240,17 +240,6 @@
         # widget:
         #   type: traefik
         #   url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
-        #   username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
-        #   password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
-    - Traefik:
-        icon: traefik-proxy.png
-        href: "https://traefik.xwing.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Xwing
-        server: xwing
-        container: traefik
-        # widget:
-        #   type: traefik
-        #   url: https://traefik.xwing.{{HOMEPAGE_VAR_DOMAIN}}
         #   username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
         #   password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
     - Traefik:
