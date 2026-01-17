@@ -29,6 +29,6 @@ resource "authentik_application" "minio" {
   group             = "Data Engineering"
   protocol_provider = authentik_provider_oauth2.minio.id
   meta_launch_url   = "https://minioui.destroyer.${var.domain}/"
-  meta_icon         = "/media/public/application-icons/minio.png"
+  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/minio.png"
   open_in_new_tab   = true
 }

@@ -28,7 +28,7 @@ resource "authentik_application" "romm" {
   group             = ""
   protocol_provider = authentik_provider_oauth2.romm.id
   meta_launch_url   = "https://romm.${var.domain}/"
-  meta_icon         = "/media/public/application-icons/romm.png"
+  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/romm.png"
   open_in_new_tab   = true
 }
 

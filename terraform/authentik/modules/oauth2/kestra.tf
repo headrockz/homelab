@@ -28,7 +28,7 @@ resource "authentik_application" "kestra" {
   group             = "Data Engineering"
   protocol_provider = authentik_provider_oauth2.kestra.id
   meta_launch_url   = "https://kestra.destroyer.${var.domain}/"
-  meta_icon         = "/media/public/application-icons/kestra.png"
+  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/kestra.png"
   open_in_new_tab   = true
 }
 

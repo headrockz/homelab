@@ -28,7 +28,7 @@ resource "authentik_application" "proxmox" {
   group             = ""
   protocol_provider = authentik_provider_oauth2.proxmox.id
   meta_launch_url   = "https://homeone.${var.domain}:8006/"
-  meta_icon         = "/media/public/application-icons/proxmox.png"
+  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/proxmox.png"
   open_in_new_tab   = true
 }
 
