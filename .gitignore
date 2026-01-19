@@ -177,4 +177,5 @@ mosquitto/
 data
 zigbee
 glances.conf
+mailrise.conf
 *.secrets.tf

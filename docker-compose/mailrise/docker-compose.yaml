@@ -1,0 +1,11 @@
+---
+services:
+  mailrise:
+    container_name: mailrise
+    image: yoryan/mailrise
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+    volumes:
+      - ./mailrise.conf:/etc/mailrise.conf
+      - ${CERTS_PATH}/certs:/certs
