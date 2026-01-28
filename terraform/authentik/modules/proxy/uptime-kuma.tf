@@ -21,7 +21,7 @@ resource "authentik_application" "uptime-kuma" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_proxy.uptime-kuma.id
   meta_launch_url   = "https://uptime.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/uptime-kuma.png"
+  meta_icon         = "application-icons/uptime-kuma.png"
   open_in_new_tab   = true
 }
 

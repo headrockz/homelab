@@ -12,7 +12,7 @@ resource "authentik_application" "glances" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_proxy.glances.id
   meta_launch_url   = "https://glances.tie.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}//media/public/application-icons/glances.svg"
+  meta_icon         = "application-icons/glances.svg"
   open_in_new_tab   = true
 }
 

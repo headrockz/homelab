@@ -12,7 +12,7 @@ resource "authentik_application" "loki" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_proxy.loki.id
   meta_launch_url   = "https://loki.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/loki.png"
+  meta_icon         = "application-icons/loki.png"
   open_in_new_tab   = true
 }
 

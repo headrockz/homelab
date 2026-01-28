@@ -12,7 +12,7 @@ resource "authentik_application" "prometheus" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_proxy.prometheus.id
   meta_launch_url   = "https://prometheus.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/prometheus.png"
+  meta_icon         = "application-icons/prometheus.png"
   open_in_new_tab   = true
 }
 
