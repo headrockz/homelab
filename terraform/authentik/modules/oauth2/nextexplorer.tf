@@ -27,6 +27,6 @@ resource "authentik_application" "nextexplorer" {
   slug              = "nextexplorer"
   protocol_provider = authentik_provider_oauth2.nextexplorer.id
   meta_launch_url   = "https://file.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/files.png"
+  meta_icon         = "application-icons/files.png"
   open_in_new_tab   = true
 }

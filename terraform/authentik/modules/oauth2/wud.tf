@@ -36,7 +36,7 @@ resource "authentik_application" "wud" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_oauth2.wud.id
   meta_launch_url   = "https://wud.falcon.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/whats-up-docker.png"
+  meta_icon         = "application-icons/whats-up-docker.png"
   open_in_new_tab   = true
 }
 

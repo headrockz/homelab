@@ -28,7 +28,7 @@ resource "authentik_application" "grafana" {
   group             = "Monitoring"
   protocol_provider = authentik_provider_oauth2.grafana.id
   meta_launch_url   = "https://grafana.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/grafana.png"
+  meta_icon         = "application-icons/grafana.png"
   open_in_new_tab   = true
 }
 

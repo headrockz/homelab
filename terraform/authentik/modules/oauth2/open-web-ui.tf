@@ -33,6 +33,6 @@ resource "authentik_application" "open-web-ui" {
   group             = "AI"
   protocol_provider = authentik_provider_oauth2.open-web-ui.id
   meta_launch_url   = "https://openwebui.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/open-webui.png"
+  meta_icon         = "application-icons/open-webui.png"
   open_in_new_tab   = true
 }

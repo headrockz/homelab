@@ -32,6 +32,6 @@ resource "authentik_application" "stirling-pdf" {
   group             = ""
   protocol_provider = authentik_provider_oauth2.stirling-pdf.id
   meta_launch_url   = "https://stirling-pdf.${var.domain}/"
-  meta_icon         = "https://authentik.${var.domain}/media/public/application-icons/stirling-pdf.png"
+  meta_icon         = "application-icons/stirling-pdf.png"
   open_in_new_tab   = true
 }
