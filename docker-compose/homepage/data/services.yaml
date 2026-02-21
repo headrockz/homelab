@@ -162,11 +162,6 @@
         # description: IT Tools
         server: my-docker
         container: it-tools
-    - Stirling PDF:
-        icon: stirling-pdf.png
-        href: "https://stirling-pdf.{{HOMEPAGE_VAR_DOMAIN}}"
-        server: my-docker
-        container: stirling-pdf
     - Syncthing:
         icon: syncthing.png
         href: "https://syncthing.{{HOMEPAGE_VAR_DOMAIN}}"
