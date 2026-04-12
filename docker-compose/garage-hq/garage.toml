@@ -1,0 +1,27 @@
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "sqlite"
+
+# consistency_mode = "${GARAGE_CONSISTENCY_MODE:consistent}"
+
+replication_factor = 1
+
+block_size = "10M"
+
+rpc_bind_addr = "0.0.0.0:3901"
+# rpc_public_addr = ${GARAGE_IP}:3901"
+rpc_secret = "${GARAGE_RPC_SECRET}"
+
+[s3_api]
+s3_region = "us-east-1"
+api_bind_addr = "0.0.0.0:3900"
+root_domain = ".s3.${SERVER}.${DOMAIN}"
+
+[s3_web]
+bind_addr = "0.0.0.0:3902"
+root_domain = ".web.${SERVER}.${DOMAIN}"
+
+[admin]
+api_bind_addr = "0.0.0.0:3903"
+admin_token = "${GARAGE_ADMIN_TOKEN}"
+metrics_token = "${GARAGE_METRICS_TOKEN}"

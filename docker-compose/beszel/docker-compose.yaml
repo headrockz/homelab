@@ -1,0 +1,35 @@
+---
+services:
+  beszel:
+    image: henrygd/beszel
+    container_name: beszel
+    restart: unless-stopped
+    env_file:
+      - .env
+    # ports:
+    #   - 8090:8090
+    networks:
+      - server-backend
+    volumes:
+      - ${DOCKER_DATA}/beszel_data:/beszel_data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.beszel.entrypoints=https
+      - traefik.http.routers.beszel.rule=Host(`beszel.${SERVER}.${DOMAIN}`) && !PathPrefix(`/_/`)
+      - traefik.http.routers.beszel.tls=true
+      - traefik.http.routers.beszel.tls.certresolver=cloudflare
+      - traefik.http.services.beszel.loadbalancer.server.port=8090
+      - traefik.http.routers.beszel.service=beszel
+
+      - traefik.http.routers.beszel-pb.entrypoints=https
+      - traefik.http.routers.beszel-pb.rule=Host(`beszel.${SERVER}.${DOMAIN}`) && PathPrefix(`/_/`)
+      - traefik.http.routers.beszel-pb.tls=true
+      - traefik.http.routers.beszel-pb.tls.certresolver=cloudflare
+      - traefik.http.routers.beszel-pb.service=beszel
+      - traefik.http.middlewares.beszel-ip-allowlist.ipallowlist.sourcerange=${TAILSCALE_IP}
+      - traefik.http.routers.beszel-pb.middlewares=authentik@file,beszel-ip-allowlist
+
+
+networks:
+  server-backend:
+    external: true

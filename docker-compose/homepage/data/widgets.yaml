@@ -1,0 +1,27 @@
+---
+# - datetime:
+#     text_size: xl
+#     format:
+#     dateStyle: short
+#     timeStyle: short
+#     hour12: true
+- resources:
+    label: Falcon
+    cpu: true
+    memory: true
+    cputemp: true
+    tempmin: 0
+    tempmax: 100
+- glances:
+    label: Tie
+    url: https://glances.tie.{{HOMEPAGE_VAR_DOMAIN}}/
+    username: "{{HOMEPAGE_VAR_GLANCES_USER}}"
+    password: "{{HOMEPAGE_VAR_GLANCES_PASS}}"
+    version: 4
+    uptime: true
+    cpu: true
+    cputemp: true
+    mem: true
+- search:
+    provider: duckduckgo
+    target: _blank

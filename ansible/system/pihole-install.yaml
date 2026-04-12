@@ -1,0 +1,10 @@
+---
+- name: Install Pihole
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+
+  tasks:
+    - name: Install Pihole
+      ansible.builtin.shell:
+        cmd: |
+          curl -sSL https://install.pi-hole.net | bash

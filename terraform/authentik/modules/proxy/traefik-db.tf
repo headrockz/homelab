@@ -1,0 +1,29 @@
+resource "authentik_provider_proxy" "traefik-db" {
+  name               = "Traefik - DB"
+  external_host      = "https://traefik.db.${var.domain}"
+  mode               = "forward_single"
+  authorization_flow = var.default_authorization_flow
+  invalidation_flow  = var.default_invalidation_flow
+}
+
+resource "authentik_application" "traefik-db" {
+  name              = "Traefik - DB"
+  slug              = "traefik-db"
+  group             = "Traefik"
+  protocol_provider = authentik_provider_proxy.traefik-db.id
+  meta_launch_url   = "https://traefik.db.${var.domain}/"
+  meta_icon         = "application-icons/traefik.png"
+  open_in_new_tab   = true
+}
+
+resource "authentik_policy_binding" "traefik-db" {
+  target = authentik_application.traefik-db.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}
+
+resource "authentik_policy_binding" "traefik-db_prometheus_user" {
+  target = authentik_application.traefik-db.uuid
+  user   = var.authentik_prometheus_user_id
+  order  = 0
+}

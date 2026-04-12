@@ -1,0 +1,40 @@
+---
+services:
+  zerobyte:
+    image: ghcr.io/nicotsx/zerobyte:v0.33.1
+    container_name: zerobyte
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    # ports:
+    #   - "4096:4096"
+    devices:
+      - /dev/fuse:/dev/fuse
+    networks:
+      - server-backend
+    environment:
+      - TZ=${TZ}
+      - TRUST_PROXY=true
+      - BASE_URL=${ZEROBYTE_URL}
+      - APP_SECRET=${ZEROBYTE_SECRET}
+      - TRUSTED_ORIGINS=${ZEROBYTE_ORGINS}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_DATA}/zerobyte/data:/var/lib/zerobyte
+      - ${VOLUME_DATA}:/mnt/volume
+      - ~/.config/rclone:/root/.config/rclone:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.zerobyte.loadbalancer.server.scheme=https
+      - traefik.http.routers.zerobyte.rule=Host(`zerobyte.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.zerobyte.tls=true
+      - traefik.http.routers.zerobyte.tls.certresolver=cloudflare
+      - traefik.http.routers.zerobyte.entrypoints=https
+      - traefik.http.services.zerobyte.loadbalancer.server.port=4096
+      - traefik.http.routers.zerobyte.service=zerobyte
+
+networks:
+  server-backend:
+    external: true

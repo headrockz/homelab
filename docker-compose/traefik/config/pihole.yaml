@@ -1,0 +1,17 @@
+---
+http:
+  routers:
+    local-pihole:
+      rule: "Host(`pihole.${DOMAIN}`)"
+      service: pihole
+      priority: 1000
+      entrypoints:
+        - http
+        - https
+      tls:
+        certResolver: cloudflare
+  services:
+    pihole:
+      loadBalancer:
+        servers:
+          - url: "http://${PIHOLE_HOST}:8443"

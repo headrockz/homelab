@@ -1,0 +1,4 @@
+---
+tls_server_config:
+  cert_file: /certs/cert1.pem
+  key_file: /certs/privkey1.pem

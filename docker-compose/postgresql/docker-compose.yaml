@@ -1,0 +1,34 @@
+---
+services:
+  postgresql:
+    image: postgres:16-bookworm
+    command: |
+      bash -c "
+      apt-get update && \
+      apt-get install postgresql-16-pgvector wget -y && \
+      wget https://github.com/tensorchord/VectorChord/releases/download/1.1.1/postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb && \
+      apt-get install ./postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb -y && \
+      apt-get autoremove -y && \
+      apt-get clean -y && \
+      docker-entrypoint.sh postgres
+      "
+    # Run after init
+    # psql -U postgres -c 'ALTER SYSTEM SET shared_preload_libraries = "vchord.so"'
+    # psql -U postgres -c 'ALTER SYSTEM SET shared_preload_libraries = "vchord"'
+    # docker compose restart
+    container_name: postgresql
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
+      - ${CERTS_PATH}/certs:/certs:z
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_AUTH}
+    # ports:
+    #   - 5432:5432
+    networks:
+      - server-database
+
+networks:
+  server-database:
+    external: true

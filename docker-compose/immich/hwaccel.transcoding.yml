@@ -1,0 +1,5 @@
+---
+services:
+  quicksync:
+    devices:
+      - /dev/dri:/dev/dri

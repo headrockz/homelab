@@ -1,0 +1,121 @@
+---
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--web.config.file=/etc/prometheus/web-config.yaml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+      - '--web.enable-remote-write-receiver'
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+      - ${CERTS_PATH}/certs:/certs
+    env_file:
+      - .env
+    # ports:
+    #   - 9090:9090
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.prometheus.entrypoints=https
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN}`)
+      - traefik.http.services.prometheus.loadbalancer.server.scheme=https
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
+      - traefik.http.routers.prometheus.tls.certresolver=cloudflare
+      - traefik.http.routers.prometheus.service=prometheus
+      - traefik.http.routers.prometheus.middlewares=authentik@file
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    command: "-config.file=/etc/loki/config.yaml"
+    volumes:
+      - ./loki/config.yaml:/etc/loki/config.yaml:ro
+      - loki_data:/loki:rw
+      - ${CERTS_PATH}/certs:/certs
+    # ports:
+    #   - 3100:3100
+    #   - 9443:9443
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.loki.entrypoints=https
+      - traefik.http.routers.loki.rule=Host(`loki.${DOMAIN}`)
+      - traefik.http.services.loki.loadbalancer.server.scheme=https
+      - traefik.http.routers.loki.tls=true
+      - traefik.http.services.loki.loadbalancer.server.port=3100
+      - traefik.http.routers.loki.tls.certresolver=cloudflare
+      - traefik.http.routers.loki.service=loki
+      - traefik.http.routers.loki.middlewares=authentik@file
+
+  statsd-exporter:
+    image: prom/statsd-exporter
+    container_name: statsd-exporter
+    restart: always
+    command:
+      - '--statsd.mapping-config=/etc/statsd_exporter.yaml'
+      - '--statsd.listen-udp=:8125'
+      - '--web.listen-address=:9102'
+    volumes:
+      - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
+    ports:
+      - 9102:9102
+      - 8125:8125/udp
+    networks:
+      - server-backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ${CERTS_PATH}/certs:/certs
+    env_file:
+      - .env
+    environment:
+      GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      GF_SERVER_PROTOCOL: https
+      GF_SERVER_CERT_FILE: ${GRAFANA_CERTIFICATE}
+      GF_SERVER_CERT_KEY: ${GRAFANA_PRIVATE_KEY}
+      GF_INSTALL_PLUGINS: https://github.com/Haohanyang/mongodb-datasource/releases/download/v0.5.0/haohanyang-mongodb-datasource-0.5.0.zip;haohanyang-mongodb-datasource,redis-datasource
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: haohanyang-mongodb-datasource
+
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_OAUTH_AUTO_LOGIN: "true"
+    # ports:
+    #   - 3000:3000
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.entrypoints=https
+      - traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)
+      - traefik.http.services.grafana.loadbalancer.server.scheme=https
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - traefik.http.routers.grafana.tls.certresolver=cloudflare
+      - traefik.http.routers.grafana.service=grafana
+
+networks:
+  server-backend:
+    external: true
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  loki_data:

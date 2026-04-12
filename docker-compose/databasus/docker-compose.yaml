@@ -1,0 +1,27 @@
+---
+services:
+  databasus:
+    container_name: databasus
+    hostname: ${SERVER}
+    restart: always
+    image: databasus/databasus:latest
+    # ports:
+    #   - "4005:4005"
+    volumes:
+      - ${DOCKER_DATA}/databasus/data:/databasus-data
+    networks:
+      - server-backend
+      - server-database
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.databasus.entrypoints=https
+      - traefik.http.routers.databasus.rule=Host(`databasus.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.databasus.tls=true
+      - traefik.http.routers.databasus.tls.certresolver=cloudflare
+      - traefik.http.services.databasus.loadbalancer.server.port=4005
+
+networks:
+  server-backend:
+    external: true
+  server-database:
+    external: true

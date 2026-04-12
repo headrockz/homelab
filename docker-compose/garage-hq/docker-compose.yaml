@@ -1,0 +1,39 @@
+---
+services:
+  garage:
+    image: dxflrs/garage:v2.2.0
+    container_name: garage
+    hostname: ${SERVER}
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./garage.toml:/etc/garage.toml:ro
+      - ${DOCKER_DATA}/garage/meta:/var/lib/garage/meta
+      - ${VOLUME_DATA}/garage/data:/var/lib/garage/data
+    networks:
+      - server-backend
+    # ports:
+    #   - 3900:3900
+    #   - 3901:3901
+    #   - 3902:3902
+    #   - 3903:3903
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.garage.entrypoints=https
+      - traefik.http.routers.garage.rule=Host(`s3.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.garage.tls=true
+      - traefik.http.routers.garage.tls.certresolver=cloudflare
+      - traefik.http.services.garage.loadbalancer.server.port=3900
+      - traefik.http.routers.garage.service=garage
+
+      - traefik.http.routers.garage-admin.entrypoints=https
+      - traefik.http.routers.garage-admin.rule=Host(`garage-admin.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.garage-admin.tls=true
+      - traefik.http.routers.garage-admin.tls.certresolver=cloudflare
+      - traefik.http.services.garage-admin.loadbalancer.server.port=3903
+      - traefik.http.routers.garage-admin.service=garage-admin
+
+networks:
+  server-backend:
+    external: true

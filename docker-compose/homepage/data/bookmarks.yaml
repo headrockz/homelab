@@ -1,0 +1,26 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Developer:
+    - Github:
+        - abbr: GH
+          icon: github.png
+          href: https://github.com
+    - Google Cloud Platform:
+        - abbr: GCP
+          icon: google-cloud-platform.png
+          href: https://console.cloud.google.com
+    - ChatGPT:
+        - abbr: GPT
+          icon: chatgpt.png
+          href: https://chatgpt.com
+    - Google Gemini:
+        - abbr: Gemini
+          icon: google-gemini.png
+          href: https://gemini.google.com/app
+
+- Entertainment:
+    - YouTube:
+        - icon: youtube.png
+          href: https://youtube.com
