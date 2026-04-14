@@ -105,12 +105,12 @@
         server: my-docker
         container: kestra
         # showStats: true
-    - MinIO:
-        icon: minio.png
-        href: "https://minioui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+    - RustFS:
+        icon: rustfs.png
+        href: "https://rustfs-ui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Destroyer
         server: destroyer
-        container: minio
+        container: rustfs
     - Open Metadata:
         icon: https://miro.medium.com/v2/1*NTBaKucQjjMGziseWsSF5Q.png
         href: "https://open-metadata.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"

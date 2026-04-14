@@ -23,7 +23,7 @@ module "modules_oauth2" {
   proxy_outpost_id        = module.property_mappings.proxy_outpost_id
 
   airflow_property_mapping_id      = module.property_mappings.airflow_property_mapping_id
-  minio_property_mapping_id        = module.property_mappings.minio_property_mapping_id
+  rustfs_property_mapping_id       = module.property_mappings.rustfs_property_mapping_id
   openwebui_property_mapping_id    = module.property_mappings.openwebui_property_mapping_id
   grafana_property_mapping_id      = module.property_mappings.grafana_property_mapping_id
   romm_property_mapping_id         = module.property_mappings.romm_property_mapping_id

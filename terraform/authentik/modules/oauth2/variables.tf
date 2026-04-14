@@ -34,8 +34,8 @@ variable "airflow_property_mapping_id" {
   type        = string
 }
 
-variable "minio_property_mapping_id" {
-  description = "MinIO property mapping ID"
+variable "rustfs_property_mapping_id" {
+  description = "RustFS property mapping ID"
   type        = string
 }
 

@@ -1,0 +1,51 @@
+---
+services:
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs
+    restart: unless-stopped
+    # ports:
+    #   - 9000:9000
+    #   - 9001:9001
+    security_opt:
+      - "no-new-privileges:true"
+    networks:
+      - server-backend
+    env_file:
+      - .env
+    environment:
+      - RUSTFS_ROOT_USER=${RUSTFS_ROOT_USER}
+      - RUSTFS_ROOT_PASSWORD=${RUSTFS_ROOT_PASSWORD}
+      - RUSTFS_IDENTITY_OPENID_ENABLE=${RUSTFS_IDENTITY_OPENID_ENABLE}
+      - RUSTFS_IDENTITY_OPENID_CONFIG_URL=${RUSTFS_IDENTITY_OPENID_CONFIG_URL}
+      - RUSTFS_IDENTITY_OPENID_CLIENT_ID=${RUSTFS_IDENTITY_OPENID_CLIENT_ID}
+      - RUSTFS_IDENTITY_OPENID_CLIENT_SECRET=${RUSTFS_IDENTITY_OPENID_CLIENT_SECRET}
+      - RUSTFS_IDENTITY_OPENID_SCOPES=${RUSTFS_IDENTITY_OPENID_SCOPES}
+      - RUSTFS_IDENTITY_OPENID_REDIRECT_URI=${RUSTFS_IDENTITY_OPENID_REDIRECT_URI}
+      - RUSTFS_IDENTITY_OPENID_REDIRECT_URI_DYNAMIC=${RUSTFS_IDENTITY_OPENID_REDIRECT_URI_DYNAMIC}
+      - RUSTFS_IDENTITY_OPENID_CLAIM_NAME=${RUSTFS_IDENTITY_OPENID_CLAIM_NAME}
+      - RUSTFS_IDENTITY_OPENID_CLAIM_PREFIX=${RUSTFS_IDENTITY_OPENID_CLAIM_PREFIX}
+      - RUSTFS_IDENTITY_OPENID_ROLE_POLICY=${RUSTFS_IDENTITY_OPENID_ROLE_POLICY}
+      - RUSTFS_IDENTITY_OPENID_GROUPS_CLAIM=${RUSTFS_IDENTITY_OPENID_GROUPS_CLAIM}
+      - RUSTFS_IDENTITY_OPENID_EMAIL_CLAIM=${RUSTFS_IDENTITY_OPENID_EMAIL_CLAIM}
+      - RUSTFS_IDENTITY_OPENID_USERNAME_CLAIM=${RUSTFS_IDENTITY_OPENID_USERNAME_CLAIM}
+    volumes:
+      - ${DOCKER_DATA}:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.rustfs.entrypoints=https
+      - traefik.http.routers.rustfs.rule=Host(`s3.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.rustfs.tls=true
+      - traefik.http.services.rustfs.loadbalancer.server.port=9000
+      - traefik.http.routers.rustfs.tls.certresolver=cloudflare
+      - traefik.http.routers.rustfs.service=rustfs
+
+      - traefik.http.routers.rustfs-ui.rule=Host(`rustfs-ui.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.rustfs-ui.tls=true
+      - traefik.http.services.rustfs-ui.loadbalancer.server.port=9001
+      - traefik.http.routers.rustfs-ui.tls.certresolver=cloudflare
+      - traefik.http.routers.rustfs-ui.service=rustfs-ui
+
+networks:
+  server-backend:
+    external: true

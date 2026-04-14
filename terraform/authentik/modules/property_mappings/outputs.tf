@@ -26,8 +26,8 @@ output "default_ssh_property_mapping_id" {
   value = data.authentik_property_mapping_provider_rac.ssh.id
 }
 
-output "minio_property_mapping_id" {
-  value = authentik_property_mapping_provider_scope.minio.id
+output "rustfs_property_mapping_id" {
+  value = authentik_property_mapping_provider_scope.rustfs.id
 }
 
 output "openwebui_property_mapping_id" {
