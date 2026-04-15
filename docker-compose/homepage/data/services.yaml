@@ -160,12 +160,6 @@
           username: "{{HOMEPAGE_VAR_TRANSMISSION_USER}}"
           password: "{{HOMEPAGE_VAR_TRANSMISSION_API}}"
           rpcUrl: /transmission/
-    - Open WebUI:
-        icon: open-webui.png
-        href: "https://openwebui.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Falcon
-        server: my-docker
-        container: open-webui
     - Next-Explorer:
         icon: files.png
         href: "https://file.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -312,3 +306,25 @@
         description: Server Falcon
         server: my-docker
         container: zigbee2mqtt
+
+- AI:
+    - Ollama:
+        icon: ollama.png
+        href: "https://ollama.dev.{{HOMEPAGE_VAR_DOMAIN}}"
+        siteMonitor: "https://ollama.dev.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Dev
+        widget:
+          type: customapi
+          url: "https://ollama.dev.{{HOMEPAGE_VAR_DOMAIN}}/api/tags"
+          username: "{{HOMEPAGE_VAR_OLLAMA_USER}}"
+          password: "{{HOMEPAGE_VAR_OLLAMA_API}}"
+          mappings:
+            - field: models
+              label: Total Models
+              format: size
+    - Open WebUI:
+        icon: open-webui.png
+        href: "https://openwebui.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: open-webui
