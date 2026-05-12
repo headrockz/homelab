@@ -35,6 +35,7 @@ services:
       - ${DOCKER_DATA}/nextexplorer/cache:/cache
       - ${PROJECT_DATA}:/mnt/Projects
       - ${SHARED_DATA}:/mnt/Nas
+      - /scripts:/mnt/scripts
     labels:
       - traefik.enable=true
       - traefik.http.routers.nextexplorer.entrypoints=https
