@@ -33,6 +33,7 @@
           url: "https://authentik.{{HOMEPAGE_VAR_DOMAIN}}"
           key: "{{HOMEPAGE_VAR_AUTHENTIK_API}}"
           allowed_fields: ["users", "loginsLast24H", "failedLoginsLast24H"]
+          version: 2
 
 - Monitoring:
     - Uptime Kuma:
