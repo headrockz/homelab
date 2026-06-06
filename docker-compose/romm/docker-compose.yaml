@@ -8,6 +8,7 @@ services:
       - ${DOCKER_DATA}/games/romm/resources:/romm/resources
       - ${DOCKER_DATA}/games/romm/data:/redis-data
       - ${ROMS}/games/roms:/romm/library/roms
+      - ${ROMS}/games/bios:/romm/library/bios:ro
       - ${DOCKER_DATA}/games/romm/assets:/romm/assets
       - ${DOCKER_DATA}/games/romm/config:/romm/config
     environment:
