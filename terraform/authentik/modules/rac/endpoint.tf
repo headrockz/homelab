@@ -82,3 +82,22 @@ resource "authentik_rac_endpoint" "dev" {
     username    = "${local.dev_user}"
   })
 }
+
+# Offsite Servers
+
+resource "authentik_rac_endpoint" "offsite" {
+  name                = "Tie"
+  protocol            = "ssh"
+  host                = local.tie_ip
+  protocol_provider   = authentik_provider_rac.ssh.id
+  maximum_connections = 3
+  property_mappings = [
+    var.default_ssh_property_mapping_id
+  ]
+  settings = jsonencode({
+    private-key = <<-EOT
+        ${local.ssh_key}
+    EOT
+    username    = "${local.tie_user}"
+  })
+}
