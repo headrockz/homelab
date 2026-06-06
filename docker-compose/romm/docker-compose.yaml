@@ -52,7 +52,8 @@ services:
       - traefik.http.routers.romm.rule=Host(`romm.${DOMAIN}`)
       - traefik.http.routers.romm.tls=true
       - traefik.http.services.romm.loadbalancer.server.port=8080
-      - traefik.http.routers.romm.tls.certresolver=romm
+      - traefik.http.routers.romm.tls.certresolver=cloudflare
+      - traefik.http.routers.romm.service=romm
 
 # romm-db:
 #   image: mariadb:latest

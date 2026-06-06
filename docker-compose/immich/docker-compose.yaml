@@ -30,7 +30,8 @@ services:
       - traefik.http.routers.immich-server.rule=Host(`immich.${SERVER}.${DOMAIN}`)
       - traefik.http.routers.immich-server.tls=true
       - traefik.http.services.immich-server.loadbalancer.server.port=2283
-      - traefik.http.routers.immich-server.tls.certresolver=immich-server
+      - traefik.http.routers.immich-server.tls.certresolver=cloudflare
+      - traefik.http.routers.immich-server.service=immich-server
 
   # immich-machine-learning:
   #   container_name: immich_machine_learning

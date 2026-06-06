@@ -26,7 +26,8 @@ services:
       - traefik.http.routers.homepage.rule=Host(`homepage.${DOMAIN}`)
       - traefik.http.routers.homepage.tls=true
       - traefik.http.services.homepage.loadbalancer.server.port=3000
-      - traefik.http.routers.homepage.tls.certresolver=homepage
+      - traefik.http.routers.homepage.tls.certresolver=cloudflare
+      - traefik.http.routers.homepage.service=homepage
 
 networks:
   server-backend:

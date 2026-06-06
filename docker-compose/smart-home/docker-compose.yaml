@@ -15,6 +15,15 @@ services:
       - 8123:8123
     depends_on:
       - mqtt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homeassistant.entrypoints=https
+      - traefik.http.routers.homeassistant.rule=Host(`hass.${DOMAIN}`)
+      - traefik.http.services.homeassistant.loadbalancer.server.scheme=https
+      - traefik.http.routers.homeassistant.tls=true
+      - traefik.http.services.homeassistant.loadbalancer.server.port=8123
+      - traefik.http.routers.homeassistant.tls.certresolver=cloudflare
+      - traefik.http.routers.homeassistant.service=homeassistant
 
   mqtt:
     container_name: mqtt
@@ -51,6 +60,14 @@ services:
       - /dev/ttyACM0:/dev/ttyACM0
     depends_on:
       - mqtt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.zigbee2mqtt.entrypoints=https
+      - traefik.http.routers.zigbee2mqtt.rule=Host(`zigbee.${DOMAIN}`)
+      - traefik.http.routers.zigbee2mqtt.tls=true
+      - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8080
+      - traefik.http.routers.zigbee2mqtt.tls.certresolver=cloudflare
+      - traefik.http.routers.zigbee2mqtt.service=zigbee2mqtt
 
 #   nodered:
 #     container_name: nodered

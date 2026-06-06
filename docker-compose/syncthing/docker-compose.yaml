@@ -29,7 +29,8 @@ services:
       - traefik.http.routers.syncthing.rule=Host(`syncthing.${SERVER}.${DOMAIN}`)
       - traefik.http.routers.syncthing.tls=true
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
-      - traefik.http.routers.syncthing.tls.certresolver=syncthing
+      - traefik.http.routers.syncthing.tls.certresolver=cloudflare
+      - traefik.http.routers.syncthing.service=syncthing
 
 networks:
   server-backend:

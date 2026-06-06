@@ -1,0 +1,17 @@
+---
+http:
+  routers:
+    omv:
+      rule: "Host(`omv.${DOMAIN}`)"
+      service: omv
+      priority: 1000
+      entrypoints:
+        - http
+        - https
+      tls:
+        certResolver: cloudflare
+  services:
+    omv:
+      loadBalancer:
+        servers:
+          - url: "https://127.0.0.1:${PORT}"

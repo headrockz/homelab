@@ -1,0 +1,17 @@
+---
+http:
+  routers:
+    pihole-2:
+      rule: "Host(`pihole2.${DOMAIN}`)"
+      service: pihole-2
+      priority: 1002
+      entrypoints:
+        - http
+        - https
+      tls:
+        certResolver: cloudflare
+  services:
+    pihole-2:
+      loadBalancer:
+        servers:
+          - url: "https://127.0.0.1:${PORT}"
