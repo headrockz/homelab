@@ -10,3 +10,7 @@
       changed_when: false
       check_mode: false
       register: disk_usage
+
+    - name: Display disk usage
+      ansible.builtin.debug:
+        msg: "Disk usage on {{ inventory_hostname }}: {{ disk_usage.stdout }}"
