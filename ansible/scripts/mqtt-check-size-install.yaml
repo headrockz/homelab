@@ -1,0 +1,55 @@
+---
+- name: Install MQTT check-size script
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+
+  vars:
+    mqtt_check_size_dir: /script
+    mqtt_check_size_venv: "{{ mqtt_check_size_dir }}/.venv"
+    mqtt_check_size_script_src: "{{ playbook_dir }}/../../scripts/mqtt-check-size.py"
+    mqtt_check_size_env_src: "{{ playbook_dir }}/../../scripts/.env"
+    mqtt_check_size_script_dest: "{{ mqtt_check_size_dir }}/mqtt-check-size.py"
+    mqtt_check_size_env_dest: "{{ mqtt_check_size_dir }}/.env"
+    mqtt_check_size_apt_packages:
+      - python3-pip
+      - python3-venv
+    mqtt_check_size_python_packages:
+      - paho-mqtt
+      - python-dotenv
+
+  tasks:
+    - name: Install Python virtualenv dependencies
+      ansible.builtin.apt:
+        name: "{{ mqtt_check_size_apt_packages }}"
+        update_cache: true
+
+    - name: Ensure script directory exists
+      ansible.builtin.file:
+        path: "{{ mqtt_check_size_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install MQTT check-size script
+      ansible.builtin.copy:
+        src: "{{ mqtt_check_size_script_src }}"
+        dest: "{{ mqtt_check_size_script_dest }}"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install MQTT check-size environment file
+      ansible.builtin.copy:
+        src: "{{ mqtt_check_size_env_src }}"
+        dest: "{{ mqtt_check_size_env_dest }}"
+        owner: root
+        group: root
+        mode: '0600'
+      no_log: true
+
+    - name: Install MQTT check-size Python libraries
+      ansible.builtin.pip:
+        name: "{{ mqtt_check_size_python_packages }}"
+        virtualenv: "{{ mqtt_check_size_venv }}"
+        virtualenv_command: python3 -m venv
