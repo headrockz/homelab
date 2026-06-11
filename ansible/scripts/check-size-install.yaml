@@ -1,0 +1,22 @@
+---
+- name: Install check-size script
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+
+  vars:
+    check_size_script_src: "{{ playbook_dir }}/../../scripts/check-size.sh"
+
+  tasks:
+    - name: Install check-size dependencies
+      ansible.builtin.apt:
+        name:
+          - jq
+        update_cache: true
+
+    - name: Install check-size script
+      ansible.builtin.copy:
+        src: "{{ check_size_script_src }}"
+        dest: "/usr/local/bin/check-size"
+        owner: root
+        group: root
+        mode: '0755'
