@@ -1,0 +1,8 @@
+[Unit]
+Description=SSD Sync Service
+After=local-fs.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart={{ ssd_sync_script_path }}

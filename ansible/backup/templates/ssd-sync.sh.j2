@@ -1,0 +1,102 @@
+#!/bin/bash
+set -euo pipefail
+
+LOG="/var/log/ssd-sync.log"
+DEVICE="/dev/disk/by-uuid/{{ ssd_sync_device_uuid }}"
+MOUNT_POINT="{{ ssd_sync_mount_point }}"
+
+SOURCE="{{ ssd_sync_source_path }}"
+RAW_DEST="{{ ssd_sync_raw_dest }}"
+PHOTO_DEST="{{ ssd_sync_photo_dest }}"
+FILESYSTEM_TYPE="{{ ssd_sync_filesystem_type }}
+
+BOT_TOKEN="{{ ssd_sync_bot_token }}"
+CHAT_ID="{{ ssd_sync_chat_id }}"
+
+telegram() {
+    curl -fsS \
+        -X POST \
+        "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+        -d chat_id="${CHAT_ID}" \
+        -d text="$1" > /dev/null
+}
+
+exec 9>/run/ssd-sync.lock
+flock -n 9 || {
+    telegram "SSD->NAS backup skipped: a sync is already running."
+    exit 1
+}
+
+echo "==== $(date) ====" >> "$LOG"
+
+cleanup() {
+    if mountpoint -q "$MOUNT_POINT"; then
+        umount "$MOUNT_POINT" || true
+    fi
+}
+
+fail() {
+    local msg="${1:-Erro desconhecido}"
+    cleanup
+    telegram "SSD->NAS backup failed: ${msg}"
+    exit 1
+}
+
+trap 'fail "failure on line $LINENO"' ERR
+
+telegram "SSD->NAS backup started."
+
+mountpoint -q "$MOUNT_POINT" || mount -t "$FILESYSTEM_TYPE" "$DEVICE" "$MOUNT_POINT"
+
+[ -d "$SOURCE" ] || fail "Source folder not found: $SOURCE"
+
+mkdir -p "$RAW_DEST" "$PHOTO_DEST"
+
+RAW_RSYNC_OUTPUT=$(rsync -ac --stats \
+    --partial \
+    --include="*/" \
+    --include="*.RAF" \
+    --include="*.raf" \
+    --include="*.DNG" \
+    --include="*.dng" \
+    --exclude=".DS_Store" \
+    --exclude="._*" \
+    --exclude="*" \
+    "$SOURCE/" \
+    "$RAW_DEST/" 2>>"$LOG")
+
+PHOTO_RSYNC_OUTPUT=$(rsync -ac --stats \
+    --partial \
+    --include="*/" \
+    --include="*.HEIC" \
+    --include="*.heic" \
+    --include="*.JPG" \
+    --include="*.jpg" \
+    --exclude=".DS_Store" \
+    --exclude="._*" \
+    --exclude="*" \
+    "$SOURCE/" \
+    "$PHOTO_DEST/" 2>>"$LOG")
+
+echo "$RAW_RSYNC_OUTPUT" >> "$LOG"
+echo "$PHOTO_RSYNC_OUTPUT" >> "$LOG"
+
+RAW_FILES=$(printf '%s\n' "$RAW_RSYNC_OUTPUT" | awk -F': ' '/Number of regular files transferred/ {print $2}')
+PHOTO_FILES=$(printf '%s\n' "$PHOTO_RSYNC_OUTPUT" | awk -F': ' '/Number of regular files transferred/ {print $2}')
+RAW_SIZE_BYTES=$(printf '%s\n' "$RAW_RSYNC_OUTPUT" | awk -F': ' '/Total transferred file size/ {print $2}' | awk '{print $1}' | tr -d ',')
+PHOTO_SIZE_BYTES=$(printf '%s\n' "$PHOTO_RSYNC_OUTPUT" | awk -F': ' '/Total transferred file size/ {print $2}' | awk '{print $1}' | tr -d ',')
+
+RAW_FILES=${RAW_FILES:-0}
+PHOTO_FILES=${PHOTO_FILES:-0}
+RAW_SIZE_BYTES=${RAW_SIZE_BYTES:-0}
+PHOTO_SIZE_BYTES=${PHOTO_SIZE_BYTES:-0}
+
+RAW_SIZE=$(numfmt --to=iec-i --suffix=B "$RAW_SIZE_BYTES")
+PHOTO_SIZE=$(numfmt --to=iec-i --suffix=B "$PHOTO_SIZE_BYTES")
+FILES_TRANSFERRED=$((RAW_FILES + PHOTO_FILES))
+TOTAL_SIZE_BYTES=$((RAW_SIZE_BYTES + PHOTO_SIZE_BYTES))
+TOTAL_SIZE=$(numfmt --to=iec-i --suffix=B "$TOTAL_SIZE_BYTES")
+
+umount "$MOUNT_POINT"
+
+telegram "SSD->NAS backup completed. Files transferred: ${FILES_TRANSFERRED}. RAW: ${RAW_FILES} files, ${RAW_SIZE}. JPG/HEIC: ${PHOTO_FILES} files, ${PHOTO_SIZE}. Total size: ${TOTAL_SIZE}. Disk safely unmounted."
