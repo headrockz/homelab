@@ -1,7 +1,7 @@
 ---
 services:
   transmission:
-    image: lscr.io/linuxserver/transmission:latest
+    image: lscr.io/linuxserver/transmission:4.1.2
     container_name: transmission
     restart: always
     volumes:
@@ -30,7 +30,7 @@ services:
       - traefik.http.routers.transmission.service=transmission
 
   jellyfin:
-    image: jellyfin/jellyfin:latest
+    image: jellyfin/jellyfin:10.11.11
     container_name: jellyfin
     restart: always
     volumes:

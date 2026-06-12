@@ -1,7 +1,7 @@
 ---
 services:
   uptimekuma:
-    image: louislam/uptime-kuma:latest
+    image: louislam/uptime-kuma:2.4.0
     container_name: uptimekuma
     hostname: uptime
     restart: always

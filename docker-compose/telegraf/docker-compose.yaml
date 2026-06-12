@@ -1,7 +1,7 @@
 ---
 services:
   telegraf:
-    image: telegraf:latest
+    image: telegraf:1.39.0
     container_name: telegraf
     hostname: ${SERVER}
     restart: always

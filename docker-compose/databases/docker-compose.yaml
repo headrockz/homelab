@@ -97,7 +97,7 @@ services:
       - server-backend
 
   influxdb:
-    image: influxdb:alpine
+    image: influxdb:2.9.1-alpine
     container_name: influxdb
     restart: always
     volumes:

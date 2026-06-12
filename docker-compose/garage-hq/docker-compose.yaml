@@ -1,7 +1,7 @@
 ---
 services:
   garage:
-    image: dxflrs/garage:${GARAGE_VERSION}
+    image: dxflrs/garage:v2.3.0
     container_name: garage
     hostname: ${SERVER}
     restart: unless-stopped

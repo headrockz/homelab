@@ -2,7 +2,7 @@
 services:
   homeassistant:
     container_name: hass
-    image: homeassistant/home-assistant
+    image: homeassistant/home-assistant:2026.6.2
     volumes:
       - ${DOCKER_DATA}/smart_home/hass:/config
       - /etc/localtime:/etc/localtime:ro
@@ -27,7 +27,7 @@ services:
 
   mqtt:
     container_name: mqtt
-    image: eclipse-mosquitto:latest
+    image: eclipse-mosquitto:2.1.2-alpine
     restart: unless-stopped
     volumes:
       - ./mosquitto/config:/mosquitto/config
@@ -43,7 +43,7 @@ services:
   zigbee2mqtt:
     container_name: zigbee2mqtt
     restart: unless-stopped
-    image: koenkk/zigbee2mqtt
+    image: koenkk/zigbee2mqtt:2.12
     volumes:
       - ./zigbee:/app/data
       - ${CERTS_PATH}/certs:/certs

@@ -1,7 +1,7 @@
 ---
 services:
   nextexplorer:
-    image: nxzai/explorer:latest
+    image: nxzai/explorer:v2.2.4
     container_name: nextexplorer
     restart: unless-stopped
     networks:

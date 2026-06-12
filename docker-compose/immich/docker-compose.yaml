@@ -2,7 +2,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:release
+    image: ghcr.io/immich-app/immich-server:v2.7.5
     restart: always
     volumes:
       - ${UPLOAD_LOCATION}/photos:/data

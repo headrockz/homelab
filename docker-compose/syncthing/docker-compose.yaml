@@ -1,7 +1,7 @@
 ---
 services:
   syncthing:
-    image: syncthing/syncthing:latest
+    image: syncthing/syncthing:2.1.1
     hostname: server-syncthing
     container_name: syncthing
     restart: always

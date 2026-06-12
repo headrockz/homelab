@@ -1,7 +1,7 @@
 ---
 services:
   romm:
-    image: rommapp/romm:latest
+    image: rommapp/romm:4.9.0
     container_name: romm
     restart: unless-stopped
     volumes:

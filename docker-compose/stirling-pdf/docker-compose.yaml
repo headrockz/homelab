@@ -1,7 +1,7 @@
 ---
 services:
   stirling-pdf:
-    image: frooodle/s-pdf:latest
+    image: frooodle/s-pdf:2.12.0
     container_name: stirling-pdf
     hostname: stirling-pdf
     restart: always
