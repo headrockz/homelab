@@ -1,6 +1,6 @@
 resource "authentik_provider_proxy" "it-tools" {
   name               = "It Tools"
-  external_host      = "https://it-tools.${var.domain}"
+  external_host      = "https://it-tools.falcon.${var.domain}"
   mode               = "forward_single"
   authorization_flow = var.default_authorization_flow
   invalidation_flow  = var.default_invalidation_flow

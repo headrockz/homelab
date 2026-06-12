@@ -169,7 +169,7 @@
         container: nextexplorer
     - It-Tools:
         icon: it-tools.png
-        href: "https://it-tools.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://it-tools.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: it-tools
