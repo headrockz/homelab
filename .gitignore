@@ -180,3 +180,4 @@ glances.conf
 mailrise.conf
 *.secrets.tf
 .docs/
+acme.json

@@ -47,6 +47,11 @@ kestra:
     enabled: false
   traces:
     root: DEFAULT
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.scripts.runner.docker.Docker
+        values:
+          volume-enabled: true
 # otel:
 #   traces:
 #     exporter: otlp

@@ -181,7 +181,7 @@
         container: zerobyte
     - Syncthing Falcon:
         icon: syncthing.png
-        href: "https://syncthing.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://syncthing.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: syncthing
@@ -236,16 +236,17 @@
           key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
 
 - Reverse Proxy:
-    - Nginx Proxy Manager:
-        icon: nginx-proxy-manager.png
-        href: "https://nginx.{{HOMEPAGE_VAR_DOMAIN}}"
+    - Traefik Falcon:
+        icon: traefik-proxy.png
+        href: "https://traefik.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
         server: my-docker
-        container: nginx-proxy-manager
+        container: traefik
         widget:
-          type: npm
-          url: https://nginx.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_NPM_USER}}"
-          password: "{{HOMEPAGE_VAR_NPM_API}}"
+          type: traefik
+          url: https://traefik.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
+          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
     - Traefik Destroyer:
         icon: traefik-proxy.png
         href: "https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
