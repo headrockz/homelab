@@ -17,5 +17,20 @@
 "name": "{{ topic_name }}",
 "state_topic": "{{ state_topic }}",
 "unique_id": "{{ unique_id }}",
+{% if device_class %}
+"device_class": "{{ device_class }}",
+{% endif %}
+{% if unit_of_measurement %}
+"unit_of_measurement": "{{ unit_of_measurement }}",
+{% endif %}
+{% if state_class %}
+"state_class": "{{ state_class }}",
+{% endif %}
+{% if suggested_display_precision %}
+"suggested_display_precision": {{ suggested_display_precision }},
+{% endif %}
+{% if entity_category %}
+"entity_category": "{{ entity_category }}",
+{% endif %}
 "value_template": "{{ '{{' }}{{ value_template }}{{ '}}' }}"
 }

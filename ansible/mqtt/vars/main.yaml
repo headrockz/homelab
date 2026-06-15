@@ -27,7 +27,154 @@ home_assistant_topics:
     icon: "server"
     value_template: "value_json.state"
     unique_id: "nano_pi_status_monitor"
-    state_topic: "tie/status/state"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Containers Running
+  - topic: "homeassistant/sensor/tie/containers_running/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Containers Running"
+    icon: "server"
+    value_template: "value_json.containers_running"
+    unique_id: "nano_pi_containers_running"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Containers Stopped
+  - topic: "homeassistant/sensor/tie/containers_stopped/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Containers Stopped"
+    icon: "server"
+    value_template: "value_json.containers_stopped"
+    unique_id: "nano_pi_containers_stopped"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Memory Usage
+  - topic: "homeassistant/sensor/tie/memory_usage/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Memory Usage"
+    icon: "memory"
+    value_template: "value_json.memory_usage_percent"
+    unit_of_measurement: "%"
+    state_class: "measurement"
+    suggested_display_precision: 0
+    entity_category: "diagnostic"
+    unique_id: "nano_pi_memory_usage"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Disk Usage
+  - topic: "homeassistant/sensor/tie/disk_usage/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Disk Usage"
+    icon: "harddisk"
+    value_template: "value_json.disk_usage_percent"
+    unit_of_measurement: "%"
+    state_class: "measurement"
+    suggested_display_precision: 0
+    entity_category: "diagnostic"
+    unique_id: "nano_pi_disk_usage"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: SSD Usage
+  - topic: "homeassistant/sensor/tie/ssd_usage/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi SSD Usage"
+    icon: "harddisk"
+    value_template: "value_json.ssd_usage_percent"
+    unit_of_measurement: "%"
+    state_class: "measurement"
+    suggested_display_precision: 0
+    entity_category: "diagnostic"
+    unique_id: "nano_pi_ssd_usage"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Uptime
+  - topic: "homeassistant/sensor/tie/uptime/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Uptime"
+    icon: "timer-outline"
+    value_template: "as_datetime(value_json.boot_time)"
+    device_class: "timestamp"
+    entity_category: "diagnostic"
+    unique_id: "nano_pi_uptime"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: Temperature
+  - topic: "homeassistant/sensor/tie/temperature/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi Temperature"
+    icon: "thermometer"
+    value_template: "value_json.temperature"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    state_class: "measurement"
+    unique_id: "nano_pi_temperature"
+    state_topic: "tie/status/system"
+    expire_after: 1800
+    labels:
+      - "nano_pi_status_monitor"
+
+  # Config Tie: CPU Usage
+  - topic: "homeassistant/sensor/tie/cpu_usage/config"
+    host: "tie"
+    retain: true
+    manufacturer: "Friendly Elec"
+    model: "Nano Pi R5C"
+    device_name: "Nano Pi Status"
+    topic_name: "Nano Pi CPU Usage"
+    icon: "cpu-64-bit"
+    value_template: "value_json.cpu_usage"
+    unit_of_measurement: "%"
+    state_class: "measurement"
+    unique_id: "nano_pi_cpu_usage"
+    state_topic: "tie/status/system"
     expire_after: 1800
     labels:
       - "nano_pi_status_monitor"

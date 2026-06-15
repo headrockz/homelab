@@ -86,11 +86,6 @@
         description: Server Falcon
         server: my-docker
         container: loki
-    - Glances:
-        icon: glances.png
-        href: "https://glances.tie.{{HOMEPAGE_VAR_DOMAIN}}"
-        siteMonitor: https://glances.tie.{{HOMEPAGE_VAR_DOMAIN}}
-        description: Server Tie
 
 - Data Engineering:
     - Airflow:
