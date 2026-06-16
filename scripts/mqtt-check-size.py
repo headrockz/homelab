@@ -74,7 +74,7 @@ def check_size():
         # Publish the sensor configuration.
         publish_to_mqtt(
             topic=config_topic,
-            message=str(sensor_config),
+            message=str(sensor_config).replace("{folder}", folder),
             broker=broker_address,
             port=port,
             retain=True,
