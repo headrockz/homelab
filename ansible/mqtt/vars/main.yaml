@@ -77,7 +77,6 @@ home_assistant_topics:
     unit_of_measurement: "%"
     state_class: "measurement"
     suggested_display_precision: 0
-    entity_category: "diagnostic"
     unique_id: "nano_pi_memory_usage"
     state_topic: "tie/status/system"
     expire_after: 1800
@@ -97,7 +96,6 @@ home_assistant_topics:
     unit_of_measurement: "%"
     state_class: "measurement"
     suggested_display_precision: 0
-    entity_category: "diagnostic"
     unique_id: "nano_pi_disk_usage"
     state_topic: "tie/status/system"
     expire_after: 1800
@@ -117,7 +115,6 @@ home_assistant_topics:
     unit_of_measurement: "%"
     state_class: "measurement"
     suggested_display_precision: 0
-    entity_category: "diagnostic"
     unique_id: "nano_pi_ssd_usage"
     state_topic: "tie/status/system"
     expire_after: 1800
@@ -135,7 +132,6 @@ home_assistant_topics:
     icon: "timer-outline"
     value_template: "as_datetime(value_json.boot_time)"
     device_class: "timestamp"
-    entity_category: "diagnostic"
     unique_id: "nano_pi_uptime"
     state_topic: "tie/status/system"
     expire_after: 1800
