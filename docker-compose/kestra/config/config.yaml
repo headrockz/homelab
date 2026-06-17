@@ -17,10 +17,21 @@ kestra:
   #   type: local
   #   local:
   #     basePath: "/app/storage"
+  # storage:
+  #   type: s3
+  #   s3:
+  #     endpoint: ${KESTRA_MINIO_ENDPOINT}
+  #     accessKey: ${KESTRA_MINIO_ACCESS_KEY}
+  #     secretKey: ${KESTRA_MINIO_SECRET_KEY}
+  #     region: "us-east-1"
+  #     bucket: "kestra"
+  #     forcePathStyle: "true"
   storage:
-    type: s3
-    s3:
+    type: minio
+    minio:
       endpoint: ${KESTRA_MINIO_ENDPOINT}
+      port: ${KESTRA_MINIO_PORT}
+      secure: ${KESTRA_MINIO_SECURE}
       accessKey: ${KESTRA_MINIO_ACCESS_KEY}
       secretKey: ${KESTRA_MINIO_SECRET_KEY}
       region: "us-east-1"
