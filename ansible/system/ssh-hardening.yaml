@@ -1,0 +1,33 @@
+---
+- name: Hardening SSH Configuration
+  hosts: "{{ hosts | d([]) }}"
+
+  tasks:
+    - name: Create a backup of the original sshd_config
+      command: cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+      args:
+        creates: /etc/ssh/sshd_config.bak
+
+    - name: Set permissions for the backup file
+      file:
+        path: /etc/ssh/sshd_config.bak
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: Apply new sshd_config from template
+      template:
+        src: templates/sshd_config.j2
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: '0600'
+        validate: /usr/sbin/sshd -t -f %s
+        newline_sequence: "\n"
+      notify: Restart SSH
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: ssh
+        state: restarted
