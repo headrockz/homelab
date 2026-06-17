@@ -48,7 +48,7 @@
       when: compose_name == "traefik"
       ansible.builtin.shell:
         cmd: |
-          sed -i "s|address: http://authentik-outpost:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname):9000/outpost.goauthentik.io/auth/traefik|g" {{ compose_path }}/{{ compose_name }}/config/middleware.yaml
+          sed -i "s|address: http://authentik-server:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname):9000/outpost.goauthentik.io/auth/traefik|g" {{ compose_path }}/{{ compose_name }}/config/middleware.yaml
       register: sed_result
       changed_when: sed_result.rc == 0
       failed_when: sed_result.rc != 0
