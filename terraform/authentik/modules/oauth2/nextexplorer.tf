@@ -31,3 +31,9 @@ resource "authentik_application" "nextexplorer" {
   meta_icon         = "application-icons/files.png"
   open_in_new_tab   = true
 }
+
+resource "authentik_policy_binding" "nextexplorer" {
+  target = authentik_application.nextexplorer.uuid
+  group  = var.authentik_admin_group_id
+  order  = 0
+}

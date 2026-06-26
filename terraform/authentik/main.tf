@@ -55,4 +55,5 @@ module "rac" {
 
   default_authorization_flow      = module.authentik_config.default_authorization_flow
   default_ssh_property_mapping_id = module.property_mappings.default_ssh_property_mapping_id
+  authentik_admin_group_id        = module.groups.authentik_admin_group
 }

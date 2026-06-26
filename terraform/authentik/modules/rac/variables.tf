@@ -26,3 +26,8 @@ variable "default_ssh_property_mapping_id" {
   description = "Default SSH property mapping ID"
   type        = string
 }
+
+variable "authentik_admin_group_id" {
+  default = "Authentik Admins Group ID"
+  type    = string
+}
