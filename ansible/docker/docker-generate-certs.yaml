@@ -1,0 +1,85 @@
+---
+- name: Generate TLS Certificates for Docker
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+  vars:
+    docker_cert_dir: "{{ remote_path | default('./certs') }}"
+    custom_cn: "{{ cn | default('docker.internal') }}"
+    custom_dns_list: "{{ dns_list | default([]) }}"
+    custom_ips_list: "{{ ip_list | default(['127.0.0.1']) }}"
+
+  tasks:
+    - name: Ensure the certificate directory exists
+      ansible.builtin.file:
+        path: "{{ docker_cert_dir }}"
+        state: directory
+        mode: "0700"
+        owner: root
+        group: root
+
+    - name: Create the CA private key
+      community.crypto.openssl_privatekey:
+        path: "{{ docker_cert_dir }}/ca-key.pem"
+        size: 4096
+        mode: "0400"
+
+    - name: Create the CA CSR
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
+        common_name: "Docker CA"
+      register: ca_csr
+
+    - name: Create the self-signed CA certificate
+      community.crypto.x509_certificate:
+        path: "{{ docker_cert_dir }}/ca.pem"
+        csr_content: "{{ ca_csr.csr }}"
+        privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
+        provider: selfsigned
+        mode: "0444"
+
+    - name: Create the server private key
+      community.crypto.openssl_privatekey:
+        path: "{{ docker_cert_dir }}/server-key.pem"
+        size: 4096
+        mode: "0400"
+
+    - name: Create the server CSR with custom CN, DNS SANs and IP SANs
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ docker_cert_dir }}/server-key.pem"
+        common_name: "{{ custom_cn }}"
+        subject_alt_name: "{{ custom_dns_list | map('regex_replace', '^', 'DNS:') | list + custom_ips_list | map('regex_replace', '^', 'IP:') | list }}"
+        extended_key_usage:
+          - serverAuth
+      register: server_csr
+
+    - name: Sign the server certificate with the CA
+      community.crypto.x509_certificate:
+        path: "{{ docker_cert_dir }}/server-cert.pem"
+        csr_content: "{{ server_csr.csr }}"
+        ownca_path: "{{ docker_cert_dir }}/ca.pem"
+        ownca_privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
+        provider: ownca
+        mode: "0444"
+
+    - name: Create the client private key
+      community.crypto.openssl_privatekey:
+        path: "{{ docker_cert_dir }}/client-key.pem"
+        size: 4096
+        mode: "0400"
+
+    - name: Create the client CSR
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ docker_cert_dir }}/client-key.pem"
+        common_name: "docker-client"
+        extended_key_usage:
+          - clientAuth
+      register: client_csr
+
+    - name: Sign the client certificate with the CA
+      community.crypto.x509_certificate:
+        path: "{{ docker_cert_dir }}/client-cert.pem"
+        csr_content: "{{ client_csr.csr }}"
+        ownca_path: "{{ docker_cert_dir }}/ca.pem"
+        ownca_privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
+        provider: ownca
+        mode: "0444"
