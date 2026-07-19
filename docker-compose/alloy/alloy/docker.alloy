@@ -1,0 +1,82 @@
+// ============================================================================
+// DOCKER METRICS & LOGS COLLECTION
+// ============================================================================
+// This file configures the monitoring (logs and resource usage metrics collection)
+// for Docker containers running on the local host.
+
+// ----------------------------------------------------------------------------
+// CONTAINER LOGS
+// ----------------------------------------------------------------------------
+
+// 1. Dynamic Container Discovery
+// Connects to the Docker socket to dynamically identify all running containers.
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// 2. Relabeling Rules (Reconfiguring Container Labels)
+// Processes container metadata to create clean, consistent labels before logs are sent.
+discovery.relabel "containers" {
+  targets = discovery.docker.containers.targets
+
+  // Rule 1: Extract the container name
+  // Removes the leading slash '/' from the default Docker name (e.g., '/traefik' becomes 'traefik')
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container_name"
+  }
+
+  // Rule 2: Add the 'instance' label with the hostname obtained internally by Alloy
+  rule {
+    target_label = "instance"
+    replacement  = constants.hostname
+  }
+
+  // Rule 3: Add the 'host' label with the hostname read from system environment variables
+  rule {
+    target_label = "host"
+    replacement  = constants.hostname
+  }
+}
+
+// 3. Docker Log Collector
+// Reads standard output/error (stdout/stderr) from the discovered and labeled containers.
+loki.source.docker "containers" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.containers.output
+  forward_to = [loki.write.loki.receiver] // Sends logs to Loki
+}
+
+// ----------------------------------------------------------------------------
+// METRICS (Container Performance Metrics)
+// ----------------------------------------------------------------------------
+
+// 4. Integrated cAdvisor Exporter
+// Collects real-time resource usage statistics (CPU, memory, network, disk) for each container.
+prometheus.exporter.cadvisor "docker_metrics" {
+  docker_host = "unix:///var/run/docker.sock"
+}
+
+// 5. cAdvisor Target Relabeling
+// Appends 'host' and 'instance' labels to the cAdvisor scrape targets.
+discovery.relabel "cadvisor_targets" {
+  targets = prometheus.exporter.cadvisor.docker_metrics.targets
+
+  rule {
+    target_label = "host"
+    replacement  = constants.hostname
+  }
+
+  rule {
+    target_label = "instance"
+    replacement  = constants.hostname
+  }
+}
+
+// 6. Scrape cAdvisor Metrics
+// Scrapes the metrics from cAdvisor after relabeling and sends them to Mimir.
+prometheus.scrape "scrape_docker" {
+  targets    = discovery.relabel.cadvisor_targets.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}

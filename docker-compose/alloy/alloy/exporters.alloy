@@ -1,0 +1,44 @@
+// ============================================================================
+// EXPORTERS CONFIGURATION
+// ============================================================================
+// This file centralizes the backend destinations where metrics, logs,
+// and traces collected by Grafana Alloy will be sent.
+
+// 1. Logs Exporter to Grafana Loki
+// Receives logs in Loki format from other components and sends them via HTTP.
+loki.write "loki" {
+  endpoint {
+    url        = env("LOKI_URL")
+    batch_wait = "5s"
+
+    basic_auth {
+      username = env("LOKI_USER")
+      password = env("LOKI_PASSWORD")
+    }
+  }
+}
+
+// 2. Metrics Exporter to Grafana Mimir
+// Sends collected metrics to Mimir using the Prometheus remote_write protocol.
+prometheus.remote_write "mimir" {
+  endpoint {
+    url = env("PROM_URL")
+
+    basic_auth {
+      username = env("PROM_USER")
+      password = env("PROM_PASSWORD")
+    }
+  }
+}
+
+// 3. Traces Exporter to Grafana Tempo (OpenTelemetry)
+// Receives trace data from other OpenTelemetry components and sends it via OTLP gRPC.
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = env("TEMPO_URL")
+
+    tls {
+      insecure = true
+    }
+  }
+}

@@ -1,0 +1,54 @@
+// ============================================================================
+// OPENTELEMETRY (OTEL) COLLECTOR PIPELINE
+// ============================================================================
+// This file configures the OpenTelemetry Collector pipeline integrated into Alloy.
+// It receives OTLP traces, metrics, and logs from instrumented applications,
+// processes data in batches, and converts them to suitable formats before
+// sending them to their respective exporters (Tempo, Mimir, and Loki).
+
+// 1. OTLP Receiver (OpenTelemetry Protocol Receiver)
+// Listens to connections from applications sending native OTLP telemetry.
+otelcol.receiver.otlp "default" {
+  // Configures the gRPC receiver (typically port 4317)
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
+  // Configures the HTTP/JSON receiver (typically port 4318)
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  // Defines the internal destinations for the received telemetry data.
+  // Logs, metrics, and traces are routed to the batch processor.
+  output {
+    logs    = [otelcol.processor.batch.default.input]
+    metrics = [otelcol.processor.batch.default.input]
+    traces  = [otelcol.processor.batch.default.input]
+  }
+}
+
+// 2. Batch Processor
+// Groups the collected telemetry data into batches before exporting to optimize
+// network performance and reduce overhead on database backends.
+otelcol.processor.batch "default" {
+  // Defines which exporters will receive the batched data.
+  output {
+    logs    = [otelcol.exporter.loki.default.input]          // OTel logs go to the Loki exporter
+    metrics = [otelcol.exporter.prometheus.default.input]    // OTel metrics go to the Prometheus exporter
+    traces  = [otelcol.exporter.otlp.tempo.input]            // Traces go to the Tempo exporter (exporters.alloy)
+  }
+}
+
+// 3. OTel Metrics to Prometheus/Mimir Converter
+// Converts OpenTelemetry structured metrics into Prometheus time series format.
+otelcol.exporter.prometheus "default" {
+  // Forwards converted metrics to the Mimir remote write exporter (exporters.alloy)
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
+
+// 4. OTel Logs to Loki Converter
+// Converts OpenTelemetry structured log records into entries accepted by Grafana Loki.
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.loki.receiver]
+}

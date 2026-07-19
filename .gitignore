@@ -181,3 +181,4 @@ mailrise.conf
 *.secrets.tf
 .docs/
 acme.json
+.antigravitycli

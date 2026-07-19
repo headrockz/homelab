@@ -86,6 +86,32 @@
         description: Server Falcon
         server: my-docker
         container: loki
+    - What's Up Docker Falcon:
+        icon: whats-up-docker.png
+        href: "https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: wud
+        # widget:
+        #     type: whatsupdocker
+        #     url: https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+        #     username: "{{HOMEPAGE_VAR_WUD_USER}}"
+        #     password: "{{HOMEPAGE_VAR_WUD_API}}"
+    - What's Up Docker Tie:
+        icon: whats-up-docker.png
+        href: "https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Tie
+        siteMonitor: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+        # widget:
+        #     type: whatsupdocker
+        #     url: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        #     username: "{{HOMEPAGE_VAR_WUD_USER}}"
+        #     password: "{{HOMEPAGE_VAR_WUD_API}}"
+    - Alloy Tie:
+        icon: alloy.png
+        href: "https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Tie
+        siteMonitor: https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}
 
 - Data Engineering:
     - Airflow:

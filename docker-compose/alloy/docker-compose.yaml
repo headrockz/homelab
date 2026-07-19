@@ -1,0 +1,54 @@
+---
+services:
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    hostname: ${SERVER}
+    restart: unless-stopped
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - /etc/alloy
+    # ports:
+    #   - 12345:12345
+    #   - 4317:4317
+    #   - 4318:4318
+    volumes:
+      - ./alloy:/etc/alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /var/log/journal:/var/log/journal:ro
+      - /run/log/journal:/run/log/journal:ro
+    env_file:
+      - .env
+    networks:
+      - server-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.alloy.entrypoints=https
+      - traefik.http.routers.alloy.rule=Host(`alloy.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.alloy.tls=true
+      - traefik.http.services.alloy.loadbalancer.server.port=12345
+      - traefik.http.routers.alloy.tls.certresolver=cloudflare
+      - traefik.http.routers.alloy.service=alloy
+      - traefik.http.routers.alloy.middlewares=authentik@file
+      # OTLP HTTP
+      - traefik.http.routers.otlp-http.entrypoints=https
+      - traefik.http.routers.otlp-http.rule=Host(`otlp.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.otlp-http.tls.certresolver=cloudflare
+      - traefik.http.routers.otlp-http.service=otlp-http
+      - traefik.http.services.otlp-http.loadbalancer.server.port=4318
+      # OTLP gRPC
+      - traefik.http.routers.otlp-grpc.entrypoints=https
+      - traefik.http.routers.otlp-grpc.rule=Host(`otlp-grpc.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.otlp-grpc.tls.certresolver=cloudflare
+      - traefik.http.routers.otlp-grpc.service=otlp-grpc
+      - traefik.http.routers.otlp-grpc.tls=true
+      - traefik.http.services.otlp-grpc.loadbalancer.server.port=4317
+      - traefik.http.services.otlp-grpc.loadbalancer.server.scheme=h2c
+
+networks:
+  server-backend:
+    external: true
