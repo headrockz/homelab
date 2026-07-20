@@ -63,18 +63,20 @@ kestra:
       - type: io.kestra.plugin.scripts.runner.docker.Docker
         values:
           volume-enabled: true
-# otel:
-#   traces:
-#     exporter: otlp
-#   exporter:
-#     otlp:
-#       endpoint: https://lokigrpc.falcon.${DOMAIN}
+otel:
+  traces:
+    exporter: otlp
+  exporter:
+    otlp:
+      endpoint: ${KESTRA_OTLP_URL}
 micronaut:
+  otel:
+    enabled: true
   # metrics:
   #   export:
   #     otlp:
   #       enabled: true
-  #       url: http://loki.${DOMAIN}/otlp
+  #       url: ${KESTRA_OTLP_HTTP_URL}
   security:
     oauth2:
       enabled: true
