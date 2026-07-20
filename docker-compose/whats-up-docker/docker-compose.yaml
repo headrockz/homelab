@@ -1,7 +1,7 @@
 ---
 services:
   wud:
-    image: getwud/wud:8.2.2
+    image: getwud/wud:8.3.0
     container_name: wud
     restart: always
     volumes:
