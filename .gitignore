@@ -96,15 +96,6 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -135,27 +126,12 @@ cython_debug/
 # Poetry
 poetry.lock
 
-# Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
-*.tfstate
-*.tfstate.*
-
 # Crash log files
 crash.log
 crash.*.log
 
-# Exclude sensitive variable files
-*.tfvars
-*.tfvars.json
-!example.tfvars
-
-# Ignore override files as they are usually used for local dev
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+# Local .terraform directories
+**/.terraform/*
 
 # Ignore CLI configuration files
 .terraformrc
@@ -164,10 +140,34 @@ terraform.rc
 # Ignore .terraform.lock.hcl
 .terraform.lock.hcl
 
+# Ignore override files as they are usually used for local dev
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Exclude sensitive variable files
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
 # Ignore ansible files
 ansible.cfg
 hosts.ini
 inventory.yaml
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 # My ignore files
 test
