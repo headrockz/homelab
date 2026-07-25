@@ -29,6 +29,7 @@ resource "authentik_application" "kestra" {
   protocol_provider = authentik_provider_oauth2.kestra.id
   meta_launch_url   = "https://kestra.destroyer.${var.domain}/"
   meta_icon         = "application-icons/kestra.png"
+  meta_description  = "Kestra is an open-source data orchestration and scheduling platform."
   open_in_new_tab   = true
 }
 

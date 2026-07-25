@@ -29,6 +29,7 @@ resource "authentik_application" "nextexplorer" {
   protocol_provider = authentik_provider_oauth2.nextexplorer.id
   meta_launch_url   = "https://file.${var.domain}/"
   meta_icon         = "application-icons/files.png"
+  meta_description  = "Next Explorer is a self-hosted file explorer and management tool."
   open_in_new_tab   = true
 }
 

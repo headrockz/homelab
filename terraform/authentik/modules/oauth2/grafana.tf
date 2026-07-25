@@ -30,6 +30,7 @@ resource "authentik_application" "grafana" {
   protocol_provider = authentik_provider_oauth2.grafana.id
   meta_launch_url   = "https://grafana.${var.domain}/"
   meta_icon         = "application-icons/grafana.png"
+  meta_description  = "Grafana is an open-source platform for monitoring and observability."
   open_in_new_tab   = true
 }
 

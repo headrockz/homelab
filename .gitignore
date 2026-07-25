@@ -179,6 +179,7 @@ zigbee
 glances.conf
 mailrise.conf
 *.secrets.tf
+*.secrets.*
 .docs/
 acme.json
 .antigravitycli

@@ -35,6 +35,7 @@ resource "authentik_application" "trino" {
   protocol_provider = authentik_provider_oauth2.trino.id
   meta_launch_url   = "https://trino.db.${var.domain}/"
   meta_icon         = "application-icons/trino.png"
+  meta_description  = "Trino is a self-hosted distributed SQL query engine for big data."
   open_in_new_tab   = true
 }
 

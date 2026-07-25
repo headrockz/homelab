@@ -30,6 +30,7 @@ resource "authentik_application" "rustfs" {
   protocol_provider = authentik_provider_oauth2.rustfs.id
   meta_launch_url   = "https://rustfs-ui.destroyer.${var.domain}/"
   meta_icon         = "application-icons/rustfs.png"
+  meta_description  = "RustFS is a self-hosted S3 compatible object storage server."
   open_in_new_tab   = true
 }
 

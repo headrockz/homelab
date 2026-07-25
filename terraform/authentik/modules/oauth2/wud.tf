@@ -37,6 +37,7 @@ resource "authentik_application" "wud" {
   protocol_provider = authentik_provider_oauth2.wud.id
   meta_launch_url   = "https://wud.falcon.${var.domain}/"
   meta_icon         = "application-icons/whats-up-docker.png"
+  meta_description  = "What's Up Docker is a self-hosted monitoring platform for Docker containers."
   open_in_new_tab   = true
 }
 

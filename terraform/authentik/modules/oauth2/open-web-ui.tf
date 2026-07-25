@@ -34,5 +34,6 @@ resource "authentik_application" "open-web-ui" {
   protocol_provider = authentik_provider_oauth2.open-web-ui.id
   meta_launch_url   = "https://openwebui.${var.domain}/"
   meta_icon         = "application-icons/open-webui.png"
+  meta_description  = "Open WebUI is a self-hosted web interface for AI models."
   open_in_new_tab   = true
 }

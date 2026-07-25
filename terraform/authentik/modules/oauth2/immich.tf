@@ -37,5 +37,6 @@ resource "authentik_application" "immich" {
   protocol_provider = authentik_provider_oauth2.immich.id
   meta_launch_url   = "https://immich.falcon.${var.domain}/"
   meta_icon         = "application-icons/immich.png"
+  meta_description  = "Immich is a self-hosted photo and video backup solution."
   open_in_new_tab   = true
 }

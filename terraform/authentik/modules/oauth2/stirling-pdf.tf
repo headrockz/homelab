@@ -33,5 +33,6 @@ resource "authentik_application" "stirling-pdf" {
   protocol_provider = authentik_provider_oauth2.stirling-pdf.id
   meta_launch_url   = "https://stirling-pdf.${var.domain}/"
   meta_icon         = "application-icons/stirling-pdf.png"
+  meta_description  = "Stirling PDF is a self-hosted PDF management platform."
   open_in_new_tab   = true
 }

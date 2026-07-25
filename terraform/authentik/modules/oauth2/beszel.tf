@@ -35,6 +35,7 @@ resource "authentik_application" "beszel" {
   protocol_provider = authentik_provider_oauth2.beszel.id
   meta_launch_url   = "https://beszel.${var.domain}/"
   meta_icon         = "application-icons/beszel.png"
+  meta_description  = "Beszel is a monitoring and alerting platform for your infrastructure."
   open_in_new_tab   = true
 }
 

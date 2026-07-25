@@ -30,6 +30,7 @@ resource "authentik_application" "airflow" {
   protocol_provider = authentik_provider_oauth2.airflow.id
   meta_launch_url   = "https://airflow.destroyer.${var.domain}/"
   meta_icon         = "application-icons/airflow.png"
+  meta_description  = "Airflow is a platform to programmatically author, schedule and monitor workflows."
   open_in_new_tab   = true
 }
 

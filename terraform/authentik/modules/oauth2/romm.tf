@@ -30,6 +30,7 @@ resource "authentik_application" "romm" {
   protocol_provider = authentik_provider_oauth2.romm.id
   meta_launch_url   = "https://romm.${var.domain}/"
   meta_icon         = "application-icons/romm.png"
+  meta_description  = "RomM is a self-hosted ROM management platform."
   open_in_new_tab   = true
 }
 

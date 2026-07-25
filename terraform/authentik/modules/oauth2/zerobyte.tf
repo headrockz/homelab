@@ -34,6 +34,7 @@ resource "authentik_application" "zerobyte" {
   protocol_provider = authentik_provider_oauth2.zerobyte.id
   meta_launch_url   = "https://zerobyte.falcon.${var.domain}"
   meta_icon         = "application-icons/zerobyte.png"
+  meta_description  = "Zerobyte is a self-hosted backup platform."
   open_in_new_tab   = true
 }
 

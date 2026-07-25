@@ -15,6 +15,7 @@ resource "authentik_application" "ssh" {
   group             = "Remote Access"
   protocol_provider = authentik_provider_rac.ssh.id
   meta_icon         = "application-icons/guacamole.png"
+  meta_description  = "Remote Access Controller."
   open_in_new_tab   = true
 }
 
