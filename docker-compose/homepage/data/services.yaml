@@ -39,7 +39,8 @@
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: "https://uptime.{{HOMEPAGE_VAR_DOMAIN}}"
-        siteMonitor: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+        server: tie
+        container: uptimekuma
         description: Server Tie
         widget:
           type: uptimekuma
@@ -47,8 +48,10 @@
           slug: homelab
     - Beszel Tie:
         icon: beszel.png
-        href: "https://beszel.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://beszel.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Tie
+        server: tie
+        container: beszel
         widget:
           type: beszel
           url: https://beszel.tie.{{HOMEPAGE_VAR_DOMAIN}}
@@ -57,6 +60,17 @@
           systemId: "{{HOMEPAGE_VAR_BESZEL_SYSTEM_ID}}"
           version: 2
           fields: ["cpu", "memory", "disk"]
+    - Prometheus:
+        icon: prometheus.png
+        href: "https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: prometheus
+        widget:
+          type: prometheus
+          url: https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}
+          username: "{{HOMEPAGE_VAR_PROMETHEUS_USER}}"
+          password: "{{HOMEPAGE_VAR_PROMETHEUS_PASS}}"
     - Grafana:
         icon: grafana.png
         href: "https://grafana.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -69,17 +83,6 @@
           username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
           password: "{{HOMEPAGE_VAR_GRAFANA_API}}"
           fields: ["dashboards", "datasources", "totalalerts"]
-    - Prometheus:
-        icon: prometheus.png
-        href: "https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Falcon
-        server: my-docker
-        container: prometheus
-        widget:
-          type: prometheus
-          url: https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_PROMETHEUS_USER}}"
-          password: "{{HOMEPAGE_VAR_PROMETHEUS_PASS}}"
     - Loki:
         icon: loki.png
         href: "https://loki.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -101,7 +104,8 @@
         icon: whats-up-docker.png
         href: "https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Tie
-        siteMonitor: https://uptime.{{HOMEPAGE_VAR_DOMAIN}}
+        server: tie
+        container: wud
         # widget:
         #     type: whatsupdocker
         #     url: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
@@ -111,7 +115,9 @@
         icon: alloy.png
         href: "https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Tie
-        siteMonitor: https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        # siteMonitor: https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}
+        server: tie
+        container: alloy
 
 - Data Engineering:
     - Airflow:
@@ -126,13 +132,6 @@
         description: Server Falcon
         server: my-docker
         container: kestra
-        # showStats: true
-    - RustFS:
-        icon: rustfs.png
-        href: "https://rustfs-ui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Destroyer
-        server: destroyer
-        container: rustfs
     - Open Metadata:
         icon: https://miro.medium.com/v2/1*NTBaKucQjjMGziseWsSF5Q.png
         href: "https://open-metadata.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -214,6 +213,11 @@
         description: Server Falcon
         server: my-docker
         container: databasus
+    - PostgreSQL Falcon:
+        icon: postgresql.png
+        description: Server Falcon
+        server: my-docker
+        container: postgresql
     - MongoDB:
         icon: mongodb.png
         href: "https://mongo.db.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -304,7 +308,8 @@
     - Traefik Tie:
         icon: traefik-proxy.png
         href: "https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}"
-        siteMonitor: "https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        server: tie
+        container: traefik
         description: Server Tie
         widget:
           type: traefik
@@ -351,3 +356,21 @@
         description: Server Falcon
         server: my-docker
         container: open-webui
+
+- Storage:
+    - Garage Falcon:
+        icon: garage.png
+        server: my-docker
+        container: garage
+        description: Server Falcon
+    - Garage Tie:
+        icon: garage.png
+        server: tie
+        container: garage
+        description: Server Tie
+    - RustFS:
+        icon: rustfs.png
+        href: "https://rustfs-ui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Destroyer
+        server: destroyer
+        container: rustfs

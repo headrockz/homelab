@@ -1,31 +1,38 @@
 ---
 my-docker:
   socket: /var/run/docker.sock
-db:
-  host: "{{HOMEPAGE_VAR_DB}}"
+# db:
+#   host: "{{HOMEPAGE_VAR_DB}}"
+#   port: 2376
+#   tls:
+#     keyFile: /certs/docker/key.pem
+#     caFile: /certs/docker/ca.pem
+#     certFile: /certs/docker/cert.pem
+# destroyer:
+#   host: "{{HOMEPAGE_VAR_DESTROYER}}"
+#   port: 2376
+#   tls:
+#     keyFile: /certs/docker/key.pem
+#     caFile: /certs/docker/ca.pem
+#     certFile: /certs/docker/cert.pem
+# xwing:
+#   host: "{{HOMEPAGE_VAR_XWING}}"
+#   port: 2376
+#   tls:
+#     keyFile: /certs/docker/key.pem
+#     caFile: /certs/docker/ca.pem
+#     certFile: /certs/docker/cert.pem
+# dev:
+#   host: "{{HOMEPAGE_VAR_DEV}}"
+#   port: 2376
+#   tls:
+#     keyFile: /certs/docker/key.pem
+#     caFile: /certs/docker/ca.pem
+#     certFile: /certs/docker/cert.pem
+tie:
+  host: "{{HOMEPAGE_VAR_TIE}}"
   port: 2376
   tls:
-    keyFile: /certs/docker/key.pem
-    caFile: /certs/docker/ca.pem
-    certFile: /certs/docker/cert.pem
-destroyer:
-  host: "{{HOMEPAGE_VAR_DESTROYER}}"
-  port: 2376
-  tls:
-    keyFile: /certs/docker/key.pem
-    caFile: /certs/docker/ca.pem
-    certFile: /certs/docker/cert.pem
-xwing:
-  host: "{{HOMEPAGE_VAR_XWING}}"
-  port: 2376
-  tls:
-    keyFile: /certs/docker/key.pem
-    caFile: /certs/docker/ca.pem
-    certFile: /certs/docker/cert.pem
-dev:
-  host: "{{HOMEPAGE_VAR_DEV}}"
-  port: 2376
-  tls:
-    keyFile: /certs/docker/key.pem
-    caFile: /certs/docker/ca.pem
-    certFile: /certs/docker/cert.pem
+    keyFile: /certs/tie/key.pem
+    caFile: /certs/tie/ca.pem
+    certFile: /certs/tie/cert.pem

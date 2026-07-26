@@ -1,5 +1,6 @@
 ---
 providers:
+hideErrors: true
 
 layout:
   Data Engineering:
@@ -15,6 +16,21 @@ layout:
   Infrastructure:
     style: row
     columns: 5
+  Storage:
+    style: row
+    columns: 3
+  Databases:
+    style: row
+    columns: 4
+  Network:
+    style: row
+    columns: 3
+  Reverse Proxy:
+    style: row
+    columns: 5
   AI:
+    style: row
+    columns: 2
+  Smart Home:
     style: row
     columns: 5
