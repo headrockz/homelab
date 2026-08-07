@@ -259,6 +259,16 @@
           version: 6
           url: https://pihole.tie.{{HOMEPAGE_VAR_DOMAIN}}
           key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
+    - Cloudflare Tunnel:
+        icon: cloudflare.png
+        description: Server Falcon
+        server: my-docker
+        container: cloudflared
+    - Cloudflare Tunnel:
+        icon: cloudflare.png
+        description: Server Tie
+        server: tie
+        container: cloudflared
 
 - Reverse Proxy:
     - Traefik Falcon:
@@ -334,6 +344,11 @@
         description: Server Falcon
         server: my-docker
         container: zigbee2mqtt
+    - Mqtt:
+        icon: mqtt.png
+        description: Server Falcon
+        server: my-docker
+        container: mqtt
 
 - AI:
     - Ollama:

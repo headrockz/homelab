@@ -36,7 +36,6 @@ services:
     volumes:
       - ${DOCKER_DATA}/jellyfin/config:/config
       - ${MEDIA}:/Media
-      - ${GALLERY}:/Gallery
     environment:
       - PUID=${UID}
       - PGID=${UIG}
