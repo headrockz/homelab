@@ -118,6 +118,11 @@
         # siteMonitor: https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}
         server: tie
         container: alloy
+    - Tempo:
+        icon: tempo.png
+        server: my-docker
+        container: tempo
+        description: Server Falcon
 
 - Data Engineering:
     - Airflow:
