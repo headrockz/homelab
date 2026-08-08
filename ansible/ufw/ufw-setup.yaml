@@ -1,0 +1,47 @@
+---
+- name: Configure UFW Firewall
+  hosts: "{{ hosts | d([]) }}"
+  become: true
+
+  vars:
+    tailscale_interface: tailscale0
+    public_tcp_ports:
+      - 80
+      - 443
+
+  tasks:
+    - name: Install UFW
+      package:
+        name: ufw
+        state: present
+
+    - name: Reset UFW to defaults (idempotent baseline)
+      ufw:
+        state: reset
+
+    - name: Set UFW default incoming policy to deny
+      ufw:
+        default: deny
+        direction: incoming
+
+    - name: Set UFW default outgoing policy to allow
+      ufw:
+        default: allow
+        direction: outgoing
+
+    - name: Allow all traffic on Tailscale interface
+      ufw:
+        rule: allow
+        interface: "{{ tailscale_interface }}"
+        direction: in
+
+    - name: Allow public TCP ports (80, 443)
+      ufw:
+        rule: allow
+        port: "{{ item | string }}"
+        proto: tcp
+      loop: "{{ public_tcp_ports }}"
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
