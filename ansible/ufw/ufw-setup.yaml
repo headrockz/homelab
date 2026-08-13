@@ -5,9 +5,22 @@
 
   vars:
     tailscale_interface: tailscale0
+    local_interface: "{{ default_interface | default('eth1') }}"
     public_tcp_ports:
       - 80
       - 443
+    local_tcp_ports:
+      - 53
+      - 445
+      - 1883
+      - 2049
+      - 21027
+      - 22000
+    local_udp_ports:
+      - 53
+      - 2049
+      - 21027
+      - 22000
 
   tasks:
     - name: Install UFW
@@ -23,24 +36,46 @@
       ufw:
         default: deny
         direction: incoming
+        comment: Default deny incoming
 
     - name: Set UFW default outgoing policy to allow
       ufw:
         default: allow
         direction: outgoing
+        comment: Default allow outgoing
 
     - name: Allow all traffic on Tailscale interface
       ufw:
         rule: allow
         interface: "{{ tailscale_interface }}"
         direction: in
+        comment: Allow all traffic on Tailscale interface
 
-    - name: Allow public TCP ports (80, 443)
+    - name: Allow Public TCP ports
       ufw:
         rule: allow
         port: "{{ item | string }}"
         proto: tcp
+        comment: "Allow public TCP port: {{ item }}"
       loop: "{{ public_tcp_ports }}"
+
+    - name: Allow Local TCP ports
+      ufw:
+        rule: allow
+        port: "{{ item | string }}"
+        proto: tcp
+        interface: "{{ local_interface }}"
+        comment: "Allow local TCP port: {{ item }}"
+      loop: "{{ local_tcp_ports }}"
+
+    - name: Allow Local UDP ports
+      ufw:
+        rule: allow
+        port: "{{ item | string }}"
+        proto: udp
+        interface: "{{ local_interface }}"
+        comment: "Allow local UDP port: {{ item }}"
+      loop: "{{ local_udp_ports }}"
 
     - name: Enable UFW
       ufw:
