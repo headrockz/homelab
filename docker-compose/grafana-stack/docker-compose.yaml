@@ -70,7 +70,7 @@ services:
     volumes:
       - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
     ports:
-      - 9102:9102
+      # - 9102:9102
       - 8125:8125/udp
     networks:
       - server-backend
