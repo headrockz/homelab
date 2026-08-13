@@ -23,10 +23,10 @@ resource "proxmox_virtual_environment_sdn_vnet" "intern" {
 
 # Basic Subnet
 resource "proxmox_virtual_environment_sdn_subnet" "intern" {
-  cidr    = local.intern_cidr
+  cidr    = var.intern_cidr
   vnet    = proxmox_virtual_environment_sdn_vnet.intern.id
   snat    = true
-  gateway = local.intern_gw
+  gateway = var.intern_gw
 
   depends_on = [
     proxmox_virtual_environment_sdn_applier.finalizer

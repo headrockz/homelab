@@ -10,3 +10,13 @@ variable "dns" {
   type        = list(string)
   sensitive   = true
 }
+
+variable "intern_cidr" {
+  description = "CIDR block for the intern SDN subnet"
+  type        = string
+}
+
+variable "intern_gw" {
+  description = "Gateway IP for the intern SDN subnet"
+  type        = string
+}

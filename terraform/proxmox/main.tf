@@ -25,6 +25,8 @@ module "groups" {
   source = "./modules/groups"
 
   proxmox_node_name = var.proxmox_node_name
+  acl_path          = var.acl_path
+  acl_role          = var.acl_role
 }
 
 module "sdn" {
@@ -32,6 +34,8 @@ module "sdn" {
 
   proxmox_node_name = var.proxmox_node_name
   dns               = var.dns
+  intern_cidr       = var.intern_cidr
+  intern_gw         = var.intern_gw
 }
 
 module "lxc" {
