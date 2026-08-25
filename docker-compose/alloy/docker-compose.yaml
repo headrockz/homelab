@@ -1,7 +1,7 @@
 ---
 services:
   alloy:
-    image: grafana/alloy:v1.16.0
+    image: grafana/alloy:v1.19.0
     container_name: alloy
     hostname: ${SERVER}
     restart: unless-stopped
@@ -21,6 +21,7 @@ services:
       - /:/rootfs:ro
       - /var/log/journal:/var/log/journal:ro
       - /run/log/journal:/run/log/journal:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     env_file:
       - .env
     networks:
