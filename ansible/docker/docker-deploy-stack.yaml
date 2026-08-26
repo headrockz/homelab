@@ -15,11 +15,17 @@
         dest: "{{ compose_path }}"
         mode: '0644'
 
-    - name: Update .env file with hostname
+    - name: Update server .env file with hostname
       ansible.builtin.lineinfile:
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^SERVER='
         line: "SERVER={{ ansible_hostname }}"
+
+    - name: Update hostname .env file with hostname
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^HOSTNAME='
+        line: "HOSTNAME={{ ansible_hostname }}"
 
     - name: Update docker volume path
       ansible.builtin.lineinfile:
