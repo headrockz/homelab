@@ -4,6 +4,7 @@ services:
     image: prom/prometheus:v3.14.0
     container_name: prometheus
     restart: always
+    user: "root"
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
       - '--web.config.file=/etc/prometheus/web-config.yaml'
@@ -17,7 +18,7 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
-      - ${CERTS_PATH}/certs:/certs
+      - ${CERTS_PATH}/certs/services:/certs
     env_file:
       - .env
     # ports:
@@ -119,6 +120,7 @@ services:
     container_name: tempo
     image: grafana/tempo:3.0.3
     restart: always
+    user: "root"
     # ports:
     #   - 3200:3200
     #   - 4317:4317
@@ -127,6 +129,7 @@ services:
       - '-config.file=/etc/tempo/config.yaml'
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo/config.yaml:ro
+      - ${CERTS_PATH}/certs/services:/certs
     networks:
       - server-backend
     labels:

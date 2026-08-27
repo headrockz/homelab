@@ -21,12 +21,20 @@
       community.crypto.openssl_privatekey:
         path: "{{ docker_cert_dir }}/ca-key.pem"
         size: 4096
-        mode: "0400"
+        mode: "0600"
 
     - name: Create the CA CSR
       community.crypto.openssl_csr_pipe:
         privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
         common_name: "Docker CA"
+        basic_constraints:
+          - "CA:TRUE"
+          - "pathlen:1"
+        basic_constraints_critical: true
+        key_usage:
+          - keyCertSign
+          - cRLSign
+        key_usage_critical: true
       register: ca_csr
 
     - name: Create the self-signed CA certificate
@@ -35,13 +43,20 @@
         csr_content: "{{ ca_csr.csr }}"
         privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
         provider: selfsigned
-        mode: "0444"
+        mode: "0644"
 
     - name: Create the server private key
       community.crypto.openssl_privatekey:
         path: "{{ docker_cert_dir }}/server-key.pem"
         size: 4096
-        mode: "0400"
+        mode: "0600"
+
+    - name: Debug certificate variables
+      ansible.builtin.debug:
+        msg:
+          - "custom_cn={{ custom_cn }}"
+          - "custom_dns_list={{ custom_dns_list }}"
+          - "custom_ips_list={{ custom_ips_list }}"
 
     - name: Create the server CSR with custom CN, DNS SANs and IP SANs
       community.crypto.openssl_csr_pipe:
@@ -65,7 +80,7 @@
       community.crypto.openssl_privatekey:
         path: "{{ docker_cert_dir }}/client-key.pem"
         size: 4096
-        mode: "0400"
+        mode: "0600"
 
     - name: Create the client CSR
       community.crypto.openssl_csr_pipe:
