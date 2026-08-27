@@ -137,6 +137,7 @@ services:
       - traefik.http.services.tempo.loadbalancer.server.port=3200
       - traefik.http.routers.tempo.tls.certresolver=cloudflare
       - traefik.http.routers.tempo.service=tempo
+      - traefik.http.routers.tempo.middlewares=authentik@file
       # Tempo OTLP
       # - traefik.http.routers.tempo-grpc.entrypoints=grpc
       # - traefik.http.routers.tempo-grpc.rule=Host(`tempo.${DOMAIN}`)
