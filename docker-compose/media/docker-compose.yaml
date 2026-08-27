@@ -28,6 +28,7 @@ services:
       - traefik.http.services.transmission.loadbalancer.server.port=9091
       - traefik.http.routers.transmission.tls.certresolver=cloudflare
       - traefik.http.routers.transmission.service=transmission
+      - traefik.http.routers.transmission.middlewares=authentik@file
 
   jellyfin:
     image: jellyfin/jellyfin:10.11.11
