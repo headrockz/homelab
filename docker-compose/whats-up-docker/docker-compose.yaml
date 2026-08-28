@@ -8,6 +8,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKER_DATA}/certs:/certs
       - /etc/localtime:/etc/localtime:ro
+      - ${CERTS_PATH}/certs/services:/certs
     env_file:
       - .env
     # ports:

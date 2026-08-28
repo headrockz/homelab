@@ -13,8 +13,9 @@
       - 22
       - 53
       - 445
-      - 1883
+      # - 1883 mqtt port
       - 2049
+      - 8883  # mqtt tls port
       - 21027
       - 22000
     local_udp_ports:
