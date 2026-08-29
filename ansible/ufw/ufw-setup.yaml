@@ -5,7 +5,7 @@
 
   vars:
     tailscale_interface: tailscale0
-    local_interface: "{{ default_interface | default('eth1') }}"
+    local_interface: "{{ default_interface | default('eth0') }}"
     public_tcp_ports:
       - 80
       - 443
@@ -67,6 +67,7 @@
         port: "{{ item | string }}"
         proto: tcp
         interface: "{{ local_interface }}"
+        direction: in
         comment: "Allow local TCP port: {{ item }}"
       loop: "{{ local_tcp_ports }}"
 
@@ -76,6 +77,7 @@
         port: "{{ item | string }}"
         proto: udp
         interface: "{{ local_interface }}"
+        direction: in
         comment: "Allow local UDP port: {{ item }}"
       loop: "{{ local_udp_ports }}"
 
