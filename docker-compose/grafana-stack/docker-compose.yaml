@@ -44,7 +44,7 @@ services:
     volumes:
       - ./loki/config.yaml:/etc/loki/config.yaml:ro
       - loki_data:/loki:rw
-      - ${CERTS_PATH}/certs:/certs
+      - ${CERTS_PATH}/certs/services:/certs
     # ports:
     #   - 3100:3100
     #   - 9443:9443
