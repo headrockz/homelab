@@ -72,11 +72,11 @@ otel:
 micronaut:
   otel:
     enabled: true
-  # metrics:
-  #   export:
-  #     otlp:
-  #       enabled: true
-  #       url: ${KESTRA_OTLP_HTTP_URL}
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        url: ${KESTRA_OTLP_HTTP_URL}
   security:
     oauth2:
       enabled: true
