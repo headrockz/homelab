@@ -37,6 +37,10 @@ storage:
     local:
       path: /var/tempo/blocks
 
+backend_worker:
+  compaction:
+    block_retention: 720h
+
 overrides:
   defaults:
     metrics_generator:

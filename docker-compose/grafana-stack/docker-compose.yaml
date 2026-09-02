@@ -3,7 +3,7 @@ services:
   prometheus:
     image: prom/prometheus:v3.14.0
     container_name: prometheus
-    restart: always
+    restart: unless-stopped
     user: "root"
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
@@ -12,6 +12,7 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=30d'
       - '--web.enable-admin-api'
       - '--web.enable-remote-write-receiver'
       - '--web.enable-otlp-receiver'
@@ -61,26 +62,10 @@ services:
       - traefik.http.routers.loki.service=loki
       - traefik.http.routers.loki.middlewares=authentik@file
 
-  statsd-exporter:
-    image: prom/statsd-exporter:v0.29.0
-    container_name: statsd-exporter
-    restart: always
-    command:
-      - '--statsd.mapping-config=/etc/statsd_exporter.yaml'
-      - '--statsd.listen-udp=:8125'
-      - '--web.listen-address=:9102'
-    volumes:
-      - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
-    ports:
-      # - 9102:9102
-      - 8125:8125/udp
-    networks:
-      - server-backend
-
   grafana:
     image: grafana/grafana:13.2.0
     container_name: grafana
-    restart: always
+    restart: unless-stopped
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
@@ -119,7 +104,7 @@ services:
   tempo:
     container_name: tempo
     image: grafana/tempo:3.0.3
-    restart: always
+    restart: unless-stopped
     user: "root"
     # ports:
     #   - 3200:3200
@@ -155,6 +140,22 @@ services:
       # - traefik.http.services.tempo-otlp.loadbalancer.server.port=4318
       # - traefik.http.routers.tempo-otlp.tls.certresolver=cloudflare
       # - traefik.http.routers.tempo-otlp.service=tempo-otlp
+
+  statsd-exporter:
+    image: prom/statsd-exporter:v0.29.0
+    container_name: statsd-exporter
+    restart: unless-stopped
+    command:
+      - '--statsd.mapping-config=/etc/statsd_exporter.yaml'
+      - '--statsd.listen-udp=:8125'
+      - '--web.listen-address=:9102'
+    volumes:
+      - ./statsd/statsd_exporter.yaml:/etc/statsd_exporter.yaml
+    ports:
+      # - 9102:9102
+      - 8125:8125/udp
+    networks:
+      - server-backend
 
 networks:
   server-backend:

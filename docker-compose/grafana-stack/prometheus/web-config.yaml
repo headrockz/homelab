@@ -1,4 +1,8 @@
 ---
 tls_server_config:
-  cert_file: /certs/cert1.pem
-  key_file: /certs/privkey1.pem
+  cert_file: /certs/client-cert.pem
+  key_file: /certs/client-key.pem
+  # client_auth_type: RequireAndVerifyClientCert #  NoClientCert
+  # client_ca_file: /certs/ca.pem
+# basic_auth_users:
+#   prometheus: # htpasswd -nB prometheus
