@@ -7,6 +7,7 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}/photos:/data
       - ${EXTERNAL_LOCATION}:/mnt/external:ro
+      - ./immich.json:/app/immich.json
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
