@@ -111,6 +111,12 @@
         #     url: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
         #     username: "{{HOMEPAGE_VAR_WUD_USER}}"
         #     password: "{{HOMEPAGE_VAR_WUD_API}}"
+    - Alloy Falcon:
+        icon: alloy.png
+        href: "https://alloy.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: alloy
     - Alloy Tie:
         icon: alloy.png
         href: "https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}"

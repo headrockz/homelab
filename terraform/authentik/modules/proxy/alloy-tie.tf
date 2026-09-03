@@ -1,29 +1,29 @@
-resource "authentik_provider_proxy" "alloy" {
-  name               = "Alloy"
+resource "authentik_provider_proxy" "alloy-tie" {
+  name               = "Alloy Tie"
   external_host      = "https://alloy.tie.${var.domain}"
   mode               = "forward_single"
   authorization_flow = var.default_authorization_flow
   invalidation_flow  = var.default_invalidation_flow
 }
 
-resource "authentik_application" "alloy" {
-  name              = "Alloy"
-  slug              = "alloy"
+resource "authentik_application" "alloy-tie" {
+  name              = "Alloy Tie"
+  slug              = "alloy-tie"
   group             = "Monitoring"
-  protocol_provider = authentik_provider_proxy.alloy.id
+  protocol_provider = authentik_provider_proxy.alloy-tie.id
   meta_launch_url   = "https://alloy.tie.${var.domain}/"
   meta_icon         = "application-icons/alloy.png"
   open_in_new_tab   = true
 }
 
-resource "authentik_policy_binding" "alloy" {
-  target = authentik_application.alloy.uuid
+resource "authentik_policy_binding" "alloy-tie" {
+  target = authentik_application.alloy-tie.uuid
   group  = var.authentik_admin_group_id
   order  = 0
 }
 
-resource "authentik_policy_binding" "alloy_prometheus_user" {
-  target = authentik_application.alloy.uuid
+resource "authentik_policy_binding" "alloy_prometheus_user_tie" {
+  target = authentik_application.alloy-tie.uuid
   user   = var.authentik_prometheus_user_id
   order  = 0
 }
