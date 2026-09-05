@@ -6,11 +6,11 @@ services:
     restart: unless-stopped
     volumes:
       - ${DOCKER_DATA}/games/romm/resources:/romm/resources
-      - ${DOCKER_DATA}/games/romm/data:/redis-data
+      - ${DOCKER_DATA}/games/romm/assets:/romm/assets
       - ${ROMS}/games/roms:/romm/library/roms
       - ${ROMS}/games/bios:/romm/library/bios:ro
-      - ${DOCKER_DATA}/games/romm/assets:/romm/assets
-      - ${DOCKER_DATA}/games/romm/config:/romm/config
+      - ./config:/romm/config
+      - redis-data:/redis-data
     environment:
       - DISABLE_USERPASS_LOGIN=${DISABLE_USERPASS_LOGIN}
       - ROMM_DB_DRIVER=${DB_DRIVER}
@@ -86,3 +86,6 @@ networks:
     external: true
   server-database:
     external: true
+
+volumes:
+  redis-data:
