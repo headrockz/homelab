@@ -1,0 +1,8 @@
+logging {
+  level = "info"
+  format = "logfmt"
+}
+
+livedebugging {
+  enabled = true
+}

@@ -1,0 +1,27 @@
+// Docker container metrics sent to Mimir.
+
+// Expose container CPU, memory, network, and disk usage.
+prometheus.exporter.cadvisor "docker_metrics" {
+  docker_host = "unix:///var/run/docker.sock"
+}
+
+// Add stable labels to cAdvisor targets.
+discovery.relabel "cadvisor_targets" {
+  targets = prometheus.exporter.cadvisor.docker_metrics.targets
+
+  rule {
+    target_label = "host"
+    replacement  = constants.hostname
+  }
+
+  rule {
+    target_label = "instance"
+    replacement  = constants.hostname
+  }
+}
+
+// Scrape cAdvisor metrics.
+prometheus.scrape "scrape_docker" {
+  targets    = discovery.relabel.cadvisor_targets.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}

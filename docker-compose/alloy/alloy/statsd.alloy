@@ -1,0 +1,16 @@
+// StatsD metrics sent to Mimir.
+
+// Receive legacy StatsD packets.
+prometheus.exporter.statsd "legacy_app" {
+  listen_udp = "0.0.0.0:8125"
+  // mapping_config_path = "/etc/alloy/statsd-mapping.yaml"
+}
+
+// Scrape and forward StatsD metrics.
+prometheus.scrape "statsd" {
+  targets         = prometheus.exporter.statsd.legacy_app.targets
+  forward_to      = [prometheus.remote_write.mimir.receiver]
+  job_name        = "statsd-metrics"
+  scrape_interval = "5s"
+  scrape_timeout  = "4s"
+}

@@ -1,0 +1,67 @@
+// System logs sent to Loki.
+
+// Promote useful journal fields to labels.
+loki.relabel "journal" {
+  forward_to = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+
+  rule {
+    source_labels = ["__journal_priority_keyword"]
+    target_label  = "priority"
+  }
+
+  rule {
+    source_labels = ["__journal__hostname"]
+    target_label  = "hostname"
+  }
+}
+
+// Read the systemd journal.
+loki.source.journal "read_system_logs" {
+  max_age       = "12h"
+  relabel_rules = loki.relabel.journal.rules
+  forward_to    = [loki.process.journal.receiver]
+
+  labels = {
+    job      = "systemd",
+    host     = constants.hostname,
+    instance = constants.hostname,
+  }
+}
+
+// Optional journal filters.
+loki.process "journal" {
+  // stage.match {
+  //   selector = `{unit=~"systemd-logind.service|systemd-tmpfiles-clean.service|cron.service"}`
+  //   action   = "drop"
+  // }
+
+  // stage.match {
+  //   selector = `{priority=~"info|debug"}`
+  //   action   = "drop"
+  // }
+
+  forward_to = [loki.write.loki.receiver]
+}
+
+// Find host .log files under /var/log.
+local.file_match "varlog" {
+  path_targets = [
+    {
+      __path__ = "/rootfs/var/log/**/*.log",
+      job      = "varlog",
+      host     = constants.hostname,
+      instance = constants.hostname,
+    },
+  ]
+}
+
+// Read the matched log files.
+loki.source.file "varlog" {
+  targets    = local.file_match.varlog.targets
+  forward_to = [loki.write.loki.receiver]
+}

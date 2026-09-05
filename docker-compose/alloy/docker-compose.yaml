@@ -5,6 +5,10 @@ services:
     container_name: alloy
     hostname: ${SERVER}
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     command:
       - run
       - --server.http.listen-addr=0.0.0.0:12345
@@ -13,6 +17,9 @@ services:
     #   - 12345:12345
     #   - 4317:4317
     #   - 4318:4318
+    #   - 8125:8125/udp
+    #   - 51893:51893/tcp
+    #   - 51898:51898/udp
     volumes:
       - ./alloy:/etc/alloy
       - /var/run/docker.sock:/var/run/docker.sock

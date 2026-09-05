@@ -1,0 +1,18 @@
+// Syslog messages sent to Loki.
+
+// Receive syslog over TCP.
+loki.source.syslog "local" {
+  listener {
+    address  = "0.0.0.0:51893"
+    labels   = { component = "loki.source.syslog", protocol = "tcp" }
+  }
+
+  // Receive syslog over UDP.
+  listener {
+    address  = "0.0.0.0:51898"
+    protocol = "udp"
+    labels   = { component = "loki.source.syslog", protocol = "udp" }
+  }
+
+  forward_to = [loki.write.loki.receiver]
+}

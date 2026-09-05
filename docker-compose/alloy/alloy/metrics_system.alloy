@@ -1,0 +1,37 @@
+// System metrics sent to Mimir.
+
+// Expose CPU, memory, disk, and network metrics.
+prometheus.exporter.unix "host_metrics" {
+  procfs_path = "/host/proc"
+  rootfs_path = "/rootfs"
+  sysfs_path  = "/host/sys"
+}
+
+// Expose host process metrics.
+prometheus.exporter.process "processes" {
+  procfs_path = "/host/proc"
+}
+
+// Add stable labels to system targets.
+discovery.relabel "host_targets" {
+  targets = concat(
+    prometheus.exporter.unix.host_metrics.targets,
+    prometheus.exporter.process.processes.targets,
+  )
+
+  rule {
+    target_label = "host"
+    replacement  = constants.hostname
+  }
+
+  rule {
+    target_label = "instance"
+    replacement  = constants.hostname
+  }
+}
+
+// Scrape local system metrics.
+prometheus.scrape "scrape_host" {
+  targets    = discovery.relabel.host_targets.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
