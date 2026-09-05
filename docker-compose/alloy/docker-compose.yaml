@@ -33,6 +33,7 @@ services:
       - .env
     networks:
       - server-backend
+      - server-database
     labels:
       - traefik.enable=true
       - traefik.http.routers.alloy.entrypoints=https
@@ -59,4 +60,6 @@ services:
 
 networks:
   server-backend:
+    external: true
+  server-database:
     external: true

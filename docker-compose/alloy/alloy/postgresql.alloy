@@ -1,0 +1,14 @@
+// PostgreSQL metrics sent to Mimir.
+prometheus.exporter.postgres "postgres" {
+  data_source_names = [
+    "postgresql://" + env("POSTGRES_USER") + ":" + env("POSTGRES_PASSWORD") + "@postgresql:5432/postgres?sslmode=disable",
+  ]
+}
+
+// Scrape PostgreSQL metrics.
+prometheus.scrape "postgres" {
+  targets    = prometheus.exporter.postgres.postgres.targets
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  scrape_interval = "15s"
+}
