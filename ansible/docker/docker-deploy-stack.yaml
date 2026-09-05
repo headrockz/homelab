@@ -59,9 +59,15 @@
       changed_when: sed_result.rc == 0
       failed_when: sed_result.rc != 0
 
-    - name: Create docker network if it doesn't exist
+    - name: Create docker network server-backend if it doesn't exist
       community.docker.docker_network:
         name: server-backend
+        state: present
+      changed_when: false
+
+    - name: Create docker network server-database if it doesn't exist
+      community.docker.docker_network:
+        name: server-database
         state: present
       changed_when: false
 
