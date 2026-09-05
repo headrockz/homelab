@@ -6,6 +6,7 @@ source /etc/bashrc.d/mqtt.sh
 BROKER=$MQTT_HOST
 USERNAME=$MQTT_USER
 PASSWORD=$MQTT_PASS
+PORT="${MQTT_PORT:-8883}"
 TOPIC="${1:-}"
 
 
@@ -18,7 +19,7 @@ else
 fi
 
 # Publica a mensagem via MQTT com autenticação
-mosquitto_pub -h $BROKER -t "$TOPIC" -u $USERNAME -P $PASSWORD -m "{\"state\": \"$STATUS\"}"
+mosquitto_pub -h $BROKER -t "$TOPIC" -p "$PORT" -u $USERNAME -P $PASSWORD --cafile "${CERTS_PATH}/services/ca.pem" --cert "${CERTS_PATH}/services/client-cert.pem" --key "${CERTS_PATH}/services/client-key.pem" -m "{\"state\": \"$STATUS\"}"
 
 # Verifica se a publicação foi bem-sucedida
 if [ $? -eq 0 ]; then

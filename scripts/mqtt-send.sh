@@ -8,7 +8,7 @@ if [ -f /etc/bashrc.d/mqtt.sh ]; then
 fi
 
 BROKER="${MQTT_HOST}"
-PORT="${MQTT_PORT:-1883}"
+PORT="${MQTT_PORT:-8883}"
 USERNAME="${MQTT_USER}"
 PASSWORD="${MQTT_PASS}"
 SYSTEM_TOPIC="${1:-}"
@@ -37,7 +37,7 @@ payload="$(printf '{"state":"%s","containers_running":%s,"containers_stopped":%s
     "$cpu_usage" \
     "$boot_time")"
 
-mosquitto_pub -h "$BROKER" -p "$PORT" -u "$USERNAME" -P "$PASSWORD" -t "$SYSTEM_TOPIC" -m "$payload"
+mosquitto_pub -h "$BROKER" -p "$PORT" -u "$USERNAME" -P "$PASSWORD" --cafile "${CERTS_PATH}/services/ca.pem" --cert "${CERTS_PATH}/services/client-cert.pem" --key "${CERTS_PATH}/services/client-key.pem" -t "$SYSTEM_TOPIC" -m "$payload"
 system_status=$?
 
 if [ "$system_status" -eq 0 ]; then

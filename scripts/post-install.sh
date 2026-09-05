@@ -2,10 +2,10 @@
 # ----------------------------------------------------------------- #
 # Linguagens ->  Python
 # Gerenciador de versões -> pyenv, poetry
-# Ferramentas -> Docker, kubectl, k9s, Helm, opentofu,
-#                lazygit, lazydocker, harlequin
+# Ferramentas -> Docker, kubectl, k9s, Helm, opentofu, ansible,
+#                lazygit, lazydocker, harlequin, herdr
 # Shell -> zsh
-# Plugins -> powerlevel10k zsh-autosuggstions
+# Plugins -> oh-my-posh zsh-autosuggstions
 #            fast-syntax-highlighting zsh-completions
 # ----------------------------------------------------------------- #
 
@@ -79,9 +79,7 @@ git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $HOME/.z
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions &&
 
 ############################ My dotfiles ############################
-git clone https://github.com/headrockz/mydotfliles.git &&
-
-mv .mydotfliles/.zshrc $HOME/ &&
+git clone https://github.com/headrockz/dotfliles.git &&
 
 ################## Definindo o zsh com shell padrao #################
 sudo usermod --shell $(which zsh) $USER ;
