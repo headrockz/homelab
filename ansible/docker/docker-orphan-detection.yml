@@ -1,0 +1,71 @@
+---
+- name: Docker orphan cleanup
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Remove exited containers
+      ansible.builtin.shell:
+        cmd: |
+          containers=$(docker ps -aq --filter status=exited)
+
+          if [ -n "$containers" ]; then
+            docker rm $containers
+          fi
+      register: removed_exited_containers
+      changed_when: removed_exited_containers.stdout | length > 0
+
+    - name: Print removed exited containers
+      ansible.builtin.debug:
+        msg: "{{ removed_exited_containers.stdout_lines }}"
+      when: removed_exited_containers.stdout | length > 0
+
+    - name: Remove dead containers
+      ansible.builtin.shell:
+        cmd: |
+          containers=$(docker ps -aq --filter status=dead)
+
+          if [ -n "$containers" ]; then
+            docker rm $containers
+          fi
+      register: removed_dead_containers
+      changed_when: removed_dead_containers.stdout | length > 0
+
+    - name: Print removed dead containers
+      ansible.builtin.debug:
+        msg: "{{ removed_dead_containers.stdout_lines }}"
+      when: removed_dead_containers.stdout | length > 0
+
+    - name: Remove dangling images
+      ansible.builtin.command:
+        cmd: docker image prune -f
+      register: removed_dangling_images
+      changed_when: "'Total reclaimed space: 0B' not in removed_dangling_images.stdout"
+
+    - name: Print removed dangling images
+      ansible.builtin.debug:
+        msg: "{{ removed_dangling_images.stdout_lines }}"
+      when: removed_dangling_images.stdout | length > 0
+
+    - name: Remove dangling volumes
+      ansible.builtin.command:
+        cmd: docker volume prune -f
+      register: removed_dangling_volumes
+      changed_when: "'Total reclaimed space: 0B' not in removed_dangling_volumes.stdout"
+
+    - name: Print removed dangling volumes
+      ansible.builtin.debug:
+        msg: "{{ removed_dangling_volumes.stdout_lines }}"
+      when: removed_dangling_volumes.stdout | length > 0
+
+    - name: Remove dangling networks
+      ansible.builtin.command:
+        cmd: docker network prune -f
+      register: removed_dangling_networks
+      changed_when: true
+
+    - name: Print removed dangling networks
+      ansible.builtin.debug:
+        msg: "{{ removed_dangling_networks.stdout_lines }}"
+      when: removed_dangling_networks.stdout | length > 0
