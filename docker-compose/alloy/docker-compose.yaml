@@ -21,6 +21,7 @@ services:
     #   - 51893:51893/tcp
     #   - 51898:51898/udp
     volumes:
+      - ${CERTS_PATH}/certs/services:/certs
       - ./alloy:/etc/alloy
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc:/host/proc:ro
@@ -45,17 +46,18 @@ services:
       - traefik.http.routers.alloy.middlewares=authentik@file
       # OTLP HTTP
       - traefik.http.routers.otlp-http.entrypoints=https
-      - traefik.http.routers.otlp-http.rule=Host(`otlp.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.otlp-http.rule=Host(`otlp-http.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.otlp-http.tls=true
       - traefik.http.routers.otlp-http.tls.certresolver=cloudflare
-      - traefik.http.routers.otlp-http.service=otlp-http
       - traefik.http.services.otlp-http.loadbalancer.server.port=4318
+      - traefik.http.routers.otlp-http.service=otlp-http
       # OTLP gRPC
       - traefik.http.routers.otlp-grpc.entrypoints=https
       - traefik.http.routers.otlp-grpc.rule=Host(`otlp-grpc.${SERVER}.${DOMAIN}`)
-      - traefik.http.routers.otlp-grpc.tls.certresolver=cloudflare
-      - traefik.http.routers.otlp-grpc.service=otlp-grpc
       - traefik.http.routers.otlp-grpc.tls=true
+      - traefik.http.routers.otlp-grpc.tls.certresolver=cloudflare
       - traefik.http.services.otlp-grpc.loadbalancer.server.port=4317
+      - traefik.http.routers.otlp-grpc.service=otlp-grpc
       - traefik.http.services.otlp-grpc.loadbalancer.server.scheme=h2c
 
 networks:
