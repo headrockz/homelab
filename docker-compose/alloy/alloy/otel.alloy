@@ -1,13 +1,20 @@
 // OTLP telemetry pipeline.
+otelcol.auth.basic "otlp" {
+  htpasswd {
+    file = "/etc/alloy/.htpasswd"
+  }
+}
 
 // Receive OTLP over gRPC and HTTP.
 otelcol.receiver.otlp "default" {
   grpc {
     endpoint = "0.0.0.0:4317"
+    auth = otelcol.auth.basic.otlp.handler
   }
 
   http {
     endpoint = "0.0.0.0:4318"
+    auth = otelcol.auth.basic.otlp.handler
   }
 
   // Route all signals to the batch processor.
