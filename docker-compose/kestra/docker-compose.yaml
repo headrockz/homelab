@@ -7,6 +7,10 @@ services:
     restart: always
     pull_policy: always
     user: "root"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
     volumes:
       - ${DOCKER_DATA}/kestra:/app/storage
       - ./config/config.yaml:/app/config.yaml:ro
