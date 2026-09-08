@@ -11,7 +11,7 @@ services:
           memory: 2048M
     volumes:
       - ${DOCKER_DATA}/syncthing/config:/var/syncthing
-      - ${SHARED_DATA}:/sync/sata
+      - ${VOLUME_DATA}:/sync/sata
       - ${PROJECT_DATA}:/sync/projects
     environment:
       - PGID=${PGID}

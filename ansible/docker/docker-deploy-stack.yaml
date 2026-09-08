@@ -9,11 +9,19 @@
     - community.docker
 
   tasks:
-    - name: Copy docker-compose files
-      ansible.builtin.copy:
-        src: "{{ local_dir }}"
-        dest: "{{ compose_path }}"
-        mode: '0644'
+    - name: Synchronize docker-compose files
+      ansible.posix.synchronize:
+        src: "{{ local_dir }}/"
+        dest: "{{ compose_path }}/{{ compose_name }}"
+        recursive: true
+        delete: true
+        rsync_opts:
+          - "--exclude=acme.json"
+          - "--exclude=otel.alloy"
+          - "--exclude=postgresql.alloy"
+          - "--exclude=syslog.alloy"
+          - "--exclude=.htpasswd"
+          - "--exclude=certs/"
 
     - name: Update server .env file with hostname
       ansible.builtin.lineinfile:
@@ -33,28 +41,29 @@
         regexp: '^DOCKER_DATA='
         line: "DOCKER_DATA={{ docker_volume | default('~/docker') }}"
 
-    # Specific case for stack "garage"
-    - name: Update volume data (only for containers garage)
-      when: compose_name == "garage-hq"
+    # Specific case for stack garage, zerobyte, and syncthing
+    - name: Update volume data (only for containers garage, zerobyte, syncthing)
+      when: compose_name in ["garage-hq", "zerobyte", "syncthing"]
       ansible.builtin.lineinfile:
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^VOLUME_DATA='
         line: "VOLUME_DATA={{ volume_data | default('~/compose') }}"
-
-    # Specific case for stack "shares"
-    - name: Update shared data (only for containers shares)
-      when: compose_name == "shares"
-      ansible.builtin.lineinfile:
-        path: "{{ compose_path }}/{{ compose_name }}/.env"
-        regexp: '^SHARED_DATA='
-        line: "SHARED_DATA={{ path_syncthing | default('~/compose') }}"
 
     # Specific case for stack "traefik"
     - name: Update middleware.yaml with hostname
       when: compose_name == "traefik"
       ansible.builtin.shell:
         cmd: |
-          sed -i "s|address: http://authentik-server:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname):9000/outpost.goauthentik.io/auth/traefik|g" {{ compose_path }}/{{ compose_name }}/config/middleware.yaml
+          sed -i "s|address: http://authentik-server:9000/outpost.goauthentik.io/auth/traefik|address: http://ak-outpost-$(hostname)-outpost:9000/outpost.goauthentik.io/auth/traefik|g" {{ compose_path }}/{{ compose_name }}/config/middleware.yaml
+      register: sed_result
+      changed_when: sed_result.rc == 0
+      failed_when: sed_result.rc != 0
+
+    - name: Update middleware.yaml with hostname
+      when: compose_name == "traefik"
+      ansible.builtin.shell:
+        cmd: |
+          sed -i "s|\"falcon\"|\"{{ ansible_hostname }}\"|g" {{ compose_path }}/{{ compose_name }}/config/traefik.yaml
       register: sed_result
       changed_when: sed_result.rc == 0
       failed_when: sed_result.rc != 0
