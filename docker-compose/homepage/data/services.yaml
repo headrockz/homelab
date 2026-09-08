@@ -349,6 +349,12 @@
           type: homeassistant
           url: https://home.{{HOMEPAGE_VAR_DOMAIN}}
           key: "{{HOMEPAGE_VAR_HASS_API}}"
+    - Music Assistant:
+        icon: music-assistant.png
+        href: "https://music.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: music-assistant
     - Zigbee2MQTT:
         icon: zigbee2mqtt.png
         href: "https://zigbee.{{HOMEPAGE_VAR_DOMAIN}}"

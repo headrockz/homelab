@@ -70,6 +70,30 @@ services:
       - traefik.http.routers.zigbee2mqtt.tls.certresolver=cloudflare
       - traefik.http.routers.zigbee2mqtt.service=zigbee2mqtt
 
+  musicassistant:
+    image: ghcr.io/music-assistant/server:2.10.2
+    container_name: music-assistant
+    restart: unless-stopped
+    # ports:
+    #   - "8095:8095"
+    #   - "8097:8097"
+    volumes:
+      - ${DOCKER_DATA}/smart_home/musicassistant:/data/
+      # - ${MEDIA_PATH}/media:/media:ro # Local media folder
+    environment:
+      - TZ=${TZ}
+    networks:
+      - server-backend
+      - smart-home
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.musicassistant.entrypoints=https
+      - traefik.http.routers.musicassistant.rule=Host(`music.${DOMAIN}`)
+      - traefik.http.routers.musicassistant.tls=true
+      - traefik.http.services.musicassistant.loadbalancer.server.port=8095
+      - traefik.http.routers.musicassistant.tls.certresolver=cloudflare
+      - traefik.http.routers.musicassistant.service=musicassistant
+
 #   nodered:
 #     container_name: nodered
 #     restart: unless-stopped
