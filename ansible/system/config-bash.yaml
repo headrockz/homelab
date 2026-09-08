@@ -1,0 +1,46 @@
+---
+- name: Install and Configure ZSH with Oh My Posh and Plugins
+  hosts: "{{ hosts | default([]) }}"
+  become: true
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - zsh
+          - curl
+          - git
+          - unzip
+          - tar
+        state: present
+        update_cache: true
+
+    - name: Create a backup of the original bashrc
+      command: cp ~/.bashrc ~/.bashrc.bak
+      args:
+        creates: ~/.bashrc.bak
+
+    - name: Install oh-my-posh
+      ansible.builtin.shell:
+        cmd: |
+          curl -s https://ohmyposh.dev/install.sh | bash -s
+
+    - name: Download my oh-my-posh theme
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/headrockz/mydotfiles/refs/heads/main/my_posh_config.omp.json
+        dest: "~/.my_posh_config.omp.json"
+        mode: '0644'
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+      become: true
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Copy .zshrc configuration file
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/templates/.bashrc.j2"
+        dest: "~/.bashrc"
+        mode: '0644'
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+      become: true
+      become_user: "{{ ansible_user_id }}"
