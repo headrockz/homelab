@@ -79,6 +79,7 @@
         container: grafana
         widget:
           type: grafana
+          version: 2
           url: https://grafana.{{HOMEPAGE_VAR_DOMAIN}}
           username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
           password: "{{HOMEPAGE_VAR_GRAFANA_API}}"
@@ -180,6 +181,16 @@
           type: jellyfin
           url: https://jellyfin.{{HOMEPAGE_VAR_DOMAIN}}
           key: "{{HOMEPAGE_VAR_JELLYFIN_API}}"
+    - Syncthing Falcon:
+        icon: syncthing.png
+        href: "https://syncthing.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: syncthing
+        widget:
+          type: syncthing
+          url: https://syncthing.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_SYNCTHING_API}}"
     - Transmission:
         icon: transmission.png
         href: "https://transmission.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -188,7 +199,7 @@
         container: transmission
         widget:
           type: transmission
-          url: https://transmission.{{HOMEPAGE_VAR_DOMAIN}}
+          url: http://transmission:9091
           username: "{{HOMEPAGE_VAR_TRANSMISSION_USER}}"
           password: "{{HOMEPAGE_VAR_TRANSMISSION_API}}"
           rpcUrl: /transmission/
@@ -210,12 +221,6 @@
         description: Server Falcon
         server: my-docker
         container: zerobyte
-    - Syncthing Falcon:
-        icon: syncthing.png
-        href: "https://syncthing.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Falcon
-        server: my-docker
-        container: syncthing
 
 - Databases:
     - Databasus:
