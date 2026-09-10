@@ -8,6 +8,7 @@ services:
     deploy:
       resources:
         limits:
+          cpus: 0.20
           memory: 512M
     command:
       - run
