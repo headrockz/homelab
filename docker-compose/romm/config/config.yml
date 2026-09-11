@@ -1,0 +1,163 @@
+---
+emulatorjs:
+  cache_limit: null
+  controls: {}
+  debug: false
+  disable_auto_unload: false
+  disable_batch_bootup: false
+  netplay:
+    enabled: false
+    ice_servers: []
+  settings: {}
+exclude:
+  platforms:
+    - '#recycle'
+    - $RECYCLE.BIN
+    - .DocumentRevisions-V100
+    - .Spotlight-V100
+    - .Trash-*
+    - .fseventsd
+    - .stfloder*
+    - .stfolder
+    - .stfolder*
+    - .stfolder.removed-20241029-174101
+    - .sync
+    - .sync*
+    - '@eaDir'
+    - System Volume Information
+    - __MACOSX
+    - assets
+    - media
+  roms:
+    multi_file:
+      names:
+        - '#recycle'
+        - $RECYCLE.BIN
+        - .DocumentRevisions-V100
+        - .Spotlight-V100
+        - .Trash-*
+        - .fseventsd
+        - .media
+        - .stfolder
+        - .stfolder.removed-20241029-202043
+        - '@eaDir'
+        - System Volume Information
+        - __MACOSX
+        - assets
+        - media
+      parts:
+        extensions:
+          - bak
+          - cache
+          - crdownload
+          - db
+          - ini
+          - lock
+          - log
+          - media
+          - tmp
+        names:
+          - '*:Zone.Identifier'
+          - .DS_Store
+          - .Trashes
+          - .localized
+          - .stfolder
+          - '@SynoResource'
+          - gamelist.xml
+          - media
+          - metadata.pegasus.txt
+    single_file:
+      extensions:
+        - '*.db'
+        - '*.ds_store*'
+        - '*.stf'
+        - '*.txt*'
+        - '*media*'
+        - .ds_store
+        - .stfloder
+        - .stfolder
+        - .stfolder*
+        - bak
+        - cache
+        - crdownload
+        - db
+        - ini
+        - lock
+        - log
+        - media
+        - tmp
+      names:
+        - '*.DS_Store*'
+        - '*.sft*'
+        - '*.stfolder*'
+        - '*.txt'
+        - '*:Zone.Identifier'
+        - '*media*'
+        - .DS_Store
+        - .Trashes
+        - .localized
+        - .sft*
+        - .stfolder
+        - .stfolder*
+        - .stfolder.removed-20241029-202043
+        - .stignore
+        - .sync
+        - .txt
+        - '@SynoResource'
+        - gamelist.xml
+        - media
+        - metadata.pegasus.txt
+filesystem:
+  firmware_folder: bios
+  roms_folder: roms
+  skip_hash_calculation: false
+scan:
+  gamelist:
+    export: false
+    media:
+      image: screenshot
+      thumbnail: box2d
+  media:
+    - box2d
+    - screenshot
+    - manual
+  pegasus:
+    export: false
+  priority:
+    artwork:
+      - igdb
+      - moby
+      - ss
+      - ra
+      - lb
+      - hasheous
+      - tgdb
+      - flashpoint
+      - hltb
+    language:
+      - en
+      - fr
+    metadata:
+      - igdb
+      - moby
+      - ss
+      - ra
+      - lb
+      - hasheous
+      - tgdb
+      - flashpoint
+      - hltb
+    region:
+      - us
+      - wor
+      - ss
+      - eu
+      - jp
+    region_mode: prefer_rom_tags
+system:
+  platforms:
+    dreamcast: dc
+    gameandwatch: g-and-w
+    gamecube: ngc
+    ngp: neo-geo-pocket
+  versions: {}
