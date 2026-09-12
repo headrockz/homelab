@@ -14,12 +14,12 @@ services:
       - transmission_config:/config
       - ${MEDIA}/downloads:/downloads
       - ${MEDIA}/watch:/watch
-    networks:
-      - server-backend
     ports:
       # - 9091:9091
       - 51413:51413
       - 51413:51413/udp
+    networks:
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.transmission.entrypoints=https

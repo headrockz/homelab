@@ -3,18 +3,16 @@ services:
   homeassistant:
     container_name: hass
     image: homeassistant/home-assistant:2026.6.2
+    restart: unless-stopped
     volumes:
       - ${DOCKER_DATA}/smart_home/hass:/config
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
+    # ports:
+    #   - 8123:8123
     networks:
       - smart-home
       - server-backend
-    # ports:
-    #   - 8123:8123
-    depends_on:
-      - mqtt
     labels:
       - traefik.enable=true
       - traefik.http.routers.homeassistant.entrypoints=https
@@ -23,6 +21,8 @@ services:
       - traefik.http.services.homeassistant.loadbalancer.server.port=8123
       - traefik.http.routers.homeassistant.tls.certresolver=cloudflare
       - traefik.http.routers.homeassistant.service=homeassistant
+    depends_on:
+      - mqtt
 
   mqtt:
     container_name: mqtt
@@ -45,6 +45,8 @@ services:
     container_name: zigbee2mqtt
     restart: unless-stopped
     image: koenkk/zigbee2mqtt:2.12
+    environment:
+      - TZ=${TZ}
     volumes:
       - ./zigbee:/app/data
       - ${CERTS_PATH}/certs:/certs
@@ -54,13 +56,6 @@ services:
     networks:
       - smart-home
       - server-backend
-    environment:
-      - TZ=${TZ}
-    # add usb adapter zigbee
-    devices:
-      - /dev/ttyACM0:/dev/ttyACM0
-    depends_on:
-      - mqtt
     labels:
       - traefik.enable=true
       - traefik.http.routers.zigbee2mqtt.entrypoints=https
@@ -69,19 +64,24 @@ services:
       - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8080
       - traefik.http.routers.zigbee2mqtt.tls.certresolver=cloudflare
       - traefik.http.routers.zigbee2mqtt.service=zigbee2mqtt
+    depends_on:
+      - mqtt
+    # add usb adapter zigbee
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
 
   musicassistant:
     image: ghcr.io/music-assistant/server:2.10.2
     container_name: music-assistant
     restart: unless-stopped
-    # ports:
-    #   - "8095:8095"
-    #   - "8097:8097"
+    environment:
+      - TZ=${TZ}
     volumes:
       - ${DOCKER_DATA}/smart_home/musicassistant:/data/
       # - ${MEDIA_PATH}/media:/media:ro # Local media folder
-    environment:
-      - TZ=${TZ}
+    # ports:
+    #   - "8095:8095"
+    #   - "8097:8097"
     networks:
       - server-backend
       - smart-home

@@ -4,12 +4,12 @@ services:
     image: postgres:16
     container_name: postgres
     restart: always
-    volumes:
-      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
-      - ${CERTS_PATH}/certs:/certs:z
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST_AUTH_METHOD: ${POSTGRES_AUTH}
+    volumes:
+      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
+      - ${CERTS_PATH}/certs:/certs
     ports:
       - 5432:5432
     networks:
@@ -28,10 +28,10 @@ services:
     image: mysql
     container_name: mysql
     restart: always
-    volumes:
-      - ${DOCKER_DATA}/mysql/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ${DOCKER_DATA}/mysql/data:/var/lib/mysql
     ports:
       - 3306:3306
     networks:
@@ -52,12 +52,12 @@ services:
     image: mongo:latest
     container_name: mongo
     restart: always
-    volumes:
-      - ${DOCKER_DATA}/mongo/data:/data/db
-      - ${DOCKER_DATA}/mongo/config:/data/configdb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - ${DOCKER_DATA}/mongo/data:/data/db
+      - ${DOCKER_DATA}/mongo/config:/data/configdb
     ports:
       - 27017:27017
     networks:
@@ -67,8 +67,6 @@ services:
     image: mongo-express
     container_name: mongo-express
     restart: always
-    volumes:
-      - ${CERTS_PATH}/certs:/certs:Z
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: ${EXPRESS_USER}
       ME_CONFIG_BASICAUTH_PASSWORD: ${EXPRESS_PASSWORD}
@@ -79,8 +77,13 @@ services:
       ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - ${CERTS_PATH}/certs:/certs:Z
     ports:
       - 8081:8081
+    networks:
+      - server-database
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.mongo-express.entrypoints=https
@@ -92,18 +95,11 @@ services:
       - traefik.http.routers.mongo-express.service=mongo-express
     links:
       - mongo
-    networks:
-      - server-database
-      - server-backend
 
   influxdb:
     image: influxdb:2.9.1-alpine
     container_name: influxdb
     restart: always
-    volumes:
-      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
-      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
-      - ${CERTS_PATH}/certs:/certs:Z
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=${INFLUX_MODE}
       - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER}
@@ -113,8 +109,15 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
       - INFLUXD_TLS_CERT=${INFLUX_CERTIFICATE}
       - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
+    volumes:
+      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
+      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
+      - ${CERTS_PATH}/certs:/certs:Z
     ports:
       - 8086:8086
+    networks:
+      - server-database
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.influxdb.entrypoints=https
@@ -124,9 +127,6 @@ services:
       - traefik.http.services.influxdb.loadbalancer.server.port=8086
       - traefik.http.routers.influxdb.tls.certresolver=cloudflare
       - traefik.http.routers.influxdb.service=influxdb
-    networks:
-      - server-database
-      - server-backend
 
 networks:
   server-database:

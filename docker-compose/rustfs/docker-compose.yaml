@@ -4,15 +4,6 @@ services:
     image: rustfs/rustfs:latest
     container_name: rustfs
     restart: unless-stopped
-    # ports:
-    #   - 9000:9000
-    #   - 9001:9001
-    security_opt:
-      - "no-new-privileges:true"
-    networks:
-      - server-backend
-    env_file:
-      - .env
     environment:
       - RUSTFS_ROOT_USER=${RUSTFS_ROOT_USER}
       - RUSTFS_ROOT_PASSWORD=${RUSTFS_ROOT_PASSWORD}
@@ -29,8 +20,15 @@ services:
       - RUSTFS_IDENTITY_OPENID_GROUPS_CLAIM=${RUSTFS_IDENTITY_OPENID_GROUPS_CLAIM}
       - RUSTFS_IDENTITY_OPENID_EMAIL_CLAIM=${RUSTFS_IDENTITY_OPENID_EMAIL_CLAIM}
       - RUSTFS_IDENTITY_OPENID_USERNAME_CLAIM=${RUSTFS_IDENTITY_OPENID_USERNAME_CLAIM}
+    env_file:
+      - .env
     volumes:
       - ${DOCKER_DATA}:/data
+    # ports:
+    #   - 9000:9000
+    #   - 9001:9001
+    networks:
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.rustfs.entrypoints=https
@@ -45,6 +43,8 @@ services:
       - traefik.http.services.rustfs-ui.loadbalancer.server.port=9001
       - traefik.http.routers.rustfs-ui.tls.certresolver=cloudflare
       - traefik.http.routers.rustfs-ui.service=rustfs-ui
+    security_opt:
+      - "no-new-privileges:true"
 
 networks:
   server-backend:

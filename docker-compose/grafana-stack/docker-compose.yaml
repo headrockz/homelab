@@ -66,13 +66,6 @@ services:
     image: grafana/grafana:13.2.0
     container_name: grafana
     restart: unless-stopped
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - ${CERTS_PATH}/certs:/certs
-    env_file:
-      - .env
     environment:
       GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
@@ -87,6 +80,13 @@ services:
       GF_AUTH_OAUTH_AUTO_LOGIN: "true"
       GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(roles[*], 'GrafanaAdmin') && 'GrafanaAdmin' || contains(roles[*], 'Admin') && 'Admin' || contains(roles[*], 'Editor') && 'Editor' || 'Viewer'"
       GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN: "true"
+    env_file:
+      - .env
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ${CERTS_PATH}/certs:/certs
     # ports:
     #   - 3000:3000
     networks:
@@ -106,15 +106,15 @@ services:
     image: grafana/tempo:3.0.3
     restart: unless-stopped
     user: "root"
-    # ports:
-    #   - 3200:3200
-    #   - 4317:4317
-    #   - 4318:4318
     command:
       - '-config.file=/etc/tempo/config.yaml'
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo/config.yaml:ro
       - ${CERTS_PATH}/certs/services:/certs
+    # ports:
+    #   - 3200:3200
+    #   - 4317:4317
+    #   - 4318:4318
     networks:
       - server-backend
     labels:
