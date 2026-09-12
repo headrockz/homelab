@@ -20,7 +20,7 @@ services:
     # docker compose restart
     volumes:
       - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
-      - ${CERTS_PATH}/certs:/certs:z
+      - ${CERTS_PATH}/certs:/certs
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_HOST_AUTH_METHOD=${POSTGRES_AUTH}
