@@ -5,22 +5,12 @@ services:
     container_name: alloy
     hostname: ${SERVER}
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: 0.20
-          memory: 512M
     command:
       - run
       - --server.http.listen-addr=0.0.0.0:12345
       - /etc/alloy
-    # ports:
-    #   - 12345:12345
-    #   - 4317:4317
-    #   - 4318:4318
-    #   - 8125:8125/udp
-    #   - 51893:51893/tcp
-    #   - 51898:51898/udp
+    env_file:
+      - .env
     volumes:
       - ${CERTS_PATH}/certs/services:/certs
       - ./alloy:/etc/alloy
@@ -31,8 +21,13 @@ services:
       - /var/log/journal:/var/log/journal:ro
       - /run/log/journal:/run/log/journal:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    env_file:
-      - .env
+    # ports:
+    #   - 12345:12345
+    #   - 4317:4317
+    #   - 4318:4318
+    #   - 8125:8125/udp
+    #   - 51893:51893/tcp
+    #   - 51898:51898/udp
     networks:
       - server-backend
       - server-database
@@ -60,6 +55,11 @@ services:
       - traefik.http.services.otlp-grpc.loadbalancer.server.port=4317
       - traefik.http.routers.otlp-grpc.service=otlp-grpc
       - traefik.http.services.otlp-grpc.loadbalancer.server.scheme=h2c
+    deploy:
+      resources:
+        limits:
+          cpus: 0.20
+          memory: 512M
 
 networks:
   server-backend:

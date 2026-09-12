@@ -4,10 +4,6 @@ services:
     image: nxzai/explorer:v2.2.4
     container_name: nextexplorer
     restart: unless-stopped
-    networks:
-      - server-backend
-    # ports:
-    #   - "3000:3000"
     environment:
       - NODE_ENV=production
       - PUBLIC_URL=https://file.${DOMAIN}
@@ -36,6 +32,10 @@ services:
       - ${PROJECT_DATA}:/mnt/Projects
       - ${SHARED_DATA}:/mnt/Nas
       - /scripts:/mnt/scripts
+    # ports:
+    #   - "3000:3000"
+    networks:
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.nextexplorer.entrypoints=https

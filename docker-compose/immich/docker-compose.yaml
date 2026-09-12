@@ -4,27 +4,19 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:v3.0.3
     restart: always
+    env_file:
+      - .env
     volumes:
       - ${UPLOAD_LOCATION}/photos:/data
       - ${EXTERNAL_LOCATION}:/mnt/external:ro
       - ./immich.json:/app/immich.json
       - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - .env
     # ports:
     #   - '2283:2283'
     networks:
       - server-backend
       - immich
       - server-database
-    depends_on:
-      - redis
-      # - database
-    healthcheck:
-      disable: false
-    extends:
-      file: hwaccel.transcoding.yml
-      service: quicksync
     labels:
       - traefik.enable=true
       - traefik.http.routers.immich-server.entrypoints=https
@@ -33,6 +25,14 @@ services:
       - traefik.http.services.immich-server.loadbalancer.server.port=2283
       - traefik.http.routers.immich-server.tls.certresolver=cloudflare
       - traefik.http.routers.immich-server.service=immich-server
+    depends_on:
+      - redis
+      # - database
+    healthcheck:
+      disable: false
+    extends:
+      file: hwaccel.transcoding.yml
+      service: quicksync
 
   # immich-machine-learning:
   #   container_name: immich_machine_learning

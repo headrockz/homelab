@@ -6,18 +6,18 @@ services:
     restart: unless-stopped
     volumes:
       - ${DOCKER_DATA}/open-webui/data/open-webui:/app/backend/data
-    env_file:
-      - .env
     environment:
       OLLAMA_BASE_URL: ${APP_OLLAMA_URL}
+    env_file:
+      - .env
+    networks:
+      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.openwebui.rule=Host(`openwebui.${DOMAIN}`)
       - traefik.http.routers.openwebui.tls=true
       - traefik.http.services.openwebui.loadbalancer.server.port=8080
       - traefik.http.routers.openwebui.tls.certresolver=cloudflare
-    networks:
-      - server-backend
 
 networks:
   server-backend:

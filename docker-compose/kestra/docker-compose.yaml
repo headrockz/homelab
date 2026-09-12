@@ -3,14 +3,16 @@ services:
   kestra:
     image: kestra/kestra:develop
     container_name: kestra
-    command: server standalone --worker-thread=16 --config config.yaml
     restart: always
     pull_policy: always
     user: "root"
-    deploy:
-      resources:
-        limits:
-          memory: 2G
+    command: server standalone --worker-thread=16 --config config.yaml
+    environment:
+      - SECRET_SSH_KEY=${SECRET_SSH_KEY}
+      - SECRET_TELEGRAM_BOT_TOKEN=${SECRET_TELEGRAM_BOT_TOKEN}
+      - SECRET_TELEGRAM_CHAT_ID=${SECRET_TELEGRAM_CHAT_ID}
+    env_file:
+      - .env
     volumes:
       - ${DOCKER_DATA}/kestra:/app/storage
       - ./config/config.yaml:/app/config.yaml:ro
@@ -18,12 +20,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/kestra-wd:/tmp/kestra-wd
       - ${CERTS_PATH}/certs/services:/certs
-    environment:
-      - SECRET_SSH_KEY=${SECRET_SSH_KEY}
-      - SECRET_TELEGRAM_BOT_TOKEN=${SECRET_TELEGRAM_BOT_TOKEN}
-      - SECRET_TELEGRAM_CHAT_ID=${SECRET_TELEGRAM_CHAT_ID}
-    env_file:
-      - .env
     # ports:
     #   - 8080:8080
     #   - 8081:8081
@@ -38,6 +34,10 @@ services:
       - traefik.http.services.kestra.loadbalancer.server.port=8080
       - traefik.http.routers.kestra.tls.certresolver=cloudflare
       - traefik.http.routers.kestra.service=kestra
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
 networks:
   server-backend:

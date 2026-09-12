@@ -1,14 +1,14 @@
 ---
 services:
   databasus:
+    image: databasus/databasus:v3.42.0
     container_name: databasus
     hostname: ${SERVER}
     restart: always
-    image: databasus/databasus:v3.42.0
-    # ports:
-    #   - "4005:4005"
     volumes:
       - ${DOCKER_DATA}/databasus/data:/databasus-data
+    # ports:
+    #   - "4005:4005"
     networks:
       - server-backend
       - server-database

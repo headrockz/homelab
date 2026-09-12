@@ -5,18 +5,14 @@ services:
     hostname: server-syncthing
     container_name: syncthing
     restart: always
-    deploy:
-      resources:
-        limits:
-          memory: 2048M
-    volumes:
-      - ${DOCKER_DATA}/syncthing/config:/var/syncthing
-      - ${VOLUME_DATA}:/sync/sata
-      - ${PROJECT_DATA}:/sync/projects
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    volumes:
+      - ${DOCKER_DATA}/syncthing/config:/var/syncthing
+      - ${VOLUME_DATA}:/sync/sata
+      - ${PROJECT_DATA}:/sync/projects
     ports:
       # - 8384:8384
       - 22000:22000
@@ -31,6 +27,10 @@ services:
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
       - traefik.http.routers.syncthing.tls.certresolver=cloudflare
       - traefik.http.routers.syncthing.service=syncthing
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
 networks:
   server-backend:

@@ -7,12 +7,6 @@ services:
     restart: always
     user: telegraf:996
     entrypoint: /bin/bash -c "/entrypoint.sh telegraf"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
-      - /:/hostfs:ro
-    env_file:
-      - .env
     environment:
       - HOST_ETC=/hostfs/etc
       - HOST_PROC=/hostfs/proc
@@ -20,6 +14,12 @@ services:
       - HOST_VAR=/hostfs/var
       - HOST_RUN=/hostfs/run
       - HOST_MOUNT_PREFIX=/hostfs
+    env_file:
+      - .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /:/hostfs:ro
     networks:
       - server-telegraf
 

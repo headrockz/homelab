@@ -4,22 +4,22 @@ services:
     image: lscr.io/linuxserver/transmission:4.1.2
     container_name: transmission
     restart: always
-    volumes:
-      - transmission_config:/config
-      - ${MEDIA}/downloads:/downloads
-      - ${MEDIA}/watch:/watch
     environment:
       - PUID=${UID}
       - PGID=${UIG}
       - TZ=${TZ}
       - USER=${TRANSMISSION_USER}
       - PASS=${TRANSMISSION_PASSWORD}
+    volumes:
+      - transmission_config:/config
+      - ${MEDIA}/downloads:/downloads
+      - ${MEDIA}/watch:/watch
+    networks:
+      - server-backend
     ports:
       # - 9091:9091
       - 51413:51413
       - 51413:51413/udp
-    networks:
-      - server-backend
     labels:
       - traefik.enable=true
       - traefik.http.routers.transmission.entrypoints=https
@@ -34,13 +34,13 @@ services:
     image: jellyfin/jellyfin:10.11.11
     container_name: jellyfin
     restart: always
-    volumes:
-      - ${DOCKER_DATA}/jellyfin/config:/config
-      - ${MEDIA}:/Media
     environment:
       - PUID=${UID}
       - PGID=${UIG}
       - TZ=${TZ}
+    volumes:
+      - ${DOCKER_DATA}/jellyfin/config:/config
+      - ${MEDIA}:/Media
     ports:
       # - 8096:8096/tcp
       # - 8920:8920/tcp
@@ -48,8 +48,6 @@ services:
       - 1900:1900/udp
     networks:
       - server-backend
-    devices:
-      - /dev/dri:/dev/dri
     labels:
       - traefik.enable=true
       - traefik.http.routers.jellyfin.entrypoints=https
@@ -58,6 +56,8 @@ services:
       - traefik.http.services.jellyfin.loadbalancer.server.port=8096
       - traefik.http.routers.jellyfin.tls.certresolver=cloudflare
       - traefik.http.routers.jellyfin.service=jellyfin
+    devices:
+      - /dev/dri:/dev/dri
 
 networks:
   server-backend:

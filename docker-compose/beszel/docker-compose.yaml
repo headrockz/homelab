@@ -6,12 +6,12 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ${DOCKER_DATA}/beszel_data:/beszel_data
     # ports:
     #   - 8090:8090
     networks:
       - server-backend
-    volumes:
-      - ${DOCKER_DATA}/beszel_data:/beszel_data
     labels:
       - traefik.enable=true
       - traefik.http.routers.beszel.entrypoints=https
