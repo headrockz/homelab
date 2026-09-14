@@ -127,6 +127,7 @@
         container: alloy
     - Tempo:
         icon: tempo.png
+        href: "https://tempo.{{HOMEPAGE_VAR_DOMAIN}}/ready"
         server: my-docker
         container: tempo
         description: Server Falcon
@@ -285,6 +286,11 @@
         description: Server Tie
         server: tie
         container: cloudflared
+    - Open WRT:
+        icon: openwrt.png
+        href: "https://{{HOMEPAGE_VAR_VENATOR}}"
+        siteMonitor: https://{{HOMEPAGE_VAR_VENATOR}}
+        description: Server Venator
 
 - Reverse Proxy:
     - Traefik Falcon:

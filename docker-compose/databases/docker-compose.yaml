@@ -15,7 +15,7 @@ services:
       - .env
     volumes:
       - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
-      - ${CERTS_PATH}/certs:/certs
+      - ${CERTS_PATH}/certs/postgresql:/certs
       - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
       - ./postgresql/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
       - ./postgresql/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
@@ -28,7 +28,7 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.postgres.rule=HostSNI(`postgres.${SERVER}.${DOMAIN}`)"
       - "traefik.tcp.routers.postgres.entrypoints=tcp"
-      - "traefil.tcp.routers.postgres.tls=true"
+      - "traefik.tcp.routers.postgres.tls=true"
       - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
       - "traefik.tcp.routers.postgres.service=postgres"
       - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
