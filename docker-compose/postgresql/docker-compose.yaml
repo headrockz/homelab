@@ -4,28 +4,36 @@ services:
     image: postgres:16-bookworm
     container_name: postgresql
     restart: unless-stopped
-    command: |
-      bash -c "
-      apt-get update && \
-      apt-get install postgresql-16-pgvector wget -y && \
-      wget https://github.com/tensorchord/VectorChord/releases/download/1.1.1/postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb && \
-      apt-get install ./postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb -y && \
-      apt-get autoremove -y && \
-      apt-get clean -y && \
-      docker-entrypoint.sh postgres
-      "
-    # Run after init
-    # psql -U postgres -c 'ALTER SYSTEM SET shared_preload_libraries = "vchord.so"'
-    # psql -U postgres -c 'ALTER SYSTEM SET shared_preload_libraries = "vchord"'
-    # docker compose restart
-    volumes:
-      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
-      - ${CERTS_PATH}/certs:/certs
+    command:
+      - bash
+      - -c
+      - |
+        apt-get update
+        apt-get install -y postgresql-16-pgvector wget
+
+        wget "https://github.com/tensorchord/VectorChord/releases/download/1.1.1/postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb"
+
+        apt-get install -y "./postgresql-16-vchord_1.1.1-1_$(dpkg --print-architecture).deb"
+
+        apt-get autoremove -y
+        apt-get clean
+
+        exec docker-entrypoint.sh postgres \
+          -c config_file=/etc/postgresql/postgresql.conf \
+          -c hba_file=/etc/postgresql/pg_hba.conf
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_HOST_AUTH_METHOD=${POSTGRES_AUTH}
+    env_file:
+      - .env
+    volumes:
+      - ${DOCKER_DATA}/postgresql/data:/var/lib/postgresql/data
+      - ${CERTS_PATH}/certs/postgresql:/certs
+      - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./postgresql/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./postgresql/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
     # ports:
-    #   - 5432:5432
+    #   - "5432:5432"
     networks:
       - server-database
 
