@@ -31,7 +31,7 @@ services:
       - traefik.http.routers.transmission.middlewares=authentik@file
 
   jellyfin:
-    image: jellyfin/jellyfin:10.11.11
+    image: jellyfin/jellyfin:12.1
     container_name: jellyfin
     restart: always
     environment:
