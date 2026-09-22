@@ -60,6 +60,26 @@
           systemId: "{{HOMEPAGE_VAR_BESZEL_SYSTEM_ID}}"
           version: 2
           fields: ["cpu", "memory", "disk"]
+    - What's Up Docker Falcon:
+        icon: whats-up-docker.png
+        href: "https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: wud
+        widget:
+          type: whatsupdocker
+          url: https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_WUD_FALCON_TOKEN}}"
+    - What's Up Docker Tie:
+        icon: whats-up-docker.png
+        href: "https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Tie
+        server: tie
+        container: wud
+        widget:
+          type: whatsupdocker
+          url: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_WUD_TIE_TOKEN}}"
     - Prometheus:
         icon: prometheus.png
         href: "https://prometheus.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -90,28 +110,12 @@
         description: Server Falcon
         server: my-docker
         container: loki
-    - What's Up Docker Falcon:
-        icon: whats-up-docker.png
-        href: "https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Falcon
+    - Tempo:
+        icon: tempo.png
+        href: "https://tempo.{{HOMEPAGE_VAR_DOMAIN}}/ready"
         server: my-docker
-        container: wud
-        # widget:
-        #     type: whatsupdocker
-        #     url: https://wud.falcon.{{HOMEPAGE_VAR_DOMAIN}}
-        #     username: "{{HOMEPAGE_VAR_WUD_USER}}"
-        #     password: "{{HOMEPAGE_VAR_WUD_API}}"
-    - What's Up Docker Tie:
-        icon: whats-up-docker.png
-        href: "https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Tie
-        server: tie
-        container: wud
-        # widget:
-        #     type: whatsupdocker
-        #     url: https://wud.tie.{{HOMEPAGE_VAR_DOMAIN}}
-        #     username: "{{HOMEPAGE_VAR_WUD_USER}}"
-        #     password: "{{HOMEPAGE_VAR_WUD_API}}"
+        container: tempo
+        description: Server Falcon
     - Alloy Falcon:
         icon: alloy.png
         href: "https://alloy.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -125,12 +129,6 @@
         # siteMonitor: https://alloy.tie.{{HOMEPAGE_VAR_DOMAIN}}
         server: tie
         container: alloy
-    - Tempo:
-        icon: tempo.png
-        href: "https://tempo.{{HOMEPAGE_VAR_DOMAIN}}/ready"
-        server: my-docker
-        container: tempo
-        description: Server Falcon
 
 - Data Engineering:
     - Airflow:
