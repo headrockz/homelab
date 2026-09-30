@@ -221,6 +221,12 @@
         description: Server Falcon
         server: my-docker
         container: zerobyte
+    - Bookorbit:
+        icon: bookorbit.png
+        href: "https://bookorbit.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: bookorbit
 
 - Databases:
     - Databasus:

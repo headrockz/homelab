@@ -1,0 +1,80 @@
+---
+services:
+  bookorbit:
+    container_name: bookorbit
+    image: ghcr.io/bookorbit/bookorbit:3.2.0
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ${MEDIA}:/books
+      - ${DOCKER_DATA}/bookorbit/data:/data
+    # ports:
+    #   - "3000:3000"
+    networks:
+      - server-backend
+      - server-database
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bookorbit.entrypoints=https
+      - traefik.http.routers.bookorbit.rule=Host(`bookorbit.${DOMAIN}`)
+      - traefik.http.routers.bookorbit.tls=true
+      - traefik.http.routers.bookorbit.tls.certresolver=cloudflare
+      - traefik.http.services.bookorbit.loadbalancer.server.port=3000
+      - traefik.http.routers.bookorbit.service=bookorbit
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+
+# kokoro:
+#   container_name: bookorbit-kokoro
+#   image: ${KOKORO_IMAGE:-ghcr.io/remsky/kokoro-fastapi-cpu:v0.8.0}
+#   profiles: ["tts"]
+#   restart: unless-stopped
+#   init: true
+#   expose:
+#     - "8880"
+#   security_opt:
+#     - no-new-privileges:true
+#   stop_grace_period: 30s
+#   healthcheck:
+#     test:
+#       [
+#         "CMD-SHELL",
+#         'python -c "import urllib.request;urllib.request.urlopen(''http://127.0.0.1:8880/v1/audio/voices'')"',
+#       ]
+#     interval: 30s
+#     timeout: 10s
+#     retries: 5
+#     start_period: 60s
+
+# postgres:
+#   container_name: bookorbit-db
+#   image: pgvector/pgvector:pg18
+#   restart: unless-stopped
+#   environment:
+#     POSTGRES_USER: ${POSTGRES_USER}
+#     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#     POSTGRES_DB: ${POSTGRES_DB}
+#     PGDATA: /var/lib/postgresql/data/pgdata
+#   volumes:
+#     - ./data/postgres:/var/lib/postgresql/data
+#   healthcheck:
+#     test:
+#       ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+#     interval: 10s
+#     timeout: 5s
+#     retries: 10
+#     start_period: 20s
+
+
+networks:
+  server-backend:
+    external: true
+  server-database:
+    external: true
