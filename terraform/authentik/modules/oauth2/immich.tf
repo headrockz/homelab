@@ -33,7 +33,7 @@ resource "authentik_provider_oauth2" "immich" {
 resource "authentik_application" "immich" {
   name              = "Immich"
   slug              = "immich"
-  group             = ""
+  group             = "Media"
   protocol_provider = authentik_provider_oauth2.immich.id
   meta_launch_url   = "https://immich.falcon.${var.domain}/"
   meta_icon         = "application-icons/immich.png"

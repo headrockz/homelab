@@ -26,7 +26,7 @@ resource "authentik_provider_oauth2" "romm" {
 resource "authentik_application" "romm" {
   name              = "RomM"
   slug              = "romm"
-  group             = ""
+  group             = "Media"
   protocol_provider = authentik_provider_oauth2.romm.id
   meta_launch_url   = "https://romm.${var.domain}/"
   meta_icon         = "application-icons/romm.png"
