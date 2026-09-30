@@ -13,6 +13,7 @@ resource "authentik_application" "tempo" {
   protocol_provider = authentik_provider_proxy.tempo.id
   meta_launch_url   = "https://tempo.${var.domain}/"
   meta_icon         = "application-icons/tempo.png"
+  meta_description  = "Distributed tracing backend"
   open_in_new_tab   = true
 }
 

@@ -13,6 +13,7 @@ resource "authentik_application" "alloy-tie" {
   protocol_provider = authentik_provider_proxy.alloy-tie.id
   meta_launch_url   = "https://alloy.tie.${var.domain}/"
   meta_icon         = "application-icons/alloy.png"
+  meta_description  = "Metrics collection agent for the Tie platform"
   open_in_new_tab   = true
 }
 

@@ -13,6 +13,7 @@ resource "authentik_application" "ollama" {
   protocol_provider = authentik_provider_proxy.ollama.id
   meta_launch_url   = "https://ollama.dev.${var.domain}/"
   meta_icon         = "application-icons/ollama-dark.png"
+  meta_description  = "Local AI model inference engine"
   open_in_new_tab   = true
 }
 

@@ -13,6 +13,7 @@ resource "authentik_application" "traefik-destroyer" {
   protocol_provider = authentik_provider_proxy.traefik-destroyer.id
   meta_launch_url   = "https://traefik.destroyer.${var.domain}/"
   meta_icon         = "application-icons/traefik.png"
+  meta_description  = "Traefik proxy dashboard"
   open_in_new_tab   = true
 }
 

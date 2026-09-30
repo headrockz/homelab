@@ -13,6 +13,7 @@ resource "authentik_application" "transmission" {
   protocol_provider = authentik_provider_proxy.transmission.id
   meta_launch_url   = "https://transmission.${var.domain}/"
   meta_icon         = "application-icons/transmission.png"
+  meta_description  = "BitTorrent client"
   open_in_new_tab   = true
 }
 

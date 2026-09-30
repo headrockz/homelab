@@ -13,6 +13,7 @@ resource "authentik_application" "zigbee2mqtt" {
   protocol_provider = authentik_provider_proxy.zigbee2mqtt.id
   meta_launch_url   = "https://zigbee.${var.domain}/"
   meta_icon         = "application-icons/zigbee2mqtt.png"
+  meta_description  = "Zigbee network management"
   open_in_new_tab   = true
 }
 

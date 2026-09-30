@@ -13,6 +13,7 @@ resource "authentik_application" "prometheus" {
   protocol_provider = authentik_provider_proxy.prometheus.id
   meta_launch_url   = "https://prometheus.${var.domain}/"
   meta_icon         = "application-icons/prometheus.png"
+  meta_description  = "Time-series monitoring and alerting"
   open_in_new_tab   = true
 }
 

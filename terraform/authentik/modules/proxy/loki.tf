@@ -13,6 +13,7 @@ resource "authentik_application" "loki" {
   protocol_provider = authentik_provider_proxy.loki.id
   meta_launch_url   = "https://loki.${var.domain}/"
   meta_icon         = "application-icons/loki.png"
+  meta_description  = "Distributed log aggregation system"
   open_in_new_tab   = true
 }
 

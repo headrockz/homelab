@@ -13,6 +13,7 @@ resource "authentik_application" "alloy-falcon" {
   protocol_provider = authentik_provider_proxy.alloy-falcon.id
   meta_launch_url   = "https://alloy.falcon.${var.domain}/"
   meta_icon         = "application-icons/alloy.png"
+  meta_description  = "Metrics collection agent for the Falcon platform"
   open_in_new_tab   = true
 }
 

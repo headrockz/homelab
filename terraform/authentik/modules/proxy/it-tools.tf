@@ -13,6 +13,7 @@ resource "authentik_application" "it-tools" {
   protocol_provider = authentik_provider_proxy.it-tools.id
   meta_launch_url   = "https://it-tools.${var.domain}/"
   meta_icon         = "application-icons/it-tools.png"
+  meta_description  = "Collection of IT tools"
   open_in_new_tab   = true
 }
 

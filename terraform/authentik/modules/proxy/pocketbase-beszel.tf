@@ -13,6 +13,7 @@ resource "authentik_application" "pocketbase-beszel" {
   protocol_provider = authentik_provider_proxy.pocketbase-beszel.id
   meta_launch_url   = "https://beszel.tie.${var.domain}/_/"
   meta_icon         = "application-icons/pocketbase.png"
+  meta_description  = "PocketBase backend for Beszel"
   open_in_new_tab   = true
 }
 
