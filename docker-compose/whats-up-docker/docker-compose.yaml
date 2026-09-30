@@ -1,7 +1,7 @@
 ---
 services:
   wud:
-    image: getwud/wud:9.1.0
+    image: getwud/wud:9.2.0
     container_name: wud
     restart: always
     volumes:
@@ -9,8 +9,12 @@ services:
       - ${DOCKER_DATA}/certs:/certs
       - /etc/localtime:/etc/localtime:ro
       - ${CERTS_PATH}/certs/services:/certs
+      - ${DOCKER_PATH}:/stacks
+      - wud_data:/store
     env_file:
       - .env
+    environment:
+      - WUD_TRIGGER_DOCKERCOMPOSE_FALCON_FILE=/stacks/$${container.labels['com.docker.compose.project']}/docker-compose.yaml
     # ports:
     #   - 3000:3000
     networks:
@@ -27,3 +31,6 @@ services:
 networks:
   server-backend:
     external: true
+
+volumes:
+  wud_data:

@@ -1,7 +1,7 @@
 ---
 services:
   databasus:
-    image: databasus/databasus:v3.42.0
+    image: databasus/databasus:v3.60.0
     container_name: databasus
     hostname: ${SERVER}
     restart: always
