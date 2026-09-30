@@ -1,7 +1,7 @@
 ---
 services:
   server:
-    image: ghcr.io/goauthentik/server:2026.5.3
+    image: ghcr.io/goauthentik/server:2026.8.3
     container_name: authentik-server
     restart: unless-stopped
     user: root
@@ -37,7 +37,7 @@ services:
   #     condition: service_healthy
 
   worker:
-    image: ghcr.io/goauthentik/server:2026.5.3
+    image: ghcr.io/goauthentik/server:2026.8.3
     container_name: authentik-worker
     restart: unless-stopped
     user: root
