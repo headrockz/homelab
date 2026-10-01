@@ -2,7 +2,7 @@
 services:
   homeassistant:
     container_name: hass
-    image: homeassistant/home-assistant:2026.6.2
+    image: homeassistant/home-assistant:2026.9.4
     restart: unless-stopped
     volumes:
       - ${DOCKER_DATA}/smart_home/hass:/config

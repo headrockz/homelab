@@ -2,7 +2,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v3.0.3
+    image: ghcr.io/immich-app/immich-server:v3.2.4
     restart: always
     env_file:
       - .env
