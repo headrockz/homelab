@@ -39,3 +39,13 @@ AcceptEnv LANG LC_*
 # --- Banners ---
 PrintMotd no
 PrintLastLog yes
+
+# --- SSH Users ---
+AllowGroups sshusers
+
+# --- Users ---
+Match User zerobyte
+    ForceCommand internal-sftp
+    AllowTcpForwarding no
+    X11Forwarding no
+    PermitTunnel no
