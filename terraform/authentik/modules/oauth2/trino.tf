@@ -18,12 +18,14 @@ resource "authentik_provider_oauth2" "trino" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://trino.db.${var.domain}/oauth2/callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://trino.db.${var.domain}/oauth2/callback",
     },
     {
-      matching_mode = "regex",
-      url           = "https://192.168.0.14:8443/oauth2/callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://192.168.0.14:8443/oauth2/callback",
     }
   ]
 }

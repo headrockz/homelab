@@ -17,8 +17,9 @@ resource "authentik_provider_oauth2" "romm" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://romm.${var.domain}/api/oauth/openid",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://romm.${var.domain}/api/oauth/openid",
     }
   ]
 }

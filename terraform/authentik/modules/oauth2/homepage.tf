@@ -17,12 +17,14 @@ resource "authentik_provider_oauth2" "homepage" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://homepage.${var.domain}/api/auth/callback/homepage-oidc",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://homepage.${var.domain}/api/auth/callback/homepage-oidc",
     },
     {
-      matching_mode = "regex",
-      url           = "https://homepage.${var.domain}/auth/signin",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://homepage.${var.domain}/auth/signin",
     }
   ]
 }

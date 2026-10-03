@@ -16,8 +16,9 @@ resource "authentik_provider_oauth2" "kestra" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://kestra.destroyer.${var.domain}/oauth/callback/authentik",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://kestra.destroyer.${var.domain}/oauth/callback/authentik",
     }
   ]
 }

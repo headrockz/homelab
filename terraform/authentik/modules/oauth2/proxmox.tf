@@ -16,8 +16,9 @@ resource "authentik_provider_oauth2" "proxmox" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://homeone.${var.domain}:8006",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://homeone.${var.domain}:8006",
     }
   ]
 }

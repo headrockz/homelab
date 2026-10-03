@@ -17,12 +17,14 @@ resource "authentik_provider_oauth2" "zerobyte" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://zerobyte.falcon.${var.domain}/",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://zerobyte.falcon.${var.domain}/",
     },
     {
-      matching_mode = "strict",
-      url           = "https://zerobyte.falcon.${var.domain}/api/auth/sso/callback/authentik",
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://zerobyte.falcon.${var.domain}/api/auth/sso/callback/authentik",
     }
   ]
 }

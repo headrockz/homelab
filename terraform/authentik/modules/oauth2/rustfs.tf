@@ -17,8 +17,9 @@ resource "authentik_provider_oauth2" "rustfs" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://rustfs-ui.destroyer.${var.domain}/rustfs/admin/v3/oidc/callback/default",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://rustfs-ui.destroyer.${var.domain}/rustfs/admin/v3/oidc/callback/default",
     }
   ]
 }

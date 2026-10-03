@@ -17,8 +17,9 @@ resource "authentik_provider_oauth2" "airflow" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "http://airflow.destroyer.${var.domain}/oauth-authorized/authentik",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "http://airflow.destroyer.${var.domain}/oauth-authorized/authentik",
     }
   ]
 }

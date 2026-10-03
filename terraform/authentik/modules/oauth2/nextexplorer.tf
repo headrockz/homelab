@@ -17,8 +17,9 @@ resource "authentik_provider_oauth2" "nextexplorer" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://file.${var.domain}/callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://file.${var.domain}/callback",
     }
   ]
 }

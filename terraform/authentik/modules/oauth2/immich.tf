@@ -16,16 +16,19 @@ resource "authentik_provider_oauth2" "immich" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://immich.falcon.${var.domain}/auth/login",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://immich.falcon.${var.domain}/auth/login",
     },
     {
-      matching_mode = "regex",
-      url           = "https://immich.falcon.${var.domain}/user-settings",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://immich.falcon.${var.domain}/user-settings",
     },
     {
-      matching_mode = "regex",
-      url           = "app.immich:///oauth-callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "app.immich:///oauth-callback",
     }
   ]
 }

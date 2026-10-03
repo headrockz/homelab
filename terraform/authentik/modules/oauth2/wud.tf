@@ -16,16 +16,19 @@ resource "authentik_provider_oauth2" "wud" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://wud.falcon.${var.domain}/auth/oidc/authentik/cb",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://wud.falcon.${var.domain}/auth/oidc/authentik/cb",
     },
     {
-      matching_mode = "regex",
-      url           = "https://wud.tie.${var.domain}/auth/oidc/authentik/cb",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://wud.tie.${var.domain}/auth/oidc/authentik/cb",
     },
     {
-      matching_mode = "regex",
-      url           = "http://wud:3000/auth/oidc/authentik/cb",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "http://wud:3000/auth/oidc/authentik/cb",
     }
   ]
 }

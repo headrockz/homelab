@@ -18,12 +18,14 @@ resource "authentik_provider_oauth2" "beszel" {
 
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://beszel.${var.domain}/api/oauth2-redirect",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://beszel.${var.domain}/api/oauth2-redirect",
     },
     {
-      matching_mode = "regex",
-      url           = "https://beszel.tie.${var.domain}/api/oauth2-redirect",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://beszel.tie.${var.domain}/api/oauth2-redirect",
     }
   ]
 }

@@ -17,8 +17,9 @@ resource "authentik_provider_oauth2" "bookorbit" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://bookorbit.${var.domain}/oauth2-callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://bookorbit.${var.domain}/oauth2-callback",
     }
   ]
 }

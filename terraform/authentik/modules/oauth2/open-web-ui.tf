@@ -17,12 +17,14 @@ resource "authentik_provider_oauth2" "open-web-ui" {
   ]
   allowed_redirect_uris = [
     {
-      matching_mode = "regex",
-      url           = "https://openwebui.${var.domain}/auth/login",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://openwebui.${var.domain}/auth/login",
     },
     {
-      matching_mode = "regex",
-      url           = "https://openwebui.${var.domain}/oauth/oidc/callback",
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "https://openwebui.${var.domain}/oauth/oidc/callback",
     }
   ]
 }
