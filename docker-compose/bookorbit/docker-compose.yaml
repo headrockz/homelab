@@ -1,14 +1,14 @@
 ---
 services:
   bookorbit:
-    container_name: bookorbit
     image: ghcr.io/bookorbit/bookorbit:3.2.0
+    container_name: bookorbit
     restart: unless-stopped
     init: true
-    env_file:
-      - .env
     environment:
       - NODE_ENV=production
+    env_file:
+      - .env
     volumes:
       - ${MEDIA}:/books
       - ${DOCKER_DATA}/bookorbit/data:/data
