@@ -34,6 +34,12 @@
           key: "{{HOMEPAGE_VAR_AUTHENTIK_API}}"
           allowed_fields: ["users", "loginsLast24H", "failedLoginsLast24H"]
           version: 2
+    - Termix:
+        icon: termix.png
+        href: "https://termix.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Falcon
+        server: my-docker
+        container: termix
 
 - Monitoring:
     - Uptime Kuma:

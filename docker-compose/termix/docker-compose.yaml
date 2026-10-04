@@ -1,0 +1,41 @@
+---
+services:
+  termix:
+    image: ghcr.io/lukegus/termix:2.9.0
+    container_name: termix
+    restart: unless-stopped
+    environment:
+      - PORT=8080
+    env_file:
+      - .env
+    volumes:
+      - ${DOCKER_DATA}/termix:/app/data
+    # ports:
+    #   - '8080:8080'
+    networks:
+      - server-backend
+      - termix
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.termix.entrypoints=https
+      - traefik.http.routers.termix.rule=Host(`termix.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.termix.tls=true
+      - traefik.http.services.termix.loadbalancer.server.port=8080
+      - traefik.http.routers.termix.tls.certresolver=cloudflare
+      - traefik.http.routers.termix.service=termix
+# depends_on:
+#   - guacd
+
+# guacd:
+#   image: guacamole/guacd:1.6.0
+#   container_name: guacd
+#   restart: unless-stopped
+#   # ports:
+#   #   - "4822:4822"
+#   networks:
+#     - termix
+
+networks:
+  termix:
+  server-backend:
+    external: true
