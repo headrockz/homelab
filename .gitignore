@@ -180,6 +180,7 @@ glances.conf
 mailrise.conf
 *.secrets.tf
 *.secrets.*
+!*.secrets.*.example
 .docs/
 acme.json
 .antigravitycli

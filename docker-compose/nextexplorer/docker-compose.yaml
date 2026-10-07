@@ -17,7 +17,7 @@ services:
       - OIDC_ISSUER=https://authentik.${DOMAIN}/application/o/nextexplorer/
       - OIDC_CLIENT_ID=${NEXTEXPLORER_OIDC_CLIENT_ID}
       - OIDC_CLIENT_SECRET=${NEXTEXPLORER_OIDC_CLIENT_SECRET}
-      - OIDC_SCOPES=openid profile email groups nextexplorer
+      - OIDC_SCOPES=openid profile email groups
       - OIDC_ADMIN_GROUPS=${NEXTEXPLORER_OIDC_ADMIN_GROUPS}
 
       # - OIDC_REQUIRE_EMAIL_VERIFIED=false
