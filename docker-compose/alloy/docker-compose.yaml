@@ -1,7 +1,7 @@
 ---
 services:
   alloy:
-    image: grafana/alloy:v1.19.0
+    image: grafana/alloy:v1.20.1
     container_name: alloy
     hostname: ${SERVER}
     restart: unless-stopped
