@@ -40,6 +40,11 @@
         description: Server Falcon
         server: my-docker
         container: termix
+    - Umbrel:
+        icon: umbrel.svg
+        href: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Shuttle
+        siteMonitor: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
 
 - Monitoring:
     - Uptime Kuma:
