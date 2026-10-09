@@ -232,6 +232,37 @@
         description: Server Falcon
         server: my-docker
         container: zerobyte
+        widgets:
+          - type: customapi
+            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/repositories"
+            headers:
+              X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Repositories
+                format: number
+          - type: customapi
+            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/volumes"
+            headers:
+              X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Volumes
+                format: number
+          - type: customapi
+            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/backups"
+            headers:
+              X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Backups
+                format: number
     - Bookorbit:
         icon: bookorbit.png
         href: "https://bookorbit.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -422,11 +453,53 @@
         server: my-docker
         container: garage
         description: Server Falcon
+        widgets:
+          - type: customapi
+            url: "https://garage-admin.falcon.{{HOMEPAGE_VAR_DOMAIN}}/v2/ListBuckets"
+            headers:
+              Authorization: "Bearer {{HOMEPAGE_VAR_GARAGE_TOKEN}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Buckets
+                format: number
+          - type: customapi
+            url: "https://garage-admin.falcon.{{HOMEPAGE_VAR_DOMAIN}}/v2/ListKeys"
+            headers:
+              Authorization: "Bearer {{HOMEPAGE_VAR_GARAGE_TOKEN}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Access Keys
+                format: number
     - Garage Tie:
         icon: garage.png
         server: tie
         container: garage
         description: Server Tie
+        widgets:
+          - type: customapi
+            url: "https://garage-admin.tie.{{HOMEPAGE_VAR_DOMAIN}}/v2/ListBuckets"
+            headers:
+              Authorization: "Bearer {{HOMEPAGE_VAR_GARAGE_TOKEN}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Buckets
+                format: number
+          - type: customapi
+            url: "https://garage-admin.tie.{{HOMEPAGE_VAR_DOMAIN}}/v2/ListKeys"
+            headers:
+              Authorization: "Bearer {{HOMEPAGE_VAR_GARAGE_TOKEN}}"
+            display: list
+            refreshInterval: 60000
+            mappings:
+              - field: length
+                label: Access Keys
+                format: number
     - RustFS:
         icon: rustfs.png
         href: "https://rustfs-ui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
