@@ -43,13 +43,13 @@
         csr_content: "{{ ca_csr.csr }}"
         privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
         provider: selfsigned
-        mode: "0644"
+        mode: "0444"
 
     - name: Create the server private key
       community.crypto.openssl_privatekey:
         path: "{{ docker_cert_dir }}/server-key.pem"
         size: 4096
-        mode: "0600"
+        mode: "0444"
 
     - name: Debug certificate variables
       ansible.builtin.debug:
