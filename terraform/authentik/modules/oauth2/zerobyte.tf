@@ -9,7 +9,9 @@ resource "authentik_provider_oauth2" "zerobyte" {
   authorization_flow = var.default_authorization_flow
   invalidation_flow  = var.default_invalidation_flow
   signing_key        = var.default_self_singned
+  grant_types        = ["authorization_code"]
   sub_mode           = "hashed_user_id"
+  issuer_mode        = "global"
   property_mappings = [
     var.oauth_profile_id,
     var.oauth_openid_id,
