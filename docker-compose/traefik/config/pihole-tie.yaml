@@ -1,0 +1,17 @@
+---
+http:
+  routers:
+    pihole-tie:
+      rule: "Host(`pihole.tie.${DOMAIN}`)"
+      service: pihole-tie
+      priority: 1006
+      entrypoints:
+        - http
+        - https
+      tls:
+        certResolver: cloudflare
+  services:
+    pihole-tie:
+      loadBalancer:
+        servers:
+          - url: "https://${PIHOLE_HOST}:8443"

@@ -296,23 +296,23 @@
         container: influxdb
 
 - Network:
-    - PiHole Homeone:
-        icon: pi-hole.png
-        href: "https://pihole.{{HOMEPAGE_VAR_DOMAIN}}/admin"
-        description: Server Homeone
-        widget:
-          type: pihole
-          url: https://pihole.{{HOMEPAGE_VAR_DOMAIN}}
-          version: 6
-          key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
     - PiHole Falcon:
         icon: pi-hole.png
-        href: "https://pihole2.{{HOMEPAGE_VAR_DOMAIN}}/admin"
+        href: "https://pihole.falcon.{{HOMEPAGE_VAR_DOMAIN}}/admin"
         description: Server Falcon
         widget:
           type: pihole
           version: 6
-          url: https://pihole2.{{HOMEPAGE_VAR_DOMAIN}}
+          url: https://pihole.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
+    - PiHole Shuttle:
+        icon: pi-hole.png
+        href: "https://pihole.shuttle.{{HOMEPAGE_VAR_DOMAIN}}/admin"
+        description: Server Shuttle
+        widget:
+          type: pihole
+          url: https://pihole.shuttle.{{HOMEPAGE_VAR_DOMAIN}}
+          version: 6
           key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
     - PiHole Tie:
         icon: pi-hole.png

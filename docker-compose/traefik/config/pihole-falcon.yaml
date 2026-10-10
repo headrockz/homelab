@@ -1,9 +1,9 @@
 ---
 http:
   routers:
-    pihole-2:
-      rule: "Host(`pihole2.${DOMAIN}`)"
-      service: pihole-2
+    pihole-falcon:
+      rule: "Host(`pihole.falcon.${DOMAIN}`)"
+      service: pihole-falcon
       priority: 1002
       entrypoints:
         - http
@@ -11,7 +11,7 @@ http:
       tls:
         certResolver: cloudflare
   services:
-    pihole-2:
+    pihole-falcon:
       loadBalancer:
         servers:
-          - url: "https://127.0.0.1:${PORT}"
+          - url: "https://${PIHOLE_HOST}:8443"
