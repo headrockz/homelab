@@ -41,6 +41,12 @@
         regexp: '^DOCKER_DATA='
         line: "DOCKER_DATA={{ docker_volume | default('~/docker') }}"
 
+    - name: Update docker path data for specific stacks
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^DOCKER_PATH='
+        line: "DOCKER_PATH={{ compose_path | default('~/docker') }}"
+
     # Specific case for stack garage, zerobyte, and syncthing
     - name: Update volume data (only for containers garage, zerobyte, syncthing)
       when: compose_name in ["garage-hq", "zerobyte", "syncthing"]
@@ -48,6 +54,28 @@
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^VOLUME_DATA='
         line: "VOLUME_DATA={{ volume_data | default('~/compose') }}"
+
+    # Specific case for stack "Whats up docker"
+    - name: Replace Whats Up Docker host references
+      when: compose_name == "whats-up-docker"
+      ansible.builtin.replace:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: 'FALCON'
+        replace: "{{ ansible_hostname | upper }}"
+
+    - name: Replace Whats Up Docker compose host references
+      when: compose_name == "whats-up-docker"
+      ansible.builtin.replace:
+        path: "{{ compose_path }}/{{ compose_name }}/docker-compose.yaml"
+        regexp: 'FALCON'
+        replace: "{{ ansible_hostname | upper }}"
+
+    - name: Remove remote Whats Up Docker watchers after line 69
+      when: compose_name == "whats-up-docker"
+      ansible.builtin.replace:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '(?s)\A((?:[^\n]*\n){69}).*\Z'
+        replace: '\1'
 
     # Specific case for stack "traefik"
     - name: Update middleware.yaml with hostname
