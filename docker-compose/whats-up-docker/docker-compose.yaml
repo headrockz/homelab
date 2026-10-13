@@ -1,14 +1,14 @@
 ---
 services:
   wud:
-    image: getwud/wud:9.2.0
+    image: getwud/wud:9.4.1
     container_name: wud
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKER_DATA}/certs:/certs
       - /etc/localtime:/etc/localtime:ro
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
       - ${DOCKER_PATH}:/stacks
       - wud_data:/store
     env_file:

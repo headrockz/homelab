@@ -2,7 +2,7 @@
 services:
   homeassistant:
     container_name: hass
-    image: homeassistant/home-assistant:2026.9.4
+    image: homeassistant/home-assistant:2026.10.1
     restart: unless-stopped
     volumes:
       - ${DOCKER_DATA}/smart_home/hass:/config
@@ -49,7 +49,6 @@ services:
       - TZ=${TZ}
     volumes:
       - ./zigbee:/app/data
-      - ${CERTS_PATH}/certs:/certs
       - /run/udev:/run/udev:ro
     # ports:
     #   - 8080:8080
