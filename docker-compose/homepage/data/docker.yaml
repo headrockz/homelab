@@ -33,6 +33,6 @@ tie:
   host: "{{HOMEPAGE_VAR_TIE}}"
   port: 2376
   tls:
-    keyFile: /certs/tie/key.pem
-    caFile: /certs/tie/ca.pem
-    certFile: /certs/tie/cert.pem
+    caFile: /certs/ca.pem
+    certFile: /certs/client-cert.pem
+    keyFile: /certs/client-key.pem

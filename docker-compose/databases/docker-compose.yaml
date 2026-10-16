@@ -119,8 +119,8 @@ services:
       - INFLUXD_TLS_CERT=${INFLUX_CERTIFICATE}
       - INFLUXD_TLS_KEY=${INFLUX_PRIVATE_KEY}
     volumes:
-      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2:Z
-      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2:Z
+      - ${DOCKER_DATA}/influxdb/data:/var/lib/influxdb2
+      - ${DOCKER_DATA}/influxdb/config:/etc/influxdb2
       - ${CERTS_PATH}/certs:/certs
     ports:
       - 8086:8086

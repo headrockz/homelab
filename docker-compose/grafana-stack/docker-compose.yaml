@@ -19,7 +19,7 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
     env_file:
       - .env
     # ports:
@@ -45,7 +45,7 @@ services:
     volumes:
       - ./loki/config.yaml:/etc/loki/config.yaml:ro
       - loki_data:/loki:rw
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
     # ports:
     #   - 3100:3100
     #   - 9443:9443
@@ -86,7 +86,7 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
     # ports:
     #   - 3000:3000
     networks:
@@ -110,7 +110,7 @@ services:
       - '-config.file=/etc/tempo/config.yaml'
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo/config.yaml:ro
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
     # ports:
     #   - 3200:3200
     #   - 4317:4317

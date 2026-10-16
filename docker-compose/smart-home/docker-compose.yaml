@@ -32,7 +32,7 @@ services:
       - ./mosquitto/config:/mosquitto/config
       - ${DOCKER_DATA}/smart_home/mosquitto/data:/mosquitto/data
       - ${DOCKER_DATA}/smart_home/mosquitto/log:/mosquitto/log
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
     ports:
       - 8883:8883  # mqtt tls port
       # - 1883:1883 # mqtt port

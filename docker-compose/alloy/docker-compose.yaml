@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ${CERTS_PATH}/certs/services:/certs
+      - ${CERTS_PATH}/certs:/certs
       - ./alloy:/etc/alloy
       - /var/run/docker.sock:/var/run/docker.sock
       - /proc:/host/proc:ro
