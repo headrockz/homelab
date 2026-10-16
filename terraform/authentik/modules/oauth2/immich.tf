@@ -18,12 +18,12 @@ resource "authentik_provider_oauth2" "immich" {
     {
       matching_mode     = "regex",
       redirect_uri_type = "authorization",
-      url               = "https://immich.falcon.${var.domain}/auth/login",
+      url               = "https://immich.${var.domain}/auth/login",
     },
     {
       matching_mode     = "regex",
       redirect_uri_type = "authorization",
-      url               = "https://immich.falcon.${var.domain}/user-settings",
+      url               = "https://immich.${var.domain}/user-settings",
     },
     {
       matching_mode     = "regex",
@@ -38,7 +38,7 @@ resource "authentik_application" "immich" {
   slug              = "immich"
   group             = "Media"
   protocol_provider = authentik_provider_oauth2.immich.id
-  meta_launch_url   = "https://immich.falcon.${var.domain}/"
+  meta_launch_url   = "https://immich.${var.domain}/"
   meta_icon         = "application-icons/immich.png"
   meta_description  = "Immich is a self-hosted photo and video backup solution."
   open_in_new_tab   = true

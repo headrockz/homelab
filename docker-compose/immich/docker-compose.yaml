@@ -20,7 +20,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.immich-server.entrypoints=https
-      - traefik.http.routers.immich-server.rule=Host(`immich.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.immich-server.rule=Host(`immich.${DOMAIN}`)
       - traefik.http.routers.immich-server.tls=true
       - traefik.http.services.immich-server.loadbalancer.server.port=2283
       - traefik.http.routers.immich-server.tls.certresolver=cloudflare

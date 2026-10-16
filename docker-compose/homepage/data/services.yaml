@@ -171,13 +171,13 @@
           fields: ["platforms", "totalRoms", "totalfilesize"]
     - Immich:
         icon: immich.png
-        href: "https://immich.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://immich.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: immich_server
         widget:
           type: immich
-          url: https://immich.falcon.{{HOMEPAGE_VAR_DOMAIN}}
+          url: https://immich.{{HOMEPAGE_VAR_DOMAIN}}
           key: "{{HOMEPAGE_VAR_IMMICH_API}}"
           version: 2
           fields: ["photos", "videos", "storage"]
@@ -222,19 +222,19 @@
         container: nextexplorer
     - It-Tools:
         icon: it-tools.png
-        href: "https://it-tools.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://it-tools.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: it-tools
     - Zerobyte:
         icon: zerobyte.png
-        href: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://zerobyte.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: zerobyte
         widgets:
           - type: customapi
-            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/repositories"
+            url: "https://zerobyte.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/repositories"
             headers:
               X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
             display: list
@@ -244,7 +244,7 @@
                 label: Repositories
                 format: number
           - type: customapi
-            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/volumes"
+            url: "https://zerobyte.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/volumes"
             headers:
               X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
             display: list
@@ -254,7 +254,7 @@
                 label: Volumes
                 format: number
           - type: customapi
-            url: "https://zerobyte.falcon.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/backups"
+            url: "https://zerobyte.{{HOMEPAGE_VAR_DOMAIN}}/api/v1/backups"
             headers:
               X-API-Key: "{{HOMEPAGE_VAR_ZEROBYTE_KEY}}"
             display: list
@@ -273,7 +273,7 @@
 - Databases:
     - Databasus:
         icon: databasus.png
-        href: "https://databasus.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
+        href: "https://databasus.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
         container: databasus

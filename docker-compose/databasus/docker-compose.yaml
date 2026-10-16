@@ -15,7 +15,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.databasus.entrypoints=https
-      - traefik.http.routers.databasus.rule=Host(`databasus.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.databasus.rule=Host(`databasus.${DOMAIN}`)
       - traefik.http.routers.databasus.tls=true
       - traefik.http.routers.databasus.tls.certresolver=cloudflare
       - traefik.http.services.databasus.loadbalancer.server.port=4005

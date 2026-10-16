@@ -23,7 +23,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.zerobyte.entrypoints=https
-      - traefik.http.routers.zerobyte.rule=Host(`zerobyte.${SERVER}.${DOMAIN}`)
+      - traefik.http.routers.zerobyte.rule=Host(`zerobyte.${DOMAIN}`)
       - traefik.http.routers.zerobyte.tls=true
       - traefik.http.routers.zerobyte.tls.certresolver=cloudflare
       - traefik.http.services.zerobyte.loadbalancer.server.port=4096

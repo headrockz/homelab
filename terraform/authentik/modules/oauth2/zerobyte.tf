@@ -21,12 +21,12 @@ resource "authentik_provider_oauth2" "zerobyte" {
     {
       matching_mode     = "regex",
       redirect_uri_type = "authorization",
-      url               = "https://zerobyte.falcon.${var.domain}/",
+      url               = "https://zerobyte.${var.domain}/",
     },
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://zerobyte.falcon.${var.domain}/api/auth/sso/callback/authentik",
+      url               = "https://zerobyte.${var.domain}/api/auth/sso/callback/authentik",
     }
   ]
 }
@@ -36,7 +36,7 @@ resource "authentik_application" "zerobyte" {
   slug              = "zerobyte"
   group             = ""
   protocol_provider = authentik_provider_oauth2.zerobyte.id
-  meta_launch_url   = "https://zerobyte.falcon.${var.domain}"
+  meta_launch_url   = "https://zerobyte.${var.domain}"
   meta_icon         = "application-icons/zerobyte.png"
   meta_description  = "Zerobyte is a self-hosted backup platform."
   open_in_new_tab   = true
