@@ -98,3 +98,41 @@
         ownca_privatekey_path: "{{ docker_cert_dir }}/ca-key.pem"
         provider: ownca
         mode: "0444"
+
+    - name: Ensure PostgreSQL certificate directory exist
+      ansible.builtin.file:
+        path: "{{ docker_cert_dir }}/postgresql"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Copy certificates for PostgreSQL
+      ansible.builtin.copy:
+        src: "{{ docker_cert_dir }}/{{ item.src }}"
+        dest: "{{ docker_cert_dir }}/postgresql/{{ item.dest }}"
+        remote_src: true
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - src: ca-key.pem
+          dest: ca-key.pem
+          owner: root
+          group: root
+          mode: "0600"
+        - src: ca.pem
+          dest: ca.pem
+          owner: root
+          group: root
+          mode: "0444"
+        - src: server-cert.pem
+          dest: server-cert.pem
+          owner: "999"
+          group: "999"
+          mode: "0444"
+        - src: server-key.pem
+          dest: server-key.pem
+          owner: "999"
+          group: "999"
+          mode: "0600"
