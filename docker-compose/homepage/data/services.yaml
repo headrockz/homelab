@@ -1,16 +1,10 @@
 ---
 - Infrastructure:
-    - Proxmox:
-        icon: proxmox.png
-        href: "https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006"
-        description: Server Homeone
-        siteMonitor: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
-        widget:
-          type: proxmox
-          url: https://homeone.{{HOMEPAGE_VAR_DOMAIN}}:8006
-          username: "{{HOMEPAGE_VAR_PROXMOX_USER}}"
-          password: "{{HOMEPAGE_VAR_PROXMOX_API}}"
-          node: homeone
+    - Umbrel:
+        icon: umbrel.svg
+        href: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Shuttle
+        siteMonitor: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
     - Open Media Vault:
         icon: openmediavault.png
         href: "https://omv.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -40,11 +34,11 @@
         description: Server Falcon
         server: my-docker
         container: termix
-    - Umbrel:
-        icon: umbrel.svg
-        href: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Shuttle
-        siteMonitor: "https://umbrel.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
+    - Open WRT:
+        icon: openwrt.png
+        href: "https://{{HOMEPAGE_VAR_VENATOR}}"
+        siteMonitor: https://{{HOMEPAGE_VAR_VENATOR}}
+        description: Server Venator
 
 - Monitoring:
     - Uptime Kuma:
@@ -132,6 +126,12 @@
         href: "https://alloy.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Server Falcon
         server: my-docker
+        container: alloy
+    - Alloy Shuttle:
+        icon: alloy.png
+        href: "https://alloy.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Shuttle
+        server: shuttle
         container: alloy
     - Alloy Tie:
         icon: alloy.png
@@ -323,23 +323,6 @@
           version: 6
           url: https://pihole.tie.{{HOMEPAGE_VAR_DOMAIN}}
           key: "{{HOMEPAGE_VAR_PIHOLE_API}}"
-    - Cloudflare Tunnel:
-        icon: cloudflare.png
-        description: Server Falcon
-        server: my-docker
-        container: cloudflared
-    - Cloudflare Tunnel:
-        icon: cloudflare.png
-        description: Server Tie
-        server: tie
-        container: cloudflared
-    - Open WRT:
-        icon: openwrt.png
-        href: "https://{{HOMEPAGE_VAR_VENATOR}}"
-        siteMonitor: https://{{HOMEPAGE_VAR_VENATOR}}
-        description: Server Venator
-
-- Reverse Proxy:
     - Traefik Falcon:
         icon: traefik-proxy.png
         href: "https://traefik.falcon.{{HOMEPAGE_VAR_DOMAIN}}"
@@ -351,37 +334,15 @@
           url: https://traefik.falcon.{{HOMEPAGE_VAR_DOMAIN}}
           username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
           password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
-    - Traefik Destroyer:
+    - Traefik Shuttle:
         icon: traefik-proxy.png
-        href: "https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Destroyer
-        server: destroyer
+        href: "https://traefik.shuttle.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Server Shuttle
+        server: shuttle
         container: traefik
         widget:
           type: traefik
-          url: https://traefik.destroyer.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
-          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
-    - Traefik DB:
-        icon: traefik-proxy.png
-        href: "https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server DB
-        server: db
-        container: traefik
-        widget:
-          type: traefik
-          url: https://traefik.db.{{HOMEPAGE_VAR_DOMAIN}}
-          username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
-          password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
-    - Traefik Dev:
-        icon: traefik-proxy.png
-        href: "https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Dev
-        server: dev
-        container: traefik
-        widget:
-          type: traefik
-          url: https://traefik.dev.{{HOMEPAGE_VAR_DOMAIN}}
+          url: https://traefik.shuttle.{{HOMEPAGE_VAR_DOMAIN}}
           username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
           password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
     - Traefik Tie:
@@ -395,6 +356,21 @@
           url: https://traefik.tie.{{HOMEPAGE_VAR_DOMAIN}}
           username: "{{HOMEPAGE_VAR_TRAEFIK_USER}}"
           password: "{{HOMEPAGE_VAR_TRAEFIK_PASS}}"
+    - Cloudflare Tunnel:
+        icon: cloudflare.png
+        description: Server Falcon
+        server: my-docker
+        container: cloudflared
+    - Cloudflare Tunnel:
+        icon: cloudflare.png
+        description: Server Shuttle
+        server: shuttle
+        container: cloudflared
+    - Cloudflare Tunnel:
+        icon: cloudflare.png
+        description: Server Tie
+        server: tie
+        container: cloudflared
 
 - Smart Home:
     - Home Assistant:
