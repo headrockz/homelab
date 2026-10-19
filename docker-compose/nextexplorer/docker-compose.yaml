@@ -9,9 +9,8 @@ services:
       - PUBLIC_URL=https://file.${DOMAIN}
       - LOG_LEVEL=info
       # - SESSION_SECRET=please-change-me
-      - PUID=${UID}
-      - PGID=${UIG}
-      # OIDC (optional): enable SSO, see OIDC section below
+      - PUID=${PUID}
+      - PGID=${PGID}
       - AUTH_MODE=oidc
       - OIDC_ENABLED=true
       - OIDC_ISSUER=https://authentik.${DOMAIN}/application/o/nextexplorer/
@@ -19,13 +18,6 @@ services:
       - OIDC_CLIENT_SECRET=${NEXTEXPLORER_OIDC_CLIENT_SECRET}
       - OIDC_SCOPES=openid profile email groups
       - OIDC_ADMIN_GROUPS=${NEXTEXPLORER_OIDC_ADMIN_GROUPS}
-
-      # - OIDC_REQUIRE_EMAIL_VERIFIED=false
-      # OnlyOffice (optional): in‑browser editing for office docs
-      # - ONLYOFFICE_URL=https://office.example.com
-      # - ONLYOFFICE_SECRET=your-jwt-secret
-      # - ONLYOFFICE_LANG=en
-      # - ONLYOFFICE_FILE_EXTENSIONS=doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,rtf,txt,pdf
     volumes:
       - ${DOCKER_DATA}/nextexplorer/config:/config
       - nextexplorer-cache:/cache

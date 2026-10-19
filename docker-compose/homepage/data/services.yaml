@@ -476,9 +476,3 @@
               - field: length
                 label: Access Keys
                 format: number
-    - RustFS:
-        icon: rustfs.png
-        href: "https://rustfs-ui.destroyer.{{HOMEPAGE_VAR_DOMAIN}}"
-        description: Server Destroyer
-        server: destroyer
-        container: rustfs

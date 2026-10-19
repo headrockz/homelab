@@ -23,6 +23,25 @@
           - "--exclude=.htpasswd"
           - "--exclude=certs/"
 
+    - name: Get the Ansible connection user account
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ ansible_user }}"
+
+    - name: Update PUID in .env when present
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^PUID='
+        line: "PUID={{ ansible_facts.getent_passwd[ansible_user][1] }}"
+        backrefs: true
+
+    - name: Update PGID in .env when present
+      ansible.builtin.lineinfile:
+        path: "{{ compose_path }}/{{ compose_name }}/.env"
+        regexp: '^PGID='
+        line: "PGID={{ ansible_facts.getent_passwd[ansible_user][2] }}"
+        backrefs: true
+
     - name: Update server .env file with hostname
       ansible.builtin.lineinfile:
         path: "{{ compose_path }}/{{ compose_name }}/.env"
@@ -34,6 +53,7 @@
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^HOSTNAME='
         line: "HOSTNAME={{ ansible_hostname }}"
+        backrefs: true
 
     - name: Update docker volume path
       ansible.builtin.lineinfile:
@@ -46,6 +66,7 @@
         path: "{{ compose_path }}/{{ compose_name }}/.env"
         regexp: '^DOCKER_PATH='
         line: "DOCKER_PATH={{ compose_path | default('~/docker') }}"
+        backrefs: true
 
     # Specific case for stack garage, zerobyte, and syncthing
     - name: Update volume data (only for containers garage, zerobyte, syncthing)
