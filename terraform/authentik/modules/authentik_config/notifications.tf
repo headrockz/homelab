@@ -28,3 +28,10 @@ resource "authentik_event_transport" "default-telegram-transport" {
   webhook_mapping_body    = authentik_property_mapping_notification.body-telegram.id
   webhook_mapping_headers = authentik_property_mapping_notification.headers-telegram.id
 }
+
+resource "authentik_event_transport" "default-discord-transport" {
+  name        = "default-discord-transport"
+  mode        = "webhook_slack"
+  send_once   = true
+  webhook_url = local.discord_webhook_url
+}
