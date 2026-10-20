@@ -35,3 +35,16 @@ resource "authentik_event_transport" "default-discord-transport" {
   send_once   = true
   webhook_url = local.discord_webhook_url
 }
+
+resource "authentik_event_transport" "default-local-transport" {
+  name                 = "default-local-transport"
+  mode                 = "local"
+  send_once            = false
+  email_subject_prefix = "authentik Notification: "
+}
+
+resource "authentik_event_transport" "default-email-transport" {
+  name                 = "default-email-transport"
+  mode                 = "email"
+  email_subject_prefix = "authentik Notification:"
+}
