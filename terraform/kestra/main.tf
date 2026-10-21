@@ -6,6 +6,8 @@ module "kv" {
   local_nas      = var.local_nas
   pihole_sync    = var.pihole_sync
   grafana_url    = var.grafana_url
+  kestra_url     = var.kestra_url
+  backup_paths   = var.backup_paths
 }
 
 module "flows" {

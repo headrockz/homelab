@@ -23,3 +23,13 @@ variable "grafana_url" {
   description = "Grafana URL"
   type        = string
 }
+
+variable "kestra_url" {
+  description = "Kestra URL"
+  type        = string
+}
+
+variable "backup_paths" {
+  description = "Backup paths configuration"
+  type        = string
+}
